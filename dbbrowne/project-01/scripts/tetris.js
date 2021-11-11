@@ -15,7 +15,7 @@ const playMatrixHeight = 24
 const playMatrixWidth = 16
 const playMatrix = []
 
-const tetronimoSpawnRef = [0,7]
+const tetronimoSpawnRef = [20,7]
 
 let activeTetronimo = null
 
