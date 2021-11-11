@@ -53,7 +53,7 @@ section{
   /* background-color: turquoise; */
   width: calc(((80.5vh)*16/24));
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap-reverse;
 }
 
 .play-matrix div{
