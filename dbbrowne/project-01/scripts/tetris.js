@@ -50,9 +50,8 @@ class Tetronimo {
     this.fillColor = fillColor
   }
   colorPlayMatrixView(){
-    console.log('coloring', this.fillColor)
     this.occupiedSpaces.forEach((space)=>{
-      playMatrix[space[0]][space[1]].style.backgroundColor = 'red' //`"${this.fillColor}"`
+      playMatrix[space[0]][space[1]].style.backgroundColor = this.fillColor
     })
   }
 }
