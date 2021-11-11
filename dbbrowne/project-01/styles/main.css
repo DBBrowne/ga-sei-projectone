@@ -1,3 +1,55 @@
 * {
   box-sizing: border-box;
+  border: solid white 1px;
+}
+
+html {
+  background-color: black;
+  color: white;
+}
+
+header{
+  display: flex;
+  justify-content: center;
+}
+
+h1{
+  margin: 0.2em 0;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  border: solid white 2px;
+}
+
+section{
+  display: flex;
+}
+
+.info{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.controls{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.controls *{
+  margin: 0.1em 0;
+}
+
+.controls span {
+  min-width: 3em;
+}
+
+.play-matrix{
+  background-color: turquoise;
+  min-width: 100px;
+  min-height: 90vh;
 }
