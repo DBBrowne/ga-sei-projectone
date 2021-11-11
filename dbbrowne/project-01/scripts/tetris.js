@@ -36,7 +36,15 @@ buildPlayMatrix(playMatrixHeight, playMatrixWidth)
 
 // * Events
 
-module.exports = {
-  testJestConnection,
-  buildPlayMatrix,
+
+
+
+// * export functions for testing
+try {
+  module.exports = {
+    testJestConnection,
+    buildPlayMatrix,
+  }
+} catch {
+  'suppress this error in the browser until solution'
 }
