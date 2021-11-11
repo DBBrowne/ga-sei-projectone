@@ -69,7 +69,12 @@ section{
   width: calc(80vh/24);
 
   max-width: calc(90vw/16);
-  max-height: calc(90vw/16)
+  max-height: calc(90vw/16);
+}
+
+.play-matrix div:nth-last-child(-n +64){
+  background-color: hotpink;
+  /* display: none; */
 }
 
 @media only screen and (max-width: 900px) {
