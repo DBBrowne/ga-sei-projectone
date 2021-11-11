@@ -15,6 +15,10 @@ const playMatrixHeight = 24
 const playMatrixWidth = 16
 const playMatrix = []
 
+const tetronimoSpawnRef = [0,7]
+
+let activeTetronimo = null
+
 // * Build play window
 function buildPlayMatrix(height, width){
   for (let x = 0; x < height; x++){
@@ -32,8 +36,29 @@ function buildPlayMatrix(height, width){
 
 buildPlayMatrix(playMatrixHeight, playMatrixWidth)
 
+// try just using references within playMatrix
+// const spawnPoint = playMatrix[spawnRef[0],spawnRef[1]]
+
 // * Functions
 
+class Tetronimo {
+  constructor(shapeOffsets, fillColor = 'red'){
+    this.location = tetronimoSpawnRef
+    this.occupiedSpaces = shapeOffsets.map((offset)=>{
+      return [tetronimoSpawnRef[0] + offset[0],tetronimoSpawnRef[1] + offset[1]]
+    })
+    this.fillColor = fillColor
+  }
+  colorPlayMatrixView(){
+    console.log('coloring', this.fillColor)
+    this.occupiedSpaces.forEach((space)=>{
+      playMatrix[space[0]][space[1]].style.backgroundColor = 'red' //`"${this.fillColor}"`
+    })
+  }
+}
+
+activeTetronimo = new Tetronimo([[0,0], [0,1], [1,0], [1,1]])
+activeTetronimo.colorPlayMatrixView()
 // * Events
 
 
