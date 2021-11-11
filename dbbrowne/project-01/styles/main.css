@@ -58,11 +58,12 @@ section{
 
 .play-matrix div{
   /* test settings */
-  color: black;
+  color: grey;
   background-color: rgb(50,50,50);
+  border: solid rgb(80, 80, 80) 0.2px;
   /*  */
 
   height: calc(80vh/24);
   width: calc(80vh/24);
-  font-size: 0.5vw;
+  font-size: 6px;
 }
