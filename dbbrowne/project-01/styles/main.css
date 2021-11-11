@@ -53,3 +53,7 @@ section{
   min-width: 100px;
   min-height: 90vh;
 }
+
+.play-matrix div{
+  background-color: tomato;
+}
