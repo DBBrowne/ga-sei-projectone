@@ -29,7 +29,7 @@ const landedShape = new LandedShape(0)
 const tetrominoSpawnRef = [7,20]
 
 let gameTimer = null
-const gameTickTime = 50
+const gameTickTime = 100
 
 let activeTetromino = null
 // **************************************************************************
@@ -122,6 +122,7 @@ class Tetromino {
 }
 
 function newTetromino (fillcolor) {
+  setTickSpeed()
   activeTetromino = new Tetromino([[0,0], [0,1], [1,0], [1,1]],fillcolor)
 }
 
@@ -144,6 +145,13 @@ function setTickSpeed(tickSpeed = gameTickTime){
 
 function handleKeyDown(e) {
   switch (e.code) {
+    case 'ArrowDown':
+      setTickSpeed(gameTickTime / 5)
+      break
+    case 'ArrowUp':
+      setTickSpeed(gameTickTime / 100)
+      break
+
     default:
       console.log('invalid keyDown, ignoring ', e.code)
   }
@@ -151,6 +159,13 @@ function handleKeyDown(e) {
 
 function handleKeyUp(e) {
   switch (e.code) {
+    case 'ArrowDown':
+      setTickSpeed()
+      break
+    case 'ArrowUp':
+      // setTickSpeed()
+      break
+
     default:
       console.log('invalid keyUp, ignoring ', e.code)
   }
@@ -163,11 +178,8 @@ document,addEventListener('keyup',   handleKeyUp)
 
 
 setTimeout(()=>{
-  setTickSpeed(5)
-},2000)
-
-setTimeout(()=>{
   clearInterval(gameTimer)
+  console.log('game time over')
 },5000)
 
 
