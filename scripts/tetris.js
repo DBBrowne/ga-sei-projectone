@@ -163,7 +163,7 @@ function handleKeyUp(e) {
       setTickSpeed()
       break
     case 'ArrowUp':
-      // setTickSpeed()
+      // tickSpeed resets when new piece enters play
       break
 
     default:
