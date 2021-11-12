@@ -15,9 +15,9 @@ const playMatrixHeight = 22
 const playMatrixWidth = 16
 const playMatrix = []
 
-const tetronimoSpawnRef = [20,7]
+const tetrominoSpawnRef = [20,7]
 
-let activeTetronimo = null
+let activeTetromino = null
 
 // * Build play window
 function buildPlayMatrix(height, width){
@@ -39,9 +39,9 @@ buildPlayMatrix(playMatrixHeight, playMatrixWidth)
 
 // * Functions
 
-class Tetronimo {
+class Tetromino {
   constructor(shapeOffsets, fillColor) {
-    this.baseLocation = tetronimoSpawnRef
+    this.baseLocation = tetrominoSpawnRef
     this.shapeOffsets = shapeOffsets
     this.occupiedSpaces = []
     this.fillColor = fillColor
@@ -55,7 +55,7 @@ class Tetronimo {
   }
   updateOccupiedSpaces(){
     this.occupiedSpaces = this.shapeOffsets.map((offset)=>{
-      return [tetronimoSpawnRef[0] + offset[0],tetronimoSpawnRef[1] + offset[1]]
+      return [tetrominoSpawnRef[0] + offset[0],tetrominoSpawnRef[1] + offset[1]]
     })
   }
   colorPlayMatrixView(){
@@ -65,7 +65,7 @@ class Tetronimo {
   }
 }
 
-activeTetronimo = new Tetronimo([[0,0], [0,1], [1,0], [1,1]],'darkred')
+activeTetromino = new Tetromino([[0,0], [0,1], [1,0], [1,1]],'darkred')
 // * Events
 
 
@@ -73,9 +73,9 @@ function gameTick(){
   playMatrix.forEach(row=>row.forEach(cell=> {
     cell.style.backgroundColor = 'grey'
   }))
-  activeTetronimo.baseLocation[0]--
-  activeTetronimo.updateOccupiedSpaces()
-  activeTetronimo.colorPlayMatrixView()
+  activeTetromino.baseLocation[0]--
+  activeTetromino.updateOccupiedSpaces()
+  activeTetromino.colorPlayMatrixView()
 }
 const gameTimer = setInterval(()=>{
   gameTick()
