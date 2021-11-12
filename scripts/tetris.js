@@ -4,6 +4,16 @@ function testJestConnection() {
   console.log('hello')
   return 'hello'
 }
+class LandedShape extends Array {
+  draw(){
+    if (!this.length){
+      return
+    }
+    this.forEach(cell=>{
+      playMatrix[cell.address[0]][cell.address[1]].style.backgroundColor = cell.fillColor
+    })
+  }
+}
 
 // DOM Elements
 
@@ -14,7 +24,7 @@ const playMatrixView = document.querySelector('.play-matrix')
 const playMatrixHeight = 22
 const playMatrixWidth = 16
 const playMatrix = []
-const landedShape = []
+const landedShape = new LandedShape(0)
 
 const tetrominoSpawnRef = [7,20]
 
@@ -42,7 +52,6 @@ buildPlayMatrix(playMatrixHeight, playMatrixWidth)
 
 
 // Functions
-
 class Tetromino {
   constructor(shapeOffsets, fillColor) {
     this.baseLocation = [tetrominoSpawnRef[1],tetrominoSpawnRef[0]]
@@ -65,20 +74,25 @@ class Tetromino {
     }
     this.occupiedSpaces = [...this.nextOccupiedSpaces]
   }
-  mapOccupiedSpaces(location){
+  mapOccupiedSpaces(address){
     return this.shapeOffsets.map(offset=>{
-      return [location[0] + offset[0],location[1] + offset[1]]
+      return [address[0] + offset[0],address[1] + offset[1]]
     })
   }
   moveDown(){
     const nextLocation = [this.baseLocation[0] - 1, this.baseLocation[1]]
     this.nextOccupiedSpaces = this.mapOccupiedSpaces(nextLocation)
-    const noIntercepts = this.nextOccupiedSpaces.every(cell=>{
-      return cell[0] > 0
+    const noIntercepts = this.nextOccupiedSpaces.every(nextMoveCell=>{
+      console.log(nextMoveCell)
+      return landedShape.every(landedCell=>{
+        console.log('landedCell',landedCell.address)
+        return !landedCell.address.every((coordinate, index)=>!coordinate === nextMoveCell[index])
+      }) && 
+        nextMoveCell[0] > 0
     })
     if (!noIntercepts){
       console.log('intercept')
-      this.update()
+      this.addTolandedShape()
       return
     }
     this.baseLocation = nextLocation
@@ -88,6 +102,10 @@ class Tetromino {
     this.occupiedSpaces.forEach((space)=>{
       playMatrix[space[0]][space[1]].style.backgroundColor = this.fillColor
     })
+  }
+  addTolandedShape(){
+    this.occupiedSpaces.forEach(cell=>landedShape.push({ address: cell, fillColor: this.fillColor }))
+    newTetromino('blue')
   }
   // horizontalMove(direction = [0,1]){
   //   this.nextLocation = [this.baseLocation[0] + direction[0],this.baseLocation[1] + direction[1]]
@@ -100,7 +118,11 @@ class Tetromino {
   // }
 }
 
-activeTetromino = new Tetromino([[0,0], [0,1], [1,0], [1,1]],'darkred')
+function newTetromino (fillcolor) {
+  activeTetromino = new Tetromino([[0,0], [0,1], [1,0], [1,1]],fillcolor)
+}
+
+newTetromino('darkred')
 // Events
 
 
@@ -110,15 +132,16 @@ function gameTick(){
     cell.style.backgroundColor = 'inherit'
   }))
   activeTetromino.moveDown()
+  landedShape.draw()
 }
 const gameTimer = setInterval(()=>{
   // activeTetromino.move()
   gameTick()
-},400)
+},50)
 
 setInterval(()=>{
   clearInterval(gameTimer)
-},9000)
+},3100)
 
 
 
