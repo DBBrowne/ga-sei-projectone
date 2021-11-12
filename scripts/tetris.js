@@ -15,12 +15,6 @@ class LandedShape extends Array {
   }
 }
 
-class PlayerControlScheme {
-  constructor(){
-    this.speedUpPlay = 'ArrowDown'
-    this.dropPiece = 'ArrowUp'
-  }
-}
 
 // DOM Elements
 
@@ -67,8 +61,14 @@ const playerControls = {
 }
 
 const playerInputScheme = {
-  ArrowDown: playerControls.speedUpPlay,
-  ArrowUp: playerControls.dropPiece,
+  ArrowDown: {
+    name: '&#8595;',
+    control: playerControls.speedUpPlay,
+  },
+  ArrowUp: {
+    name: '&#8593;',
+    control: playerControls.dropPiece,
+  },
 }
 
 // **************************************************************************
@@ -92,6 +92,17 @@ function buildPlayMatrix(height, width){
 
 buildPlayMatrix(playMatrixHeight + 2, playMatrixWidth)
 
+// inject control scheme
+for (const controlKey in playerInputScheme) {
+  console.log(playerInputScheme[controlKey])
+  const controlLegend = document.querySelector('.player1 .controls')
+
+  const controlLegendItem = document.createElement('div')
+  controlLegendItem.classList.add('control-key')
+  controlLegendItem.innerHTML = `<p><span>${playerInputScheme[controlKey].name}</span>${playerInputScheme[controlKey].control.name}</p>`
+
+  controlLegend.appendChild(controlLegendItem)
+}
 // Functions
 class Tetromino {
   constructor(shapeOffsets, fillColor) {
@@ -195,8 +206,9 @@ function setTickSpeed(tickSpeed = gameTickTime){
 // key handlers
 
 function handleKeyPress(e) {
+  console.log(e)
   try {
-    playerInputScheme[e.code][e.type]()
+    playerInputScheme[e.code].control[e.type]()
   } catch (err) {
     // console.log(err)
     console.log('unrecognised key event:', e.code, e.type)
