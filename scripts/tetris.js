@@ -21,7 +21,7 @@ const playMatrixView = document.querySelector('.play-matrix')
 
 // Variables
 
-const playMatrixHeight = 22
+const playMatrixHeight = 20
 const playMatrixWidth = 16
 const playMatrix = []
 const landedShape = new LandedShape(0)
@@ -30,6 +30,7 @@ const tetrominoSpawnRef = [7,20]
 
 let gameTimer = null
 const gameTickTime = 100
+let isGameOngoing = false
 
 let activeTetromino = null
 // **************************************************************************
@@ -51,7 +52,7 @@ function buildPlayMatrix(height, width){
   return playMatrix
 }
 
-buildPlayMatrix(playMatrixHeight, playMatrixWidth)
+buildPlayMatrix(playMatrixHeight + 2, playMatrixWidth)
 
 
 // Functions
@@ -107,8 +108,17 @@ class Tetromino {
     })
   }
   addToLandedShape(){
-    this.occupiedSpaces.forEach(cell=>landedShape.push({ address: cell, fillColor: this.fillColor }))
-    newTetromino('blue')
+    this.occupiedSpaces.every(cell=>{
+      if (cell[0] > playMatrixHeight){
+        loseGame()
+        return false
+      }
+      landedShape.push({ address: cell, fillColor: this.fillColor })
+      return true
+    })
+    if (isGameOngoing){
+      newTetromino('blue')
+    }
   }
   // horizontalMove(direction = [0,1]){
   //   this.nextLocation = [this.baseLocation[0] + direction[0],this.baseLocation[1] + direction[1]]
@@ -125,7 +135,11 @@ function newTetromino (fillcolor) {
   setTickSpeed()
   activeTetromino = new Tetromino([[0,0], [0,1], [1,0], [1,1]],fillcolor)
 }
-
+function loseGame(){
+  isGameOngoing = false
+  console.log('LOSER')
+  clearInterval(gameTimer)
+}
 function gameTick(){
   console.log('tick')
   playMatrix.forEach(row=>row.forEach(cell=> {
@@ -146,10 +160,14 @@ function setTickSpeed(tickSpeed = gameTickTime){
 function handleKeyDown(e) {
   switch (e.code) {
     case 'ArrowDown':
-      setTickSpeed(gameTickTime / 5)
+      if (isGameOngoing){
+        setTickSpeed(gameTickTime / 5)
+      }
       break
     case 'ArrowUp':
-      setTickSpeed(gameTickTime / 100)
+      if (isGameOngoing){
+        setTickSpeed(gameTickTime / 100)
+      }
       break
 
     default:
@@ -160,7 +178,9 @@ function handleKeyDown(e) {
 function handleKeyUp(e) {
   switch (e.code) {
     case 'ArrowDown':
-      setTickSpeed()
+      if (isGameOngoing){
+        setTickSpeed()
+      }
       break
     case 'ArrowUp':
       // tickSpeed resets when new piece enters play
@@ -180,12 +200,13 @@ document,addEventListener('keyup',   handleKeyUp)
 setTimeout(()=>{
   clearInterval(gameTimer)
   console.log('game time over')
-},5000)
+},10000)
 
 
 
 // * START GAME
 
+isGameOngoing = true
 newTetromino('darkred')
 setTickSpeed()
 
