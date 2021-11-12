@@ -36,8 +36,6 @@ function buildPlayMatrix(height, width){
 
 buildPlayMatrix(playMatrixHeight, playMatrixWidth)
 
-// try just using references within playMatrix
-// const spawnPoint = playMatrix[spawnRef[0],spawnRef[1]]
 
 // * Functions
 
@@ -49,6 +47,9 @@ class Tetronimo {
     this.fillColor = fillColor
 
     //initialise shape
+    this.init()
+  }
+  init(){
     this.updateOccupiedSpaces()
     this.colorPlayMatrixView()
   }
