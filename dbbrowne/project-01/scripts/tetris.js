@@ -49,7 +49,6 @@ class Tetronimo {
     this.fillColor = fillColor
 
     //initialise shape
-    console.log('drawsShape')
     this.updateOccupiedSpaces()
     this.colorPlayMatrixView()
   }
@@ -75,7 +74,7 @@ function gameTick(){
   activeTetronimo.colorPlayMatrixView()
 }
 const gameTimer = setInterval(()=>{
-  console.log('game tick')
+  gameTick()
 },400)
 
 setInterval(()=>{
