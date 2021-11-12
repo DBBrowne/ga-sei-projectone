@@ -5,21 +5,24 @@ function testJestConnection() {
   return 'hello'
 }
 
-// * DOM Elements
+// DOM Elements
 
 const playMatrixView = document.querySelector('.play-matrix')
 
-// * Variables
+// Variables
 
 const playMatrixHeight = 22
 const playMatrixWidth = 16
 const playMatrix = []
 
-const tetrominoSpawnRef = [20,7]
+const tetrominoSpawnRef = [7,20]
 
 let activeTetromino = null
-
-// * Build play window
+// **************************************************************************
+// * From this point on, location arrays are referenced in the form [y,x],
+// * so that each member of the outer array represents a row of the gamespace
+// **************************************************************************
+// Build play window
 function buildPlayMatrix(height, width){
   for (let y = 0; y < height; y++){
     playMatrix.push([])
@@ -37,15 +40,15 @@ function buildPlayMatrix(height, width){
 buildPlayMatrix(playMatrixHeight, playMatrixWidth)
 
 
-// * Functions
+// Functions
 
 class Tetromino {
   constructor(shapeOffsets, fillColor) {
-    this.baseLocation = [...tetrominoSpawnRef]
+    this.baseLocation = [tetrominoSpawnRef[1],tetrominoSpawnRef[0]]
     this.shapeOffsets = shapeOffsets
     this.occupiedSpaces = []
     this.fillColor = fillColor
-    this.nextSpace = []
+    this.nextLocation = []
 
     //initialise shape
     this.init()
@@ -67,7 +70,7 @@ class Tetromino {
 }
 
 activeTetromino = new Tetromino([[0,0], [0,1], [1,0], [1,1]],'darkred')
-// * Events
+// Events
 
 
 function gameTick(){
