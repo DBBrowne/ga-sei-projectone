@@ -35,6 +35,9 @@ let isGameOngoing = false
 
 let activeTetromino = null
 
+
+// Controls
+// define behaviour for a control
 const playerControls = {
   moveLeft: {
     name: 'Move Left',
@@ -79,7 +82,7 @@ const playerControls = {
     },
   },
 }
-
+// attach input to abstract control behaviour
 const playerInputScheme = {
   ArrowLeft: {
     name: '&#8592;',
@@ -195,7 +198,7 @@ class Tetromino {
       newTetromino('blue')
     }
   }
-  // horizontalMove(direction = [0,1]){
+  // move(direction = [0,1]){
   //   this.nextLocation = [this.baseLocation[0] + direction[0],this.baseLocation[1] + direction[1]]
   //   this.shapeOffsets.every(offset=>{
   //     const newCell = [this.nextLocation[0] + offset[0], this.nextLocation[1] + offset[1]]
@@ -230,7 +233,7 @@ function setTickSpeed(tickSpeed = gameTickTime){
   },tickSpeed)
 }
 
-// key handlers
+// keypress handler
 
 function handleKeyPress(e) {
   try {
