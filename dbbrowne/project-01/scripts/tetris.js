@@ -11,7 +11,7 @@ const playMatrixView = document.querySelector('.play-matrix')
 
 // * Variables
 
-const playMatrixHeight = 24
+const playMatrixHeight = 22
 const playMatrixWidth = 16
 const playMatrix = []
 

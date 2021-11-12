@@ -51,7 +51,7 @@ section{
 
 .play-matrix{
   /* background-color: turquoise; */
-  width: calc(((80.5vh)*16/24));
+  width: calc(((80.5vh)*16/22));
   max-width: 90vw;
   display: flex;
   flex-wrap: wrap-reverse;
@@ -65,14 +65,14 @@ section{
   font-size: 6px;
   /*  */
 
-  height: calc(80vh/24);
-  width: calc(80vh/24);
+  height: calc(80vh/22);
+  width: calc(80vh/22);
 
   max-width: calc(90vw/16);
   max-height: calc(90vw/16);
 }
 
-.play-matrix div:nth-last-child(-n +64){
+.play-matrix div:nth-last-child(-n +32){
   background-color: hotpink;
   /* display: none; */
 }
