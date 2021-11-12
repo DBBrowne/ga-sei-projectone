@@ -49,8 +49,9 @@ class Tetronimo {
     this.fillColor = fillColor
 
     //initialise shape
-    this.colorPlayMatrixView()
+    console.log('drawsShape')
     this.updateOccupiedSpaces()
+    this.colorPlayMatrixView()
   }
   updateOccupiedSpaces(){
     this.occupiedSpaces = this.shapeOffsets.map((offset)=>{
@@ -67,10 +68,12 @@ class Tetronimo {
 activeTetronimo = new Tetronimo([[0,0], [0,1], [1,0], [1,1]],'darkred')
 // * Events
 
-activeTetronimo.baseLocation[0]--
-activeTetronimo.updateOccupiedSpaces()
-activeTetronimo.colorPlayMatrixView()
 
+function gameTick(){
+  activeTetronimo.baseLocation[0]--
+  activeTetronimo.updateOccupiedSpaces()
+  activeTetronimo.colorPlayMatrixView()
+}
 const gameTimer = setInterval(()=>{
   console.log('game tick')
 },400)
