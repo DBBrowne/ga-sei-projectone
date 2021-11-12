@@ -94,7 +94,6 @@ buildPlayMatrix(playMatrixHeight + 2, playMatrixWidth)
 
 // inject control scheme
 for (const controlKey in playerInputScheme) {
-  console.log(playerInputScheme[controlKey])
   const controlLegend = document.querySelector('.player1 .controls')
 
   const controlLegendItem = document.createElement('div')
@@ -206,7 +205,6 @@ function setTickSpeed(tickSpeed = gameTickTime){
 // key handlers
 
 function handleKeyPress(e) {
-  console.log(e)
   try {
     playerInputScheme[e.code].control[e.type]()
   } catch (err) {
