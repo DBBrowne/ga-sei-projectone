@@ -21,14 +21,14 @@ let activeTetronimo = null
 
 // * Build play window
 function buildPlayMatrix(height, width){
-  for (let x = 0; x < height; x++){
+  for (let y = 0; y < height; y++){
     playMatrix.push([])
-    for (let y = 0; y < width; y++){
+    for (let x = 0; x < width; x++){
       const playCell = document.createElement('div')
       playCell.textContent = `${x}, ${y}`
       
       playMatrixView.appendChild(playCell)
-      playMatrix[x].push(playCell)
+      playMatrix[y].push(playCell)
     }
   }
   return playMatrix
