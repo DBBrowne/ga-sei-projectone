@@ -50,6 +50,7 @@ section{
 }
 
 .play-matrix{
+  background-color: rgb(50,50,50);
   /* background-color: turquoise; */
   width: calc(((80.5vh)*16/22));
   max-width: 90vw;
@@ -60,7 +61,6 @@ section{
 .play-matrix div{
   /* test settings */
   color: grey;
-  background-color: rgb(50,50,50);
   border: solid rgb(80, 80, 80) 0.2px;
   font-size: 6px;
   /*  */

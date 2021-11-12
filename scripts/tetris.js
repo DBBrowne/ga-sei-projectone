@@ -14,6 +14,7 @@ const playMatrixView = document.querySelector('.play-matrix')
 const playMatrixHeight = 22
 const playMatrixWidth = 16
 const playMatrix = []
+const landedShape = []
 
 const tetrominoSpawnRef = [7,20]
 
@@ -48,7 +49,7 @@ class Tetromino {
     this.shapeOffsets = shapeOffsets
     this.occupiedSpaces = []
     this.fillColor = fillColor
-    this.nextLocation = []
+    this.nextOccupiedSpaces = []
 
     //initialise shape
     this.init()
@@ -58,15 +59,35 @@ class Tetromino {
     this.colorPlayMatrixView()
   }
   updateOccupiedSpaces(){
-    this.occupiedSpaces = this.shapeOffsets.map((offset)=>{
-      return [this.baseLocation[0] + offset[0],this.baseLocation[1] + offset[1]]
+    if (!this.nextOccupiedSpaces.length){
+      this.occupiedSpaces = this.mapOccupiedSpaces(this.baseLocation)
+      return
+    }
+    this.occupiedSpaces = [...this.nextOccupiedSpaces]
+  }
+  mapOccupiedSpaces(location){
+    return this.shapeOffsets.map(offset=>{
+      return [location[0] + offset[0],location[1] + offset[1]]
     })
+  }
+  moveDown(){
+    this.nextOccupiedSpaces = [this.baseLocation[0] - 1, this.baseLocation[1]]
+
   }
   colorPlayMatrixView(){
     this.occupiedSpaces.forEach((space)=>{
       playMatrix[space[0]][space[1]].style.backgroundColor = this.fillColor
     })
   }
+  // horizontalMove(direction = [0,1]){
+  //   this.nextLocation = [this.baseLocation[0] + direction[0],this.baseLocation[1] + direction[1]]
+  //   this.shapeOffsets.every(offset=>{
+  //     const newCell = [this.nextLocation[0] + offset[0], this.nextLocation[1] + offset[1]]
+  //     if (newCell[1] < 0){
+  //       break
+  //     }
+  //   })
+  // }
 }
 
 activeTetromino = new Tetromino([[0,0], [0,1], [1,0], [1,1]],'darkred')
@@ -75,13 +96,14 @@ activeTetromino = new Tetromino([[0,0], [0,1], [1,0], [1,1]],'darkred')
 
 function gameTick(){
   playMatrix.forEach(row=>row.forEach(cell=> {
-    cell.style.backgroundColor = 'grey'
+    cell.style.backgroundColor = 'inherit'
   }))
   activeTetromino.baseLocation[0]--
   activeTetromino.updateOccupiedSpaces()
   activeTetromino.colorPlayMatrixView()
 }
 const gameTimer = setInterval(()=>{
+  // activeTetromino.move()
   gameTick()
 },400)
 
