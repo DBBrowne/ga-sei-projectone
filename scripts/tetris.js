@@ -28,6 +28,9 @@ const landedShape = new LandedShape(0)
 
 const tetrominoSpawnRef = [7,20]
 
+let gameTimer = null
+let gameTickTime = 50
+
 let activeTetromino = null
 // **************************************************************************
 // * From this point on, location arrays are referenced in the form [y,x],
@@ -82,12 +85,14 @@ class Tetromino {
   moveDown(){
     const nextLocation = [this.baseLocation[0] - 1, this.baseLocation[1]]
     this.nextOccupiedSpaces = this.mapOccupiedSpaces(nextLocation)
+
     const noIntercepts = this.nextOccupiedSpaces.every(nextMoveCell=>{
       return landedShape.every(landedCell=>{
         return !landedCell.address.every((coordinate, index)=>(coordinate === nextMoveCell[index]))
       }) && 
         nextMoveCell[0] >= 0
     })
+
     if (!noIntercepts){
       console.log('intercept')
       this.addToLandedShape()
@@ -132,12 +137,20 @@ function gameTick(){
   activeTetromino.moveDown()
   landedShape.draw()
 }
-const gameTimer = setInterval(()=>{
-  // activeTetromino.move()
-  gameTick()
-},50)
+function setTickSpeed(tickSpeed = gameTickTime){
+  clearInterval(gameTimer)
+  return gameTimer = setInterval(()=>{
+    gameTick()
+  },tickSpeed)
+}
 
-setInterval(()=>{
+setTickSpeed()
+
+setTimeout(()=>{
+  setTickSpeed(5)
+},2000)
+
+setTimeout(()=>{
   clearInterval(gameTimer)
 },5000)
 
