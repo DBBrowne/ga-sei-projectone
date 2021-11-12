@@ -15,6 +15,13 @@ class LandedShape extends Array {
   }
 }
 
+class PlayerControlScheme {
+  constructor(){
+    this.speedUpPlay = 'ArrowDown'
+    this.dropPiece = 'ArrowUp'
+  }
+}
+
 // DOM Elements
 
 const playMatrixView = document.querySelector('.play-matrix')
@@ -33,6 +40,37 @@ const gameTickTime = 100
 let isGameOngoing = false
 
 let activeTetromino = null
+
+const playerControls = {
+  speedUpPlay: {
+    name: 'Speed Up',
+    keydown(){
+      if (isGameOngoing){
+        setTickSpeed(gameTickTime / 5)
+      }
+    },
+    keyup(){
+      if (isGameOngoing){
+        setTickSpeed() 
+      }
+    },
+  },
+  dropPiece: {
+    name: 'Drop',
+    keydown(){
+      if (isGameOngoing){
+        setTickSpeed(gameTickTime / 100)
+      }
+    },
+    keyup(){},
+  },
+}
+
+const playerInputScheme = {
+  ArrowDown: playerControls.speedUpPlay,
+  ArrowUp: playerControls.dropPiece,
+}
+
 // **************************************************************************
 // * From this point on, location arrays are referenced in the form [y,x],
 // * so that each member of the outer array represents a row of the gamespace
@@ -53,7 +91,6 @@ function buildPlayMatrix(height, width){
 }
 
 buildPlayMatrix(playMatrixHeight + 2, playMatrixWidth)
-
 
 // Functions
 class Tetromino {
@@ -137,7 +174,7 @@ function newTetromino (fillcolor) {
 }
 function loseGame(){
   isGameOngoing = false
-  console.log('LOSER')
+  
   clearInterval(gameTimer)
 }
 function gameTick(){
@@ -157,44 +194,19 @@ function setTickSpeed(tickSpeed = gameTickTime){
 
 // key handlers
 
-function handleKeyDown(e) {
-  switch (e.code) {
-    case 'ArrowDown':
-      if (isGameOngoing){
-        setTickSpeed(gameTickTime / 5)
-      }
-      break
-    case 'ArrowUp':
-      if (isGameOngoing){
-        setTickSpeed(gameTickTime / 100)
-      }
-      break
-
-    default:
-      console.log('invalid keyDown, ignoring ', e.code)
-  }
-}
-
-function handleKeyUp(e) {
-  switch (e.code) {
-    case 'ArrowDown':
-      if (isGameOngoing){
-        setTickSpeed()
-      }
-      break
-    case 'ArrowUp':
-      // tickSpeed resets when new piece enters play
-      break
-
-    default:
-      console.log('invalid keyUp, ignoring ', e.code)
+function handleKeyPress(e) {
+  try {
+    playerInputScheme[e.code][e.type]()
+  } catch (err) {
+    // console.log(err)
+    console.log('unrecognised key event:', e.code, e.type)
   }
 }
 
 // Events
 
-document,addEventListener('keydown', handleKeyDown)
-document,addEventListener('keyup',   handleKeyUp)
+document,addEventListener('keydown', handleKeyPress)
+document,addEventListener('keyup',   handleKeyPress)
 
 
 setTimeout(()=>{
