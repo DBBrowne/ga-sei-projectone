@@ -41,10 +41,11 @@ buildPlayMatrix(playMatrixHeight, playMatrixWidth)
 
 class Tetromino {
   constructor(shapeOffsets, fillColor) {
-    this.baseLocation = tetrominoSpawnRef
+    this.baseLocation = [...tetrominoSpawnRef]
     this.shapeOffsets = shapeOffsets
     this.occupiedSpaces = []
     this.fillColor = fillColor
+    this.nextSpace = []
 
     //initialise shape
     this.init()
@@ -55,7 +56,7 @@ class Tetromino {
   }
   updateOccupiedSpaces(){
     this.occupiedSpaces = this.shapeOffsets.map((offset)=>{
-      return [tetrominoSpawnRef[0] + offset[0],tetrominoSpawnRef[1] + offset[1]]
+      return [this.baseLocation[0] + offset[0],this.baseLocation[1] + offset[1]]
     })
   }
   colorPlayMatrixView(){
