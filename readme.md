@@ -1,8 +1,10 @@
 Let's make a Tetris!
 
-[Project board](https://git.generalassemb.ly/dbbrowne/SEI-60-HOMEWORK/projects/1)
+[Project board](https://github.com/users/DBBrowne/projects/1)
 
-[Deployed Here!]()
+[Initial designs](https://github.com/DBBrowne/ga-sei-projectone/wiki/initial-layouts)
+
+[Deployed Here! - not yet!]()
 
 Tetronimos:
 <figure class="pi-item pi-image" data-source="image">
