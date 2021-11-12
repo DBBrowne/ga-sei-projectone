@@ -83,16 +83,14 @@ class Tetromino {
     const nextLocation = [this.baseLocation[0] - 1, this.baseLocation[1]]
     this.nextOccupiedSpaces = this.mapOccupiedSpaces(nextLocation)
     const noIntercepts = this.nextOccupiedSpaces.every(nextMoveCell=>{
-      console.log(nextMoveCell)
       return landedShape.every(landedCell=>{
-        console.log('landedCell',landedCell.address)
-        return !landedCell.address.every((coordinate, index)=>!coordinate === nextMoveCell[index])
+        return !landedCell.address.every((coordinate, index)=>(coordinate === nextMoveCell[index]))
       }) && 
-        nextMoveCell[0] > 0
+        nextMoveCell[0] >= 0
     })
     if (!noIntercepts){
       console.log('intercept')
-      this.addTolandedShape()
+      this.addToLandedShape()
       return
     }
     this.baseLocation = nextLocation
@@ -103,7 +101,7 @@ class Tetromino {
       playMatrix[space[0]][space[1]].style.backgroundColor = this.fillColor
     })
   }
-  addTolandedShape(){
+  addToLandedShape(){
     this.occupiedSpaces.forEach(cell=>landedShape.push({ address: cell, fillColor: this.fillColor }))
     newTetromino('blue')
   }
@@ -141,7 +139,7 @@ const gameTimer = setInterval(()=>{
 
 setInterval(()=>{
   clearInterval(gameTimer)
-},3100)
+},5000)
 
 
 
