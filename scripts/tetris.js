@@ -52,9 +52,9 @@ class Tetromino {
     this.nextOccupiedSpaces = []
 
     //initialise shape
-    this.init()
+    this.update()
   }
-  init(){
+  update(){
     this.updateOccupiedSpaces()
     this.colorPlayMatrixView()
   }
@@ -71,8 +71,10 @@ class Tetromino {
     })
   }
   moveDown(){
-    this.nextOccupiedSpaces = [this.baseLocation[0] - 1, this.baseLocation[1]]
-
+    const nextLocation = [this.baseLocation[0] - 1, this.baseLocation[1]]
+    this.nextOccupiedSpaces = this.mapOccupiedSpaces(nextLocation)
+    this.baseLocation = nextLocation
+    this.update()
   }
   colorPlayMatrixView(){
     this.occupiedSpaces.forEach((space)=>{
@@ -95,12 +97,11 @@ activeTetromino = new Tetromino([[0,0], [0,1], [1,0], [1,1]],'darkred')
 
 
 function gameTick(){
+  console.log('tick')
   playMatrix.forEach(row=>row.forEach(cell=> {
     cell.style.backgroundColor = 'inherit'
   }))
-  activeTetromino.baseLocation[0]--
-  activeTetromino.updateOccupiedSpaces()
-  activeTetromino.colorPlayMatrixView()
+  activeTetromino.moveDown()
 }
 const gameTimer = setInterval(()=>{
   // activeTetromino.move()
