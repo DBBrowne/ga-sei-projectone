@@ -73,6 +73,14 @@ class Tetromino {
   moveDown(){
     const nextLocation = [this.baseLocation[0] - 1, this.baseLocation[1]]
     this.nextOccupiedSpaces = this.mapOccupiedSpaces(nextLocation)
+    const noIntercepts = this.nextOccupiedSpaces.every(cell=>{
+      return cell[0] > 0
+    })
+    if (!noIntercepts){
+      console.log('intercept')
+      this.update()
+      return
+    }
     this.baseLocation = nextLocation
     this.update()
   }
@@ -110,7 +118,7 @@ const gameTimer = setInterval(()=>{
 
 setInterval(()=>{
   clearInterval(gameTimer)
-},2000)
+},9000)
 
 
 
