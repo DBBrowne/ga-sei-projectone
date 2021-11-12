@@ -69,6 +69,7 @@ activeTetronimo = new Tetronimo([[0,0], [0,1], [1,0], [1,1]],'darkred')
 
 
 function gameTick(){
+  playMatrix.forEach(cell=>cell.style.backgroundColor = 'grey')
   activeTetronimo.baseLocation[0]--
   activeTetronimo.updateOccupiedSpaces()
   activeTetronimo.colorPlayMatrixView()
