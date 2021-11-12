@@ -42,7 +42,7 @@ buildPlayMatrix(playMatrixHeight, playMatrixWidth)
 // * Functions
 
 class Tetronimo {
-  constructor(shapeOffsets, fillColor = 'red'){
+  constructor(shapeOffsets, fillColor) {
     this.baseLocation = tetronimoSpawnRef
     this.shapeOffsets = shapeOffsets
     this.occupiedSpaces = []
@@ -70,6 +70,15 @@ activeTetronimo = new Tetronimo([[0,0], [0,1], [1,0], [1,1]],'darkred')
 activeTetronimo.baseLocation[0]--
 activeTetronimo.updateOccupiedSpaces()
 activeTetronimo.colorPlayMatrixView()
+
+const gameTimer = setInterval(()=>{
+  console.log('game tick')
+},400)
+
+setInterval(()=>{
+  clearInterval(gameTimer)
+},2000)
+
 
 
 // * export functions for testing
