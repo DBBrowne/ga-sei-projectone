@@ -48,6 +48,9 @@ class Tetronimo {
       return [tetronimoSpawnRef[0] + offset[0],tetronimoSpawnRef[1] + offset[1]]
     })
     this.fillColor = fillColor
+
+    //initialise shape
+    this.colorPlayMatrixView()
   }
   colorPlayMatrixView(){
     this.occupiedSpaces.forEach((space)=>{
@@ -56,8 +59,7 @@ class Tetronimo {
   }
 }
 
-activeTetronimo = new Tetronimo([[0,0], [0,1], [1,0], [1,1]])
-activeTetronimo.colorPlayMatrixView()
+activeTetronimo = new Tetronimo([[0,0], [0,1], [1,0], [1,1]],'darkred')
 // * Events
 
 
