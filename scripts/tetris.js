@@ -36,6 +36,24 @@ let isGameOngoing = false
 let activeTetromino = null
 
 const playerControls = {
+  moveLeft: {
+    name: 'Move Left',
+    keydown(){
+      activeTetromino.move([0,-1])
+    },
+    keyup(){
+      return 'event inactive'
+    },
+  },
+  moveRight: {
+    name: 'Move Right',
+    keydown(){
+      activeTetromino.move([0,1])
+    },
+    keyup(){
+      return 'event inactive'
+    },
+  },
   speedUpPlay: {
     name: 'Speed Up',
     keydown(){
@@ -56,11 +74,21 @@ const playerControls = {
         setTickSpeed(gameTickTime / 100)
       }
     },
-    keyup(){},
+    keyup(){
+      return 'event inactive'
+    },
   },
 }
 
 const playerInputScheme = {
+  ArrowLeft: {
+    name: '&#8592;',
+    control: playerControls.moveLeft,
+  },
+  ArrowRight: {
+    name: '&#8594;',
+    control: playerControls.moveRight,
+  },
   ArrowDown: {
     name: '&#8595;',
     control: playerControls.speedUpPlay,
