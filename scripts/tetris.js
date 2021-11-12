@@ -29,7 +29,7 @@ const landedShape = new LandedShape(0)
 const tetrominoSpawnRef = [7,20]
 
 let gameTimer = null
-let gameTickTime = 50
+const gameTickTime = 50
 
 let activeTetromino = null
 // **************************************************************************
@@ -125,10 +125,6 @@ function newTetromino (fillcolor) {
   activeTetromino = new Tetromino([[0,0], [0,1], [1,0], [1,1]],fillcolor)
 }
 
-newTetromino('darkred')
-// Events
-
-
 function gameTick(){
   console.log('tick')
   playMatrix.forEach(row=>row.forEach(cell=> {
@@ -144,7 +140,27 @@ function setTickSpeed(tickSpeed = gameTickTime){
   },tickSpeed)
 }
 
-setTickSpeed()
+// key handlers
+
+function handleKeyDown(e) {
+  switch (e.code) {
+    default:
+      console.log('invalid keyDown, ignoring ', e.code)
+  }
+}
+
+function handleKeyUp(e) {
+  switch (e.code) {
+    default:
+      console.log('invalid keyUp, ignoring ', e.code)
+  }
+}
+
+// Events
+
+document,addEventListener('keydown', handleKeyDown)
+document,addEventListener('keyup',   handleKeyUp)
+
 
 setTimeout(()=>{
   setTickSpeed(5)
@@ -154,6 +170,12 @@ setTimeout(()=>{
   clearInterval(gameTimer)
 },5000)
 
+
+
+// * START GAME
+
+newTetromino('darkred')
+setTickSpeed()
 
 
 // * export functions for testing
