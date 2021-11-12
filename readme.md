@@ -1,5 +1,8 @@
 Let's make a Tetris!
 
+There are a **LOT** of commits on this project.  These would normally exist on a development branch, then be consolidated and tidied before merging with Main.
+
+
 [Project board](https://github.com/users/DBBrowne/projects/1)
 
 [Initial designs](https://github.com/DBBrowne/ga-sei-projectone/wiki/initial-layouts)
