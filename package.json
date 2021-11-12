@@ -1,0 +1,14 @@
+{
+  "name": "dbb-tetris",
+  "version": "1.0.0",
+  "description": "Let's play tetris!",
+  "main": "scripts/tetris.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "dbbrowne",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^27.3.1"
+  }
+}
