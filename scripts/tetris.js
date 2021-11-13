@@ -27,7 +27,7 @@ const playMatrixWidth = 16
 const playMatrix = []
 const landedShape = new LandedShape(0)
 
-const tetrominoSpawnRef = [7,20]
+const tetrominoSpawnXY = [7,20]
 
 let gameTimer = null
 const gameTickTime = 100
@@ -106,6 +106,8 @@ const playerInputScheme = {
 // * From this point on, location arrays are referenced in the form [y,x],
 // * so that each member of the outer array represents a row of the gamespace
 // **************************************************************************
+
+const tetrominoSpawnYX = [tetrominoSpawnXY[1],tetrominoSpawnXY[0]]
 // Build play window
 function buildPlayMatrix(height, width){
   for (let y = 0; y < height; y++){
@@ -135,8 +137,8 @@ for (const controlKey in playerInputScheme) {
 }
 // Functions
 class Tetromino {
-  constructor(shapeOffsets, fillColor) {
-    this.baseLocation = [tetrominoSpawnRef[1],tetrominoSpawnRef[0]]
+  constructor(shapeOffsets, fillColor, baseLocation = tetrominoSpawnYX) {
+    this.baseLocation = baseLocation
     this.shapeOffsets = shapeOffsets
     this.occupiedSpaces = []
     this.fillColor = fillColor
@@ -161,16 +163,22 @@ class Tetromino {
       return [address[0] + offset[0],address[1] + offset[1]]
     })
   }
+  checkNextOccupiedSpaces(){
+    return  this.nextOccupiedSpaces.every(nextMoveCell=>{
+      return landedShape.every(landedCell=>{
+        return !landedCell.address.every((coordinate, index)=>(coordinate === nextMoveCell[index]))
+      }) && 
+        nextMoveCell[0] >= 0 &&
+        nextMoveCell[1] >= 0 &&
+        nextMoveCell[1] < playMatrixWidth
+
+    })
+  }
   moveDown(){
     const nextLocation = [this.baseLocation[0] - 1, this.baseLocation[1]]
     this.nextOccupiedSpaces = this.mapOccupiedSpaces(nextLocation)
 
-    const noIntercepts = this.nextOccupiedSpaces.every(nextMoveCell=>{
-      return landedShape.every(landedCell=>{
-        return !landedCell.address.every((coordinate, index)=>(coordinate === nextMoveCell[index]))
-      }) && 
-        nextMoveCell[0] >= 0
-    })
+    const noIntercepts = this.checkNextOccupiedSpaces()
 
     if (!noIntercepts){
       console.log('intercept')
@@ -195,21 +203,19 @@ class Tetromino {
       return true
     })
     if (isGameOngoing){
-      newTetromino('blue')
+      newActiveTetromino('blue')
     }
   }
-  // move(direction = [0,1]){
-  //   this.nextLocation = [this.baseLocation[0] + direction[0],this.baseLocation[1] + direction[1]]
-  //   this.shapeOffsets.every(offset=>{
-  //     const newCell = [this.nextLocation[0] + offset[0], this.nextLocation[1] + offset[1]]
-  //     if (newCell[1] < 0){
-  //       break
-  //     }
-  //   })
-  // }
+  move(direction){
+    this.nextLocation = [this.baseLocation[0] + direction[0],this.baseLocation[1] + direction[1]]
+    this.nextOccupiedSpaces = this.mapOccupiedSpaces(this.nextLocation)
+
+  }
 }
 
-function newTetromino (fillcolor) {
+
+
+function newActiveTetromino (fillcolor) {
   setTickSpeed()
   activeTetromino = new Tetromino([[0,0], [0,1], [1,0], [1,1]],fillcolor)
 }
@@ -260,15 +266,17 @@ setTimeout(()=>{
 // * START GAME
 
 isGameOngoing = true
-newTetromino('darkred')
+newActiveTetromino('darkred')
 setTickSpeed()
 
 
 // * export functions for testing
 try {
-  module.exports = {
+  exports = {
+    Tetromino,
     testJestConnection,
     buildPlayMatrix,
+    
   }
 } catch {
   'suppress this error in the browser until solution'
