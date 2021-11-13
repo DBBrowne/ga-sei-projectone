@@ -148,8 +148,14 @@ class Tetromino {
     this.update()
   }
   update(){
+    this.clearCurrentLocation()
     this.updateOccupiedSpaces()
     this.colorPlayMatrixView()
+  }
+  clearCurrentLocation(){
+    this.occupiedSpaces.forEach(space=>{
+      playMatrix[space[0]][space[1]].style.backgroundColor = 'inherit'
+    })
   }
   updateOccupiedSpaces(){
     if (!this.nextOccupiedSpaces.length){
@@ -157,6 +163,11 @@ class Tetromino {
       return
     }
     this.occupiedSpaces = [...this.nextOccupiedSpaces]
+  }
+  colorPlayMatrixView(){
+    this.occupiedSpaces.forEach((space)=>{
+      playMatrix[space[0]][space[1]].style.backgroundColor = this.fillColor
+    })
   }
   mapOccupiedSpaces(address){
     return this.shapeOffsets.map(offset=>{
@@ -188,11 +199,6 @@ class Tetromino {
     this.baseLocation = nextLocation
     this.update()
   }
-  colorPlayMatrixView(){
-    this.occupiedSpaces.forEach((space)=>{
-      playMatrix[space[0]][space[1]].style.backgroundColor = this.fillColor
-    })
-  }
   addToLandedShape(){
     this.occupiedSpaces.every(cell=>{
       if (cell[0] > playMatrixHeight){
@@ -209,6 +215,12 @@ class Tetromino {
   move(direction){
     this.nextLocation = [this.baseLocation[0] + direction[0],this.baseLocation[1] + direction[1]]
     this.nextOccupiedSpaces = this.mapOccupiedSpaces(this.nextLocation)
+    
+    if (this.checkNextOccupiedSpaces()){
+      this.baseLocation = this.nextLocation
+      this.update()
+    }
+
 
   }
 }
