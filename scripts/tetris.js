@@ -63,7 +63,12 @@ const tetrominoShapes = [
   },
   {
     name: 'S',
-    shapeOffsets: [[0,0], [0,1], [1,1], [1,2]],
+    shapeMap: [
+      [0,1,1],
+      [1,1,0],
+      [0,0,0]
+    ],
+    shapeOffsets: [[ 0,-1], [0,0], [1, 0], [ 1, 1]],
     fillColor: 'green',
   }
 ]
