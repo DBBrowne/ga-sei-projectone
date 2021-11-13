@@ -6,13 +6,19 @@ class LandedShape extends Array {
     if (!this.length){
       return
     }
-    this.forEach(cell=>{
-      playMatrix[cell.address[0]][cell.address[1]].style.backgroundColor = cell.fillColor
+    this.forEach((row, rowIndex)=>{
+      if (row.fullCellsCount){
+        row.forEach((cell, columnIndex)=>{
+          if (cell.fillColor){
+            playMatrix[rowIndex][columnIndex].style.backgroundColor = cell.fillColor
+          }
+        })
+      }
     })
   }
   newRow(length = playMatrixWidth){
     const newRowArray = []
-    newRowArray.fullCells = 0
+    newRowArray.fullCellsCount = 0
     for (let i = 0; i < length;i++){
       newRowArray.push({})
     }
@@ -219,7 +225,7 @@ class Tetromino {
         return false
       }
       landedShape[cell[0]][cell[1]].fillColor = this.fillColor 
-      landedShape[cell[0]].fullCells++
+      landedShape[cell[0]].fullCellsCount++
       return true
     })
     if (isGameOngoing){
@@ -243,13 +249,18 @@ function newActiveTetromino (fillColor) {
 }
 function checkForCompleteRows() {
   const originalLength = landedShape.length
-  landedShape = landedShape.filter(row=>!(row.fullCells === playMatrixWidth))
+  landedShape = landedShape.filter(row=>!(row.fullCellsCount === playMatrixWidth))
   const newLength = landedShape.length
   for (let i = newLength;i < originalLength;i++){
     landedShape.newRow()
   }
+  if (originalLength - newLength){
+    playMatrix.forEach(row=>row.forEach(cell=> {
+      cell.style.backgroundColor = 'inherit'
+    }))
+    landedShape.draw()
+  }
 }
-
 function loseGame(){
   isGameOngoing = false
   console.log('game over')
@@ -257,12 +268,8 @@ function loseGame(){
 }
 function gameTick(){
   console.log('tick')
-  // playMatrix.forEach(row=>row.forEach(cell=> {
-  //   cell.style.backgroundColor = 'inherit'
-  // }))
   activeTetromino.moveDown()
   checkForCompleteRows()
-  // landedShape.draw()
 }
 function setTickSpeed(tickSpeed = gameTickTime){
   clearInterval(gameTimer)
