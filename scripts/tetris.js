@@ -26,7 +26,7 @@ const playMatrixView = document.querySelector('.play-matrix')
 const playMatrixHeight = 20
 const playMatrixWidth = 16
 const playMatrix = []
-const landedShape = new LandedShape()
+let landedShape = new LandedShape()
 
 const tetrominoSpawnXY = [7,20]
 
@@ -127,6 +127,7 @@ function buildPlayMatrix(height, width){
 
       landedShape[y].push({})
     }
+    landedShape[y].fullCells = 0
   }
   return playMatrix
 }
@@ -209,10 +210,12 @@ class Tetromino {
   addToLandedShape(){
     this.occupiedSpaces.every(cell=>{
       if (cell[0] > playMatrixHeight){
+        console.log(cell[0])
         loseGame()
         return false
       }
       landedShape[cell[0]][cell[1]].fillColor = this.fillColor 
+      landedShape[cell[0]].fullCells++
       return true
     })
     if (isGameOngoing){
@@ -227,17 +230,23 @@ class Tetromino {
       this.baseLocation = this.nextLocation
       this.update()
     }
-
-
   }
 }
-
-
 
 function newActiveTetromino (fillColor) {
   setTickSpeed()
   activeTetromino = new Tetromino([[0,0], [0,1], [1,0], [1,1]],fillColor)
 }
+function checkForCompleteRows() {
+  console.log('check row')
+  const originalLength = landedShape.length
+  landedShape = landedShape.filter(row=>!(row.fullCells === playMatrixWidth))
+  const clearedRows = originalLength - landedShape.length
+  for (let i = 0;i < clearedRows;i++){
+    console.log('newRow')
+  }
+}
+
 function loseGame(){
   isGameOngoing = false
   console.log('game over')
@@ -249,6 +258,7 @@ function gameTick(){
   //   cell.style.backgroundColor = 'inherit'
   // }))
   activeTetromino.moveDown()
+  checkForCompleteRows()
   // landedShape.draw()
 }
 function setTickSpeed(tickSpeed = gameTickTime){
