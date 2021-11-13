@@ -34,6 +34,7 @@ function testJestConnection() {
 // DOM Elements
 
 const playMatrixView = document.querySelector('.play-matrix')
+const playerScoreView = document.querySelector('.info .score-span')
 // **************************************************************************
 // Variables
 
@@ -49,6 +50,10 @@ const gameTickTime = 100
 let isGameOngoing = false
 
 let activeTetromino = null
+
+let playerScore = 0
+const pointsPerRow = 100
+const pointsMultirowMultiplier = 1.5
 
 // **************************************************************************
 // Controls
@@ -251,14 +256,16 @@ function checkForCompleteRows() {
   const originalLength = landedShape.length
   landedShape = landedShape.filter(row=>!(row.fullCellsCount === playMatrixWidth))
   const newLength = landedShape.length
+  const clearedRows = originalLength - newLength
   for (let i = newLength;i < originalLength;i++){
     landedShape.newRow()
   }
-  if (originalLength - newLength){
+  if (clearedRows){
     playMatrix.forEach(row=>row.forEach(cell=> {
       cell.style.backgroundColor = 'inherit'
     }))
     landedShape.draw()
+    addToScore(clearedRows)
   }
 }
 function loseGame(){
