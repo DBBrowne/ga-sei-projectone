@@ -1,4 +1,16 @@
 //  * TETRIS
+// Constructors
+
+class LandedShape extends Array {
+  draw(){
+    if (!this.length){
+      return
+    }
+    this.forEach(cell=>{
+      playMatrix[cell.address[0]][cell.address[1]].style.backgroundColor = cell.fillColor
+    })
+  }
+}
 
 function testJestConnection() {
   console.log('hello')
@@ -14,7 +26,7 @@ const playMatrixView = document.querySelector('.play-matrix')
 const playMatrixHeight = 20
 const playMatrixWidth = 16
 const playMatrix = []
-let landedShape = []
+const landedShape = new LandedShape()
 
 const tetrominoSpawnXY = [7,20]
 
@@ -96,42 +108,32 @@ const playerInputScheme = {
 // * so that each member of the outer array represents a row of the gamespace
 // **************************************************************************
 
-// Constructors
 
-class LandedShape extends Array {
-  draw(){
-    if (!this.length){
-      return
-    }
-    this.forEach(cell=>{
-      playMatrix[cell.address[0]][cell.address[1]].style.backgroundColor = cell.fillColor
-    })
-  }
-}
 
 // **************************************************************************
 // Build play window
 const tetrominoSpawnYX = [tetrominoSpawnXY[1],tetrominoSpawnXY[0]]
 
 function buildPlayMatrix(height, width){
-  landedShape = new LandedShape(height).fill(new Array(width))
-
   for (let y = 0; y < height; y++){
     playMatrix.push([])
+    landedShape.push([])
     for (let x = 0; x < width; x++){
       const playCell = document.createElement('div')
       playCell.textContent = `${x}, ${y}`
       
       playMatrixView.appendChild(playCell)
       playMatrix[y].push(playCell)
+
+      landedShape[y].push({})
     }
   }
   return playMatrix
 }
 
-buildPlayMatrix(playMatrixHeight + 2, playMatrixWidth)
+buildPlayMatrix(playMatrixHeight + 2, playMatrixWidth) //todo: refactor to use return
 console.log(landedShape)
-console.log(landedShape[0][7])
+console.log(!landedShape[0][7])
 // inject control scheme
 for (const controlKey in playerInputScheme) {
   const controlLegend = document.querySelector('.player1 .controls')
@@ -185,14 +187,15 @@ class Tetromino {
   }
   checkNextOccupiedSpaces(){
     return  this.nextOccupiedSpaces.every(nextMoveCell=>{
-      // console.log(landedShape[nextMoveCell[0]][nextMoveCell[1]])
+      console.log('next Y',nextMoveCell[0])
+      console.log('next row',landedShape[nextMoveCell[0]])
+      // console.log('next cell',landedShape[nextMoveCell[0]][nextMoveCell[1]])
       // console.log(nextMoveCell[0])
       // console.log(nextMoveCell[1])
       return nextMoveCell[0] >= 0 &&
         nextMoveCell[1] >= 0 &&
         nextMoveCell[1] < playMatrixWidth &&
         !landedShape[nextMoveCell[0]][nextMoveCell[1]]
-
     })
   }
   moveDown(){
@@ -243,7 +246,7 @@ function newActiveTetromino (fillcolor) {
 }
 function loseGame(){
   isGameOngoing = false
-  
+  console.log('game over')
   clearInterval(gameTimer)
 }
 function gameTick(){
@@ -282,6 +285,7 @@ document,addEventListener('keyup',   handleKeyPress)
 setTimeout(()=>{
   clearInterval(gameTimer)
   console.log('game time over')
+  console.log(landedShape)
 },5000)
 
 
