@@ -115,7 +115,7 @@ const tetrominoSpawnYX = [tetrominoSpawnXY[1],tetrominoSpawnXY[0]]
 
 function buildPlayMatrix(height, width){
   landedShape = new LandedShape(height).fill(new Array(width))
-  
+
   for (let y = 0; y < height; y++){
     playMatrix.push([])
     for (let x = 0; x < width; x++){
@@ -130,7 +130,8 @@ function buildPlayMatrix(height, width){
 }
 
 buildPlayMatrix(playMatrixHeight + 2, playMatrixWidth)
-
+console.log(landedShape)
+console.log(landedShape[0][7])
 // inject control scheme
 for (const controlKey in playerInputScheme) {
   const controlLegend = document.querySelector('.player1 .controls')
@@ -184,12 +185,13 @@ class Tetromino {
   }
   checkNextOccupiedSpaces(){
     return  this.nextOccupiedSpaces.every(nextMoveCell=>{
-      return landedShape.every(landedCell=>{
-        return !landedCell.address.every((coordinate, index)=>(coordinate === nextMoveCell[index]))
-      }) && 
-        nextMoveCell[0] >= 0 &&
+      // console.log(landedShape[nextMoveCell[0]][nextMoveCell[1]])
+      // console.log(nextMoveCell[0])
+      // console.log(nextMoveCell[1])
+      return nextMoveCell[0] >= 0 &&
         nextMoveCell[1] >= 0 &&
-        nextMoveCell[1] < playMatrixWidth
+        nextMoveCell[1] < playMatrixWidth &&
+        !landedShape[nextMoveCell[0]][nextMoveCell[1]]
 
     })
   }
@@ -213,7 +215,7 @@ class Tetromino {
         loseGame()
         return false
       }
-      landedShape.push({ address: cell, fillColor: this.fillColor })
+      landedShape[cell[0]][cell[1]] = { fillColor: this.fillColor }
       return true
     })
     if (isGameOngoing){
@@ -246,11 +248,11 @@ function loseGame(){
 }
 function gameTick(){
   console.log('tick')
-  playMatrix.forEach(row=>row.forEach(cell=> {
-    cell.style.backgroundColor = 'inherit'
-  }))
+  // playMatrix.forEach(row=>row.forEach(cell=> {
+  //   cell.style.backgroundColor = 'inherit'
+  // }))
   activeTetromino.moveDown()
-  landedShape.draw()
+  // landedShape.draw()
 }
 function setTickSpeed(tickSpeed = gameTickTime){
   clearInterval(gameTimer)
@@ -280,7 +282,7 @@ document,addEventListener('keyup',   handleKeyPress)
 setTimeout(()=>{
   clearInterval(gameTimer)
   console.log('game time over')
-},10000)
+},5000)
 
 
 // **************************************************************************
