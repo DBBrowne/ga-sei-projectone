@@ -10,6 +10,14 @@ class LandedShape extends Array {
       playMatrix[cell.address[0]][cell.address[1]].style.backgroundColor = cell.fillColor
     })
   }
+  newRow(length = playMatrixWidth){
+    const newRowArray = []
+    newRowArray.fullCells = 0
+    for (let i = 0; i < length;i++){
+      newRowArray.push({})
+    }
+    this.push(newRowArray)
+  }
 }
 
 function testJestConnection() {
@@ -117,17 +125,14 @@ const tetrominoSpawnYX = [tetrominoSpawnXY[1],tetrominoSpawnXY[0]]
 function buildPlayMatrix(height, width){
   for (let y = 0; y < height; y++){
     playMatrix.push([])
-    landedShape.push([])
+    landedShape.newRow(width)
     for (let x = 0; x < width; x++){
       const playCell = document.createElement('div')
       playCell.textContent = `${x}, ${y}`
       
       playMatrixView.appendChild(playCell)
       playMatrix[y].push(playCell)
-
-      landedShape[y].push({})
     }
-    landedShape[y].fullCells = 0
   }
   return playMatrix
 }
@@ -210,7 +215,6 @@ class Tetromino {
   addToLandedShape(){
     this.occupiedSpaces.every(cell=>{
       if (cell[0] > playMatrixHeight){
-        console.log(cell[0])
         loseGame()
         return false
       }
@@ -238,16 +242,11 @@ function newActiveTetromino (fillColor) {
   activeTetromino = new Tetromino([[0,0], [0,1], [1,0], [1,1]],fillColor)
 }
 function checkForCompleteRows() {
-  console.log('check row')
   const originalLength = landedShape.length
   landedShape = landedShape.filter(row=>!(row.fullCells === playMatrixWidth))
   const newLength = landedShape.length
   for (let i = newLength;i < originalLength;i++){
-    landedShape.push([])
-    for (let x = 0; x < playMatrixWidth; x++){
-      landedShape[i].push({})
-    }
-    landedShape[i].fullCells = 0
+    landedShape.newRow()
   }
 }
 
