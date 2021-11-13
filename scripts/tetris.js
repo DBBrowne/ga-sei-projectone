@@ -247,7 +247,7 @@ class Tetromino {
       return true
     })
     if (isGameOngoing){
-      newActiveTetromino('blue')
+      newActiveTetromino()
     }
   }
   move(direction){
@@ -260,7 +260,7 @@ class Tetromino {
     }
   }
 }
-function newTetromino(fillColor, shapeChoice = 0) {
+function newTetromino(fillColor, shapeChoice = 1) {
   const shape = tetrominoShapes[shapeChoice]
   return new Tetromino(shape.shapeOffsets, fillColor || shape.fillColor)
 }
