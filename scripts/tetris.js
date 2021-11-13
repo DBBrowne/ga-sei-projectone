@@ -241,9 +241,13 @@ function checkForCompleteRows() {
   console.log('check row')
   const originalLength = landedShape.length
   landedShape = landedShape.filter(row=>!(row.fullCells === playMatrixWidth))
-  const clearedRows = originalLength - landedShape.length
-  for (let i = 0;i < clearedRows;i++){
-    console.log('newRow')
+  const newLength = landedShape.length
+  for (let i = newLength;i < originalLength;i++){
+    landedShape.push([])
+    for (let x = 0; x < playMatrixWidth; x++){
+      landedShape[i].push({})
+    }
+    landedShape[i].fullCells = 0
   }
 }
 
