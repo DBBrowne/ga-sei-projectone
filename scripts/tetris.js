@@ -19,7 +19,7 @@ class LandedShape extends Array {
 // DOM Elements
 
 const playMatrixView = document.querySelector('.play-matrix')
-
+// **************************************************************************
 // Variables
 
 const playMatrixHeight = 20
@@ -35,7 +35,7 @@ let isGameOngoing = false
 
 let activeTetromino = null
 
-
+// **************************************************************************
 // Controls
 // define behaviour for a control
 const playerControls = {
@@ -135,6 +135,8 @@ for (const controlKey in playerInputScheme) {
 
   controlLegend.appendChild(controlLegendItem)
 }
+
+// **************************************************************************
 // Functions
 class Tetromino {
   constructor(shapeOffsets, fillColor, baseLocation = tetrominoSpawnYX) {
@@ -251,6 +253,7 @@ function setTickSpeed(tickSpeed = gameTickTime){
   },tickSpeed)
 }
 
+// **************************************************************************
 // keypress handler
 
 function handleKeyPress(e) {
@@ -261,7 +264,7 @@ function handleKeyPress(e) {
     console.log('unrecognised key event:', e.code, e.type)
   }
 }
-
+// **************************************************************************
 // Events
 
 document,addEventListener('keydown', handleKeyPress)
@@ -274,14 +277,14 @@ setTimeout(()=>{
 },10000)
 
 
-
+// **************************************************************************
 // * START GAME
 
 isGameOngoing = true
 newActiveTetromino('darkred')
 setTickSpeed()
 
-
+// **************************************************************************
 // * export functions for testing
 try {
   exports = {
