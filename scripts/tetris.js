@@ -4,17 +4,6 @@ function testJestConnection() {
   console.log('hello')
   return 'hello'
 }
-class LandedShape extends Array {
-  draw(){
-    if (!this.length){
-      return
-    }
-    this.forEach(cell=>{
-      playMatrix[cell.address[0]][cell.address[1]].style.backgroundColor = cell.fillColor
-    })
-  }
-}
-
 
 // DOM Elements
 
@@ -25,7 +14,7 @@ const playMatrixView = document.querySelector('.play-matrix')
 const playMatrixHeight = 20
 const playMatrixWidth = 16
 const playMatrix = []
-const landedShape = new LandedShape(0)
+let landedShape = []
 
 const tetrominoSpawnXY = [7,20]
 
@@ -107,9 +96,26 @@ const playerInputScheme = {
 // * so that each member of the outer array represents a row of the gamespace
 // **************************************************************************
 
-const tetrominoSpawnYX = [tetrominoSpawnXY[1],tetrominoSpawnXY[0]]
+// Constructors
+
+class LandedShape extends Array {
+  draw(){
+    if (!this.length){
+      return
+    }
+    this.forEach(cell=>{
+      playMatrix[cell.address[0]][cell.address[1]].style.backgroundColor = cell.fillColor
+    })
+  }
+}
+
+// **************************************************************************
 // Build play window
+const tetrominoSpawnYX = [tetrominoSpawnXY[1],tetrominoSpawnXY[0]]
+
 function buildPlayMatrix(height, width){
+  landedShape = new LandedShape(height).fill(new Array(width))
+  
   for (let y = 0; y < height; y++){
     playMatrix.push([])
     for (let x = 0; x < width; x++){
