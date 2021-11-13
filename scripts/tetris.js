@@ -55,6 +55,14 @@ let playerScore = 0
 const pointsPerRow = 100
 const pointsMultirowMultiplier = 1.5
 
+const tetrominoShapes = [
+  {
+    name: 'O',
+    shapeOffsets: [[0,0], [0,1], [1,0], [1,1]],
+    fillColor: 'red',
+  }
+]
+
 // **************************************************************************
 // Controls
 // define behaviour for a control
@@ -247,10 +255,17 @@ class Tetromino {
     }
   }
 }
-
+function newTetromino(fillColor, shapeChoice = 0) {
+  const shape = tetrominoShapes[shapeChoice]
+  return new Tetromino(shape.shapeOffsets, fillColor || shape.fillColor)
+}
 function newActiveTetromino (fillColor) {
   setTickSpeed()
-  activeTetromino = new Tetromino([[0,0], [0,1], [1,0], [1,1]],fillColor)
+  activeTetromino = newTetromino(fillColor)
+}
+function addToScore(clearedRows){
+  playerScore += Math.ceil(Math.pow(clearedRows, pointsMultirowMultiplier) * pointsPerRow)
+  playerScoreView.textContent = playerScore
 }
 function checkForCompleteRows() {
   const originalLength = landedShape.length
