@@ -60,6 +60,11 @@ const tetrominoShapes = [
     name: 'O',
     shapeOffsets: [[0,0], [0,1], [1,0], [1,1]],
     fillColor: 'red',
+  },
+  {
+    name: 'S',
+    shapeOffsets: [[0,0], [0,1], [1,1], [1,2]],
+    fillColor: 'green',
   }
 ]
 
