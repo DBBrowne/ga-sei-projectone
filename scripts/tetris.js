@@ -132,8 +132,7 @@ function buildPlayMatrix(height, width){
 }
 
 buildPlayMatrix(playMatrixHeight + 2, playMatrixWidth) //todo: refactor to use return
-console.log(landedShape)
-console.log(!landedShape[0][7])
+
 // inject control scheme
 for (const controlKey in playerInputScheme) {
   const controlLegend = document.querySelector('.player1 .controls')
@@ -187,15 +186,10 @@ class Tetromino {
   }
   checkNextOccupiedSpaces(){
     return  this.nextOccupiedSpaces.every(nextMoveCell=>{
-      console.log('next Y',nextMoveCell[0])
-      console.log('next row',landedShape[nextMoveCell[0]])
-      // console.log('next cell',landedShape[nextMoveCell[0]][nextMoveCell[1]])
-      // console.log(nextMoveCell[0])
-      // console.log(nextMoveCell[1])
       return nextMoveCell[0] >= 0 &&
         nextMoveCell[1] >= 0 &&
         nextMoveCell[1] < playMatrixWidth &&
-        !landedShape[nextMoveCell[0]][nextMoveCell[1]]
+        !landedShape[nextMoveCell[0]][nextMoveCell[1]].fillColor
     })
   }
   moveDown(){
@@ -218,7 +212,7 @@ class Tetromino {
         loseGame()
         return false
       }
-      landedShape[cell[0]][cell[1]] = { fillColor: this.fillColor }
+      landedShape[cell[0]][cell[1]].fillColor = this.fillColor 
       return true
     })
     if (isGameOngoing){
@@ -240,9 +234,9 @@ class Tetromino {
 
 
 
-function newActiveTetromino (fillcolor) {
+function newActiveTetromino (fillColor) {
   setTickSpeed()
-  activeTetromino = new Tetromino([[0,0], [0,1], [1,0], [1,1]],fillcolor)
+  activeTetromino = new Tetromino([[0,0], [0,1], [1,0], [1,1]],fillColor)
 }
 function loseGame(){
   isGameOngoing = false
@@ -285,7 +279,6 @@ document,addEventListener('keyup',   handleKeyPress)
 setTimeout(()=>{
   clearInterval(gameTimer)
   console.log('game time over')
-  console.log(landedShape)
 },5000)
 
 
@@ -303,7 +296,7 @@ try {
     Tetromino,
     testJestConnection,
     buildPlayMatrix,
-    
+
   }
 } catch {
   'suppress this error in the browser until solution'
