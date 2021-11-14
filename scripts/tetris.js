@@ -47,8 +47,10 @@ let landedShape = new LandedShape()
 
 const tetrominoSpawnXY = [7,20]
 
-let gameTimer = null
 const gameTickTime = 500
+const speedUpTickDivider = 5
+const dropTickDivider = 1000
+let gameTimer = null
 let isGameOngoing = false
 
 let activeTetromino = null
@@ -148,9 +150,9 @@ const playerControls = {
   },
   speedUpPlay: {
     name: 'Speed Up',
-    keydown(){
-      if (isGameOngoing){
-        setTickSpeed(gameTickTime / 5)
+    keydown(repeat){
+      if (isGameOngoing && !repeat){
+        setTickSpeed(gameTickTime / speedUpTickDivider)
       }
     },
     keyup(){
@@ -163,7 +165,7 @@ const playerControls = {
     name: 'Drop',
     keydown(){
       if (isGameOngoing){
-        setTickSpeed(gameTickTime / 100)
+        setTickSpeed(gameTickTime / dropTickDivider)
       }
     },
     keyup(){
@@ -446,7 +448,7 @@ function handleKeyPress(e) {
   // user keys
   e.preventDefault()
   try {
-    playerInputScheme[e.code].control[e.type]()
+    playerInputScheme[e.code].control[e.type](e.repeat)
   } catch (err) {
     if (isDebugMode){
       console.log(err)
