@@ -58,7 +58,12 @@ const pointsMultirowExponent = 1.5
 const tetrominoShapes = [
   {
     name: 'O',
-    shapeOffsets: [[0,0], [0,1], [1,0], [1,1]],
+    shapeMap: [
+      [0,0,0,0],
+      [0,1,1,0],
+      [0,1,1.0],
+      [0,0,0,0]
+    ],
     fillColor: 'red',
   },
   {
@@ -68,7 +73,6 @@ const tetrominoShapes = [
       [1,1,0],
       [0,0,0]
     ],
-    shapeOffsets: [[ 0,-1], [0,0], [1, 0], [ 1, 1]],
     fillColor: 'green',
   }
 ]
@@ -169,7 +173,7 @@ function buildPlayMatrix(height, width){
 buildPlayMatrix(playMatrixHeight + 2, playMatrixWidth) //todo: refactor to use return
 
 // inject control scheme
-for (const controlKey in playerInputScheme) {
+for (const controlKey in playerInputScheme) { //todo: refactor to for-of
   const controlLegend = document.querySelector('.player1 .controls')
 
   const controlLegendItem = document.createElement('div')
@@ -182,11 +186,12 @@ for (const controlKey in playerInputScheme) {
 // **************************************************************************
 // Functions
 class Tetromino {
-  constructor(shapeOffsets, fillColor, baseLocation = tetrominoSpawnYX) {
+  constructor(shapeMap, fillColor, baseLocation = tetrominoSpawnYX) {
     this.baseLocation = baseLocation
-    this.shapeOffsets = shapeOffsets
-    this.occupiedSpaces = []
     this.fillColor = fillColor
+    this.shapeMap = shapeMap
+    this.shapeOffsets = []
+    this.occupiedSpaces = []
     this.nextOccupiedSpaces = []
 
     //initialise shape
@@ -267,7 +272,7 @@ class Tetromino {
 }
 function newTetromino(fillColor, shapeChoice = 1) {
   const shape = tetrominoShapes[shapeChoice]
-  return new Tetromino(shape.shapeOffsets, fillColor || shape.fillColor)
+  return new Tetromino(shape.shapeMap, fillColor || shape.fillColor)
 }
 function newActiveTetromino (fillColor) {
   setTickSpeed()
