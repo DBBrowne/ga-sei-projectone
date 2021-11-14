@@ -72,7 +72,7 @@ section{
   max-height: calc(90vw/16);
 }
 
-.play-matrix div:nth-last-child(-n +32){
+.play-matrix div:nth-last-child(-n +64){
   background-color: hotpink;
   /* display: none; */
 }

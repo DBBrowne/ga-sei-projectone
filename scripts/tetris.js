@@ -244,7 +244,11 @@ function buildPlayMatrix(height, width){
   return playMatrix
 }
 
-buildPlayMatrix(playMatrixHeight + 2, playMatrixWidth) //todo: refactor to use return
+
+const maxShapeSize = tetrominoShapes.reduce((acc,shape)=>{
+  return Math.max(acc, shape.shapeMap.length)
+},0)
+buildPlayMatrix(playMatrixHeight + maxShapeSize, playMatrixWidth) //todo: refactor to use return
 
 // inject control scheme
 for (const controlKey in playerInputScheme) { //todo: refactor to for-of
