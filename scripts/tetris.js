@@ -300,10 +300,8 @@ class Tetromino {
     const rotatedOffsets = convertShapeMeshToOffsets(rotatedShapeMap)
 
     this.nextOccupiedSpaces = this.mapOccupiedSpaces(this.baseLocation, rotatedOffsets)
-
-    const noIntercepts = this.checkNextOccupiedSpaces()
-
-    if (noIntercepts){
+    
+    if (this.checkNextOccupiedSpaces()){
       this.shapeOffsets = rotatedOffsets
       this.shapeMap = rotatedShapeMap
     }
