@@ -64,7 +64,7 @@ const tetrominoShapes = [
       [0,1,1.0],
       [0,0,0,0]
     ],
-    fillColor: 'red',
+    fillColor: 'darkred',
   },
   {
     name: 'S',
@@ -409,7 +409,7 @@ setTimeout(()=>{
 // * START GAME
 
 isGameOngoing = true
-newActiveTetromino('darkred')
+newActiveTetromino('red')
 setTickSpeed()
 
 // **************************************************************************
