@@ -46,7 +46,7 @@ let landedShape = new LandedShape()
 const tetrominoSpawnXY = [7,20]
 
 let gameTimer = null
-const gameTickTime = 100
+const gameTickTime = 500
 let isGameOngoing = false
 
 let activeTetromino = null
@@ -300,10 +300,12 @@ class Tetromino {
     const rotatedOffsets = convertShapeMeshToOffsets(rotatedShapeMap)
 
     this.nextOccupiedSpaces = this.mapOccupiedSpaces(this.baseLocation, rotatedOffsets)
-    
+
     if (this.checkNextOccupiedSpaces()){
       this.shapeOffsets = rotatedOffsets
       this.shapeMap = rotatedShapeMap
+    }else{
+      this.nextOccupiedSpaces = this.occupiedSpaces
     }
     this.update()
   }
