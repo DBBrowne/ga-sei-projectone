@@ -63,7 +63,7 @@ const tetrominoShapes = [
     shapeMap: [
       [0,0,0,0],
       [0,1,1,0],
-      [0,1,1.0],
+      [0,1,1,0],
       [0,0,0,0]
     ],
     fillColor: 'gold',
@@ -81,8 +81,8 @@ const tetrominoShapes = [
     name: 'I',
     shapeMap: [
       [0,0,0,0],
+      [0,0,0,0],
       [1,1,1,1],
-      [0,0,0.0],
       [0,0,0,0]
     ],
     fillColor: 'cyan',
@@ -116,9 +116,9 @@ const tetrominoShapes = [
   },{
     name: 'J',
     shapeMap: [
-      [0,0,0],
       [1,0,0],
-      [1,1,1]
+      [1,1,1],
+      [0,0,0]
     ],
     fillColor: 'darkblue',
   }
@@ -361,9 +361,10 @@ class Tetromino {
 
 // ************
 // * global functions
-function convertShapeMeshToOffsets(matrix, offsetPointXYFromTopLeft = [1,1]){
+function convertShapeMeshToOffsets(matrix, offsetPointXYFromTopLeft){
+  const offsetReference = offsetPointXYFromTopLeft || [matrix.length - 2, 1]
   return matrix.reduce((acc,row, rowIndex)=>{
-    row.forEach((flag, colIndex) => flag && acc.push([offsetPointXYFromTopLeft[0] - rowIndex,-offsetPointXYFromTopLeft[1] + colIndex]))
+    row.forEach((flag, colIndex) => flag && acc.push([offsetReference[0] - rowIndex,-offsetReference[1] + colIndex]))
     return acc
   },[])
 }
@@ -445,7 +446,7 @@ function handleKeyPress(e) {
   } catch (err) {
     if (isDebugMode){
       console.log(err)
-    console.log('unrecognised key event:', e.code, e.type)
+      console.log('unrecognised key event:', e.code, e.type)
     }
   }
 }
@@ -456,10 +457,10 @@ document,addEventListener('keydown', handleKeyPress)
 document,addEventListener('keyup',   handleKeyPress)
 
 if (isDebugMode){
-setTimeout(()=>{
-  clearInterval(gameTimer)
-  console.log('game time over')
-},5000)
+  setTimeout(()=>{
+    clearInterval(gameTimer)
+    console.log('game time over')
+  },5000)
 }
 
 
