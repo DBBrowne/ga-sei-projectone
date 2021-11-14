@@ -303,9 +303,9 @@ class Tetromino {
 
 // ************
 // * global functions
-function convertShapeMeshToOffsets(matrix){
+function convertShapeMeshToOffsets(matrix, offsetPointXYFromTopLeft = [1,1]){
   return matrix.reduce((acc,row, rowIndex)=>{
-    row.forEach((flag, colIndex) => flag && acc.push([1 - rowIndex,-1 + colIndex]))
+    row.forEach((flag, colIndex) => flag && acc.push([offsetPointXYFromTopLeft[0] - rowIndex,-offsetPointXYFromTopLeft[1] + colIndex]))
     return acc
   },[])
 }
