@@ -38,6 +38,8 @@ section{
   display: flex;
   flex-direction: column;
   justify-content: center;
+  border: outset rgb(50,50,50) 2px;
+  padding:0;
 }
 
 .controls *{
@@ -45,7 +47,13 @@ section{
 }
 
 .controls span {
-  min-width: 3em;
+  display: inline-block;
+  width: 1.1em;
+  text-align: center;
+}
+
+.play-decorator{
+  border: double gold 5px;
 }
 
 .play-matrix{
@@ -60,13 +68,13 @@ section{
 }
 
 .play-matrix div{
-  /* test settings */
-  /*  */
   height: calc(80vh/22);
   width: calc(80vh/22);
 
   max-width: calc(90vw/16);
   max-height: calc(90vw/16);
+
+  border: solid rgb(10,10,10) 0.1px;
 }
 
 .play-matrix div.debug{
