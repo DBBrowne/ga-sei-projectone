@@ -297,7 +297,15 @@ class Tetromino {
   }
   rotateShape(isClockwise = true){
     const rotatedShapeMap = rotateMatrix(this.shapeMap, isClockwise)
+    
+    this.nextOccupiedSpaces = convertShapeMeshToOffsets(rotatedShapeMap)
 
+    const noIntercepts = this.checkNextOccupiedSpaces()
+
+    if (!noIntercepts){
+      this.nextLocation = this.occupiedSpaces
+    }
+    this.update()
   }
 }
 
