@@ -269,6 +269,23 @@ class Tetromino {
       this.update()
     }
   }
+  convertShapeMeshToOffsets(array){
+    return array.reduce((acc,row, rowIndex)=>{
+      row.forEach((flag, colIndex) => {
+        flag && acc.push([1 - rowIndex,-1 + colIndex])
+      })
+      return acc
+    },[])
+  }
+  rotate(matrix, isClockwise = true){
+    //rotate clockwise by default
+    if (isClockwise){
+      //transpose, then reverse row content
+      return matrix.map((val, index) => matrix.map(row => row[index]).reverse())
+    }
+    //transpose, then reverse column content
+    return matrix.map((val, index) => matrix.map(row => row[index])).reverse()
+  }
 }
 function newTetromino(fillColor, shapeChoice = 1) {
   const shape = tetrominoShapes[shapeChoice]
