@@ -190,7 +190,7 @@ class Tetromino {
     this.baseLocation = baseLocation
     this.fillColor = fillColor
     this.shapeMap = shapeMap
-    this.shapeOffsets = []
+    this.shapeOffsets = this.convertShapeMeshToOffsets(shapeMap)
     this.occupiedSpaces = []
     this.nextOccupiedSpaces = []
 
