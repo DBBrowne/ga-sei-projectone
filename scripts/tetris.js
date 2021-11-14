@@ -53,7 +53,7 @@ let activeTetromino = null
 
 let playerScore = 0
 const pointsPerRow = 100
-const pointsMultirowMultiplier = 1.5
+const pointsMultirowExponent = 1.5
 
 const tetrominoShapes = [
   {
@@ -269,7 +269,7 @@ function newActiveTetromino (fillColor) {
   activeTetromino = newTetromino(fillColor)
 }
 function addToScore(clearedRows){
-  playerScore += Math.ceil(Math.pow(clearedRows, pointsMultirowMultiplier) * pointsPerRow)
+  playerScore += Math.ceil(Math.pow(clearedRows, pointsMultirowExponent) * pointsPerRow)
   playerScoreView.textContent = playerScore
 }
 function checkForCompleteRows() {
