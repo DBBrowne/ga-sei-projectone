@@ -304,7 +304,7 @@ class Tetromino {
     if (this.checkNextOccupiedSpaces()){
       this.shapeOffsets = rotatedOffsets
       this.shapeMap = rotatedShapeMap
-    }else{
+    } else {
       this.nextOccupiedSpaces = this.occupiedSpaces
     }
     this.update()
@@ -334,7 +334,8 @@ function rotateMatrix(matrix, isClockwise = true){
 // ************
 // * playspace functions
 
-function newTetromino(fillColor, shapeChoice = 1) {
+function newTetromino(fillColor, shapeChoice) {
+  shapeChoice = shapeChoice || Math.floor(Math.random() * tetrominoShapes.length)
   const shape = tetrominoShapes[shapeChoice]
   return new Tetromino(shape.shapeMap, fillColor || shape.fillColor)
 }
