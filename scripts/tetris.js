@@ -461,6 +461,8 @@ document,addEventListener('keydown', handleKeyPress)
 document,addEventListener('keyup',   handleKeyPress)
 
 if (isDebugMode){
+  document.querySelector('head').innerHTML += '<style>* {border: solid rgb(80, 80, 80) 0.2px;}</style>'
+  document.querySelectorAll('*').forEach(node=> node.classList.add('debug'))
   setTimeout(()=>{
     clearInterval(gameTimer)
     console.log('game time over')

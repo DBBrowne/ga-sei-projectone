@@ -1,6 +1,5 @@
 * {
   box-sizing: border-box;
-  /* border: solid white 1px; */
 }
 
 html {
@@ -50,21 +49,19 @@ section{
 }
 
 .play-matrix{
-  background-color: rgb(50,50,50);
-  /* background-color: turquoise; */
   width: calc(((80.5vh)*16/22));
   max-width: 90vw;
   display: flex;
   flex-wrap: wrap-reverse;
 }
 
+.play-matrix .debug {
+  background-color: rgb(50,50,50);
+}
+
 .play-matrix div{
   /* test settings */
-  color: grey;
-  border: solid rgb(80, 80, 80) 0.2px;
-  font-size: 6px;
   /*  */
-
   height: calc(80vh/22);
   width: calc(80vh/22);
 
@@ -72,9 +69,17 @@ section{
   max-height: calc(90vw/16);
 }
 
+.play-matrix div.debug{
+  color: grey;
+  font-size: 6px;
+}
+
 .play-matrix div:nth-last-child(-n +64){
   background-color: hotpink;
-  /* display: none; */
+  display: none;
+}
+.play-matrix div:nth-last-child(-n +64).debug{
+  display: inherit;
 }
 
 @media only screen and (max-width: 900px) {
