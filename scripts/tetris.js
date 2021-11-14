@@ -99,18 +99,18 @@ const tetrominoShapes = [
   {
     name: 'T',
     shapeMap: [
-      [0,0,0],
       [0,1,0],
-      [1,1,1]
+      [1,1,1],
+      [0,0,0]
     ],
     fillColor: 'darkorchid',
   },
   {
     name: 'L',
     shapeMap: [
-      [0,0,0],
       [0,0,1],
-      [1,1,1]
+      [1,1,1],
+      [0,0,0]
     ],
     fillColor: 'darkorange',
   },{
