@@ -123,6 +123,24 @@ const playerControls = {
       return 'event inactive'
     },
   },
+  rotateACW: {
+    name: '&#8630;',
+    keydown(){
+      activeTetromino.rotateShape(false)
+    },
+    keyup(){
+      return 'event inactive'
+    },
+  },
+  rotateCW: {
+    name: '&#8631;',
+    keydown(){
+      activeTetromino.rotateShape(true)
+    },
+    keyup(){
+      return 'event inactive'
+    },
+  },
 }
 // attach input to abstract control behaviour
 const playerInputScheme = {
@@ -141,6 +159,14 @@ const playerInputScheme = {
   ArrowUp: {
     name: '&#8593;',
     control: playerControls.dropPiece,
+  },
+  Period: {
+    name: '.',
+    control: playerControls.rotateACW,
+  },
+  Slash: {
+    name: '/',
+    control: playerControls.rotateCW,
   },
 }
 
@@ -275,7 +301,7 @@ class Tetromino {
       return acc
     },[])
   }
-  rotate(matrix, isClockwise = true){
+  rotateMatrix(matrix, isClockwise = true){
     //rotate clockwise by default
     if (isClockwise){
       //transpose, then reverse row content
@@ -283,6 +309,9 @@ class Tetromino {
     }
     //transpose, then reverse column content
     return matrix.map((val, index) => matrix.map(row => row[index])).reverse()
+  }
+  rotateShape(isClockwise = true){
+    console.log('rotate', isClockwise)
   }
 }
 function newTetromino(fillColor, shapeChoice = 1) {
@@ -334,10 +363,11 @@ function setTickSpeed(tickSpeed = gameTickTime){
 // keypress handler
 
 function handleKeyPress(e) {
+  e.preventDefault()
   try {
     playerInputScheme[e.code].control[e.type]()
   } catch (err) {
-    // console.log(err)
+    console.log(err)
     console.log('unrecognised key event:', e.code, e.type)
   }
 }
