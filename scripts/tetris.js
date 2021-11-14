@@ -269,11 +269,9 @@ class Tetromino {
       this.update()
     }
   }
-  convertShapeMeshToOffsets(array){
-    return array.reduce((acc,row, rowIndex)=>{
-      row.forEach((flag, colIndex) => {
-        flag && acc.push([1 - rowIndex,-1 + colIndex])
-      })
+  convertShapeMeshToOffsets(matrix){
+    return matrix.reduce((acc,row, rowIndex)=>{
+      row.forEach((flag, colIndex) => flag && acc.push([1 - rowIndex,-1 + colIndex]))
       return acc
     },[])
   }
