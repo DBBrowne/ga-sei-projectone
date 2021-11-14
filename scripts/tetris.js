@@ -245,8 +245,8 @@ class Tetromino {
       playMatrix[space[0]][space[1]].style.backgroundColor = this.fillColor
     })
   }
-  mapOccupiedSpaces(address){
-    return this.shapeOffsets.map(offset=>{
+  mapOccupiedSpaces(address, shapeOffsets = this.shapeOffsets){
+    return shapeOffsets.map(offset=>{
       return [address[0] + offset[0],address[1] + offset[1]]
     })
   }
