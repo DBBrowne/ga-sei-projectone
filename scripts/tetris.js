@@ -313,7 +313,7 @@ class Tetromino {
     const noIntercepts = this.checkNextOccupiedSpaces()
 
     if (!noIntercepts){
-      console.log('intercept')
+      isDebugMode && console.log('intercept')
       this.addToLandedShape()
       return
     }
@@ -384,6 +384,7 @@ function rotateMatrix(matrix, isClockwise = true){
 
 function newTetromino(fillColor, shapeChoice) {
   shapeChoice = shapeChoice || Math.floor(Math.random() * tetrominoShapes.length)
+  isDebugMode && console.log('new shape index:', shapeChoice)
   const shape = tetrominoShapes[shapeChoice]
   return new Tetromino(shape.shapeMap, fillColor || shape.fillColor)
 }
@@ -417,7 +418,7 @@ function loseGame(){
   clearInterval(gameTimer)
 }
 function gameTick(){
-  console.log('tick')
+  isDebugMode && console.log('tick')
   activeTetromino.moveDown()
   checkForCompleteRows()
 }
@@ -442,8 +443,10 @@ function handleKeyPress(e) {
   try {
     playerInputScheme[e.code].control[e.type]()
   } catch (err) {
-    // console.log(err)
+    if (isDebugMode){
+      console.log(err)
     console.log('unrecognised key event:', e.code, e.type)
+    }
   }
 }
 // **************************************************************************
@@ -452,11 +455,12 @@ function handleKeyPress(e) {
 document,addEventListener('keydown', handleKeyPress)
 document,addEventListener('keyup',   handleKeyPress)
 
-
+if (isDebugMode){
 setTimeout(()=>{
   clearInterval(gameTimer)
   console.log('game time over')
 },5000)
+}
 
 
 // **************************************************************************
