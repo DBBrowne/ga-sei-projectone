@@ -38,6 +38,8 @@ const playerScoreView = document.querySelector('.info .score-span')
 // **************************************************************************
 // Variables
 
+const isDebugMode = false
+
 const playMatrixHeight = 20
 const playMatrixWidth = 16
 const playMatrix = []
@@ -232,7 +234,8 @@ function buildPlayMatrix(height, width){
     landedShape.newRow(width)
     for (let x = 0; x < width; x++){
       const playCell = document.createElement('div')
-      playCell.textContent = `${x}, ${y}`
+      
+      isDebugMode && (playCell.textContent = `${x}, ${y}`)
       
       playMatrixView.appendChild(playCell)
       playMatrix[y].push(playCell)
