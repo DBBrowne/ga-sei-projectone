@@ -6,6 +6,7 @@ const shapeMap = [
 ]
 
 function rotateSquareMatrixCW(matrix){
+  //transpose, then reverse row content
   return matrix.map((val, index) => matrix.map(row => row[index]).reverse())
 }
 function rotateSquareMatrixACW(matrix){
@@ -15,6 +16,8 @@ function rotateSquareMatrixACW(matrix){
   //   output = rotateSquareMatrixCW(output)
   // }
   // return output
+
+  //transpose, then reverse column content
   return matrix.map((val, index) => matrix.map(row => row[index])).reverse()
 }
 function convertShapeMeshToOffsets(array){
