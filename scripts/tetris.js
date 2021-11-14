@@ -216,7 +216,7 @@ class Tetromino {
     this.baseLocation = baseLocation
     this.fillColor = fillColor
     this.shapeMap = shapeMap
-    this.shapeOffsets = this.convertShapeMeshToOffsets(shapeMap)
+    this.shapeOffsets = convertShapeMeshToOffsets(shapeMap)
     this.occupiedSpaces = []
     this.nextOccupiedSpaces = []
 
@@ -295,25 +295,35 @@ class Tetromino {
       this.update()
     }
   }
-  convertShapeMeshToOffsets(matrix){
-    return matrix.reduce((acc,row, rowIndex)=>{
-      row.forEach((flag, colIndex) => flag && acc.push([1 - rowIndex,-1 + colIndex]))
-      return acc
-    },[])
-  }
-  rotateMatrix(matrix, isClockwise = true){
-    //rotate clockwise by default
-    if (isClockwise){
-      //transpose, then reverse row content
-      return matrix.map((val, index) => matrix.map(row => row[index]).reverse())
-    }
-    //transpose, then reverse column content
-    return matrix.map((val, index) => matrix.map(row => row[index])).reverse()
-  }
   rotateShape(isClockwise = true){
-    console.log('rotate', isClockwise)
+    const rotatedShapeMap = rotateMatrix(this.shapeMap, isClockwise)
+
   }
 }
+
+// ************
+// * global functions
+function convertShapeMeshToOffsets(matrix){
+  return matrix.reduce((acc,row, rowIndex)=>{
+    row.forEach((flag, colIndex) => flag && acc.push([1 - rowIndex,-1 + colIndex]))
+    return acc
+  },[])
+}
+function rotateMatrix(matrix, isClockwise = true){
+  //rotate clockwise by default
+  if (isClockwise){
+    //transpose, then reverse row content
+    return matrix.map((val, index) => matrix.map(row => row[index]).reverse())
+  }
+  //transpose, then reverse column content
+  return matrix.map((val, index) => matrix.map(row => row[index])).reverse()
+}
+
+
+
+// ************
+// * playspace functions
+
 function newTetromino(fillColor, shapeChoice = 1) {
   const shape = tetrominoShapes[shapeChoice]
   return new Tetromino(shape.shapeMap, fillColor || shape.fillColor)
