@@ -298,7 +298,7 @@ class Tetromino {
   rotateShape(isClockwise = true){
     const rotatedShapeMap = rotateMatrix(this.shapeMap, isClockwise)
     
-    this.nextOccupiedSpaces = convertShapeMeshToOffsets(rotatedShapeMap)
+    this.nextOccupiedSpaces = this.mapOccupiedSpaces(this.baseLocation, convertShapeMeshToOffsets(rotatedShapeMap))
 
     const noIntercepts = this.checkNextOccupiedSpaces()
 
