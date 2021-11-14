@@ -64,7 +64,7 @@ const tetrominoShapes = [
       [0,1,1.0],
       [0,0,0,0]
     ],
-    fillColor: 'darkred',
+    fillColor: 'gold',
   },
   {
     name: 'S',
@@ -74,6 +74,51 @@ const tetrominoShapes = [
       [0,0,0]
     ],
     fillColor: 'green',
+  },
+  {
+    name: 'I',
+    shapeMap: [
+      [0,0,0,0],
+      [1,1,1,1],
+      [0,0,0.0],
+      [0,0,0,0]
+    ],
+    fillColor: 'cyan',
+  },
+  {
+    name: 'Z',
+    shapeMap: [
+      [1,1,0],
+      [0,1,1],
+      [0,0,0]
+    ],
+    fillColor: 'darkred',
+  },
+  {
+    name: 'T',
+    shapeMap: [
+      [0,0,0],
+      [0,1,0],
+      [1,1,1]
+    ],
+    fillColor: 'darkorchid',
+  },
+  {
+    name: 'L',
+    shapeMap: [
+      [0,0,0],
+      [0,0,1],
+      [1,1,1]
+    ],
+    fillColor: 'darkorange',
+  },{
+    name: 'J',
+    shapeMap: [
+      [0,0,0],
+      [1,0,0],
+      [1,1,1]
+    ],
+    fillColor: 'darkblue',
   }
 ]
 
