@@ -384,11 +384,17 @@ function setTickSpeed(tickSpeed = gameTickTime){
 // keypress handler
 
 function handleKeyPress(e) {
+  // system keys
+  if (e.code === 'F5'){
+    return true
+  }
+
+  // user keys
   e.preventDefault()
   try {
     playerInputScheme[e.code].control[e.type]()
   } catch (err) {
-    console.log(err)
+    // console.log(err)
     console.log('unrecognised key event:', e.code, e.type)
   }
 }
