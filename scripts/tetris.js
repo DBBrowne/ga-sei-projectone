@@ -568,9 +568,9 @@ function handlePlayButton(){
 // **************************************************************************
 // Events
 
-document,addEventListener('keydown', handleKeyPress)
-document,addEventListener('keyup',   handleKeyPress)
-globalPlayButton,addEventListener('click',   handlePlayButton)
+document.addEventListener('keydown', handleKeyPress)
+document.addEventListener('keyup',   handleKeyPress)
+globalPlayButton.addEventListener('click',   handlePlayButton)
 
 if (isDebugMode){
   document.querySelector('head').innerHTML += '<style>* {border: solid rgb(80, 80, 80) 0.2px;}</style>'
