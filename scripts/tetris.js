@@ -42,14 +42,14 @@ function testJestConnection() {
 // DOM Elements
 
 const player0playMatrixView = document.querySelector('.player0 .play-matrix')
-const playerScoreView = document.querySelector('.player0 .info .score-span')
+const player0ScoreView = document.querySelector('.player0 .info .score-span')
 const globalPlayButton = document.querySelector('.play-button')
 const pageMain = document.querySelector('main')
 const playerCoreHTML = '<div class="info"><p>Score:&nbsp;<span class="score-span">000</span></p><ul class="controls"><p>Controls:</p></ul></div><div class="play-decorator"><div class="play-matrix"></div></div>'
 // **************************************************************************
 // Variables
 
-const isDebugMode = false
+const isDebugMode = true
 
 const players = []
 
@@ -243,7 +243,7 @@ const playerInputScheme = {
 // * From this point on, location arrays are referenced in the form [y,x],
 // * so that each member of the outer array represents a row of the gamespace
 // **************************************************************************
-
+const tetrominoSpawnYX = [tetrominoSpawnXY[1],tetrominoSpawnXY[0]]
 
 
 // **************************************************************************
@@ -297,34 +297,16 @@ class TetrisGame {
       }
     }
   }
+  newActiveTetromino (fillColor) {
+    setTickSpeed()
+    activeTetromino = newTetromino(fillColor)
+  }
 }
 
 players.push(new TetrisGame)
 
 
 
-
-const tetrominoSpawnYX = [tetrominoSpawnXY[1],tetrominoSpawnXY[0]]
-
-function buildNewPlayMatrix(height, width, playMatrixView){
-  playMatrixView.innerHTML = ''
-  playMatrix = new Array
-  landedShape = new LandedShape
-  for (let y = 0; y < height; y++){
-    playMatrix.push([])
-    landedShape.newRow(width)
-    //count from width-1 to 0 to retain 0,0 at the lower left of the play view
-    for (let x = width - 1; x >= 0; x--){
-      const playCell = document.createElement('div')
-      
-      isDebugMode && (playCell.textContent = `${x}, ${y}`)
-      
-      playMatrixView.prepend(playCell)
-      playMatrix[y].push(playCell)
-    }
-  }
-  return [playMatrix, landedShape]
-}
 // console.log(player0playMatrixView)
 // buildNewPlayMatrix(playMatrixHeight + maxShapeSize, playMatrixWidth, player0playMatrixView) //todo: refactor to use return
 
@@ -449,7 +431,27 @@ function rotateMatrix(matrix, isClockwise = true){
   //transpose, then reverse row content
   return matrix.map((val, index) => matrix.map(row => row[index]).reverse())
 }
-
+//potentially belongs to the playspace object
+function buildNewPlayMatrix(height, width, playMatrixView){
+  playMatrixView.innerHTML = ''
+  playMatrix = new Array
+  landedShape = new LandedShape
+  for (let y = 0; y < height; y++){
+    playMatrix.push([])
+    landedShape.newRow(width)
+    //count from width-1 to 0 to retain 0,0 at the lower left of the play view
+    for (let x = width - 1; x >= 0; x--){
+      const playCell = document.createElement('div')
+      
+      isDebugMode && (playCell.textContent = `${x}, ${y}`)
+      
+      playMatrixView.prepend(playCell)
+      playMatrix[y].push(playCell)
+    }
+  }
+  return [playMatrix, landedShape]
+  
+}
 
 
 // ************
@@ -461,13 +463,9 @@ function newTetromino(fillColor, shapeChoice) {
   const shape = tetrominoShapes[shapeChoice]
   return new Tetromino(shape.shapeMap, fillColor || shape.fillColor)
 }
-function newActiveTetromino (fillColor) {
-  setTickSpeed()
-  activeTetromino = newTetromino(fillColor)
-}
 function addToScore(clearedRows){
   playerScore += Math.ceil(Math.pow(clearedRows, pointsMultirowExponent) * pointsPerRow)
-  playerScoreView.textContent = playerScore
+  player0ScoreView.textContent = playerScore
 }
 function checkForCompleteRows() {
   const originalLength = landedShape.length
@@ -515,11 +513,11 @@ function resetGame() {
   gameTickTime = defaultGameTickTime
   playerRowsCleared = 0
   playerScore = 0
-  playerScoreView.textContent = playerScore
+  player0ScoreView.textContent = playerScore
 }
 function startGame(){
   isGameOngoing = true
-  isDebugMode ? newActiveTetromino('red') : newActiveTetromino()
+  isDebugMode ? players[0].newActiveTetromino('red') : players[0].newActiveTetromino()
   setTickSpeed()
 }
 // **************************************************************************
