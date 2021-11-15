@@ -37,6 +37,7 @@ const levelUpTickMultiplier = 0.90
 const levelUpBreakPoint = 1
 const speedUpTickDivider = 5
 const dropTickDivider = 1000
+let globalClearedRows = 0
 
 let isGameOngoing = false
 let globalTickTime = defaultGameTickTime
@@ -232,13 +233,19 @@ class LandedShape extends Array {
       }
     })
   }
-  newRow(length = playMatrixWidth){
+  newRow(deadRow = false,length = playMatrixWidth){
     const newRowArray = []
-    newRowArray.fullCellsCount = 0
     for (let i = 0; i < length;i++){
       newRowArray.push({})
+      deadRow && (newRowArray[i].fillColor = 'grey')
     }
+    if (deadRow){
+      newRowArray.fullCellsCount = length + 1
+      return true
+    }
+    newRowArray.fullCellsCount = 0
     this.push(newRowArray)
+    return true
   }
 }
 
@@ -296,7 +303,7 @@ class TetrisGame {
     const landedShape = new LandedShape()
     for (let y = 0; y < height; y++){
       playMatrix.push([])
-      landedShape.newRow(width)
+      landedShape.newRow(false, width)
       //count from width-1 to 0 to retain 0,0 at the lower left of the play view
       for (let x = width - 1; x >= 0; x--){
         const playCell = document.createElement('div')
@@ -366,8 +373,7 @@ class TetrisGame {
       this.clearPlayAreaView()
       this.landedShape.draw(this)
       this.addToScore(clearedRows)
-      this.playerRowsCleared += clearedRows
-      globalTickTime = globalTickTime * Math.pow(levelUpTickMultiplier, Math.ceil(this.playerRowsCleared / levelUpBreakPoint))
+      globalAddClearedRows(this.playerNumber, clearedRows)
       isDebugMode && console.log(globalTickTime)
     }
   }
@@ -505,6 +511,16 @@ function rotateMatrix(matrix, isClockwise = true){
   }
   //transpose, then reverse row content
   return matrix.map((val, index) => matrix.map(row => row[index]).reverse())
+}
+function globalAddClearedRows(playerNumSendingRows, clearedRows){
+  globalClearedRows += clearedRows
+  globalTickTime = globalTickTime * Math.pow(levelUpTickMultiplier, Math.ceil(globalClearedRows / levelUpBreakPoint))
+  players.forEach(player=>{
+    if (player.playerNumber !== playerNumSendingRows){
+      player.landedShape.pop()
+      player.landedShape.newRow(true)
+    }
+  })
 }
 
 // ************
