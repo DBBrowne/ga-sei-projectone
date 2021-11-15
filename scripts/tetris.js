@@ -43,8 +43,8 @@ const isDebugMode = false
 
 const playMatrixHeight = 20
 const playMatrixWidth = 16
-const playMatrix = []
-let landedShape = new LandedShape()
+let playMatrix = []
+let landedShape = []
 
 const tetrominoSpawnXY = [7,20]
 
@@ -223,6 +223,9 @@ const playerInputScheme = {
     control: playerControls.rotateCW,
   },
 }
+const maxShapeSize = tetrominoShapes.reduce((acc,shape)=>{
+  return Math.max(acc, shape.shapeMap.length)
+},0)
 
 // **************************************************************************
 // * From this point on, location arrays are referenced in the form [y,x],
@@ -235,7 +238,10 @@ const playerInputScheme = {
 // Build play window
 const tetrominoSpawnYX = [tetrominoSpawnXY[1],tetrominoSpawnXY[0]]
 
-function buildPlayMatrix(height, width){
+function buildNewPlayMatrix(height, width){
+  playMatrixView.innerHTML = ''
+  playMatrix = new Array
+  landedShape = new LandedShape
   for (let y = 0; y < height; y++){
     playMatrix.push([])
     landedShape.newRow(width)
@@ -249,14 +255,10 @@ function buildPlayMatrix(height, width){
       playMatrix[y].push(playCell)
     }
   }
-  return playMatrix
+  return (playMatrix, landedShape)
 }
 
-
-const maxShapeSize = tetrominoShapes.reduce((acc,shape)=>{
-  return Math.max(acc, shape.shapeMap.length)
-},0)
-buildPlayMatrix(playMatrixHeight + maxShapeSize, playMatrixWidth) //todo: refactor to use return
+buildNewPlayMatrix(playMatrixHeight + maxShapeSize, playMatrixWidth) //todo: refactor to use return
 
 // inject control legend
 for (const controlKey in playerInputScheme) { //todo: refactor to for-of
@@ -431,6 +433,7 @@ function clearPlayAreaView(){
   playMatrix.forEach(row=>row.forEach(cell=> {
     cell.style.backgroundColor = 'inherit'
   }))
+}
 function loseGame(){
   isGameOngoing = false
   console.log('game over')
@@ -448,6 +451,20 @@ function setTickSpeed(tickSpeed = gameTickTime){
   },tickSpeed)
 }
 
+function resetGame() {
+  buildNewPlayMatrix(playMatrixHeight + maxShapeSize, playMatrixWidth)
+  isGameOngoing = false
+  clearInterval(gameTimer)
+  gameTickTime = defaultGameTickTime
+  playerRowsCleared = 0
+  playerScore = 0
+  playerScoreView.textContent = playerScore
+}
+function startGame(){
+  isGameOngoing = true
+  isDebugMode ? newActiveTetromino('red') : newActiveTetromino()
+  setTickSpeed()
+}
 // **************************************************************************
 // keypress handler
 
@@ -470,9 +487,11 @@ function handleKeyPress(e) {
 }
 function handlePlayButton(){
   if (!isGameOngoing){
-    isGameOngoing = true
-    isDebugMode ? newActiveTetromino('red') : newActiveTetromino()
-    setTickSpeed()
+    startGame()
+    globalPlayButton.textContent = 'RESET'
+  } else {
+    resetGame()
+    globalPlayButton.textContent = 'play'
   }
 }
 // **************************************************************************
@@ -497,7 +516,7 @@ try {
   exports = {
     Tetromino,
     testJestConnection,
-    buildPlayMatrix,
+    buildPlayMatrix: buildNewPlayMatrix,
 
   }
 } catch {
