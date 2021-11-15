@@ -19,6 +19,7 @@ h1{
 main {
   display: flex;
   justify-content: center;
+  height:70vh;
 }
 
 section{
@@ -54,13 +55,15 @@ section{
 
 .play-decorator{
   border: double gold 5px;
+  width: calc(((70vh)*16/20));
+  height: 100%
 }
 
 .play-matrix{
-  width: calc(((80.5vh)*16/22));
-  max-width: 90vw;
-  display: flex;
-  flex-wrap: wrap-reverse;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
 }
 
 .play-matrix .debug {
@@ -68,11 +71,6 @@ section{
 }
 
 .play-matrix div{
-  height: calc(80vh/22);
-  width: calc(80vh/22);
-
-  max-width: calc(90vw/16);
-  max-height: calc(90vw/16);
 
   border: solid rgb(10,10,10) 0.1px;
 }
@@ -82,16 +80,31 @@ section{
   font-size: 6px;
 }
 
-.play-matrix div:nth-last-child(-n +64){
+.play-matrix div:nth-child(-n +64){
   background-color: hotpink;
   display: none;
 }
-.play-matrix div:nth-last-child(-n +64).debug{
+.play-matrix div:nth-child(-n +64).debug{
   display: inherit;
 }
 
 @media only screen and (max-width: 900px) {
   section{
     flex-direction: column-reverse;
+  }
+  .info{
+    align-items: center;
+    margin: 0;
+  }
+  .info *{
+    margin: 0;
+  }
+  ul>p {
+    display: none;
+  }
+  .controls{
+    width: calc(((90vh)*16/24));
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 }

@@ -133,7 +133,7 @@ const playerControls = {
   moveLeft: {
     name: 'Move Left',
     keydown(){
-      activeTetromino.move([0,-1])
+      activeTetromino.move([0,1])
     },
     keyup(){
       return 'event inactive'
@@ -142,7 +142,7 @@ const playerControls = {
   moveRight: {
     name: 'Move Right',
     keydown(){
-      activeTetromino.move([0,1])
+      activeTetromino.move([0,-1])
     },
     keyup(){
       return 'event inactive'
@@ -234,12 +234,13 @@ function buildPlayMatrix(height, width){
   for (let y = 0; y < height; y++){
     playMatrix.push([])
     landedShape.newRow(width)
-    for (let x = 0; x < width; x++){
+    //count from width-1 to 0 to retain 0,0 at the lower left of the play view
+    for (let x = width - 1; x >= 0; x--){
       const playCell = document.createElement('div')
       
       isDebugMode && (playCell.textContent = `${x}, ${y}`)
       
-      playMatrixView.appendChild(playCell)
+      playMatrixView.prepend(playCell)
       playMatrix[y].push(playCell)
     }
   }
@@ -328,15 +329,15 @@ class Tetromino {
   }
   addToLandedShape(){
     if (
-    this.occupiedSpaces.every(cell=>{
+      this.occupiedSpaces.every(cell=>{
         if (cell[0] >= playMatrixHeight){
-        loseGame()
-        return false
-      }
-      landedShape[cell[0]][cell[1]].fillColor = this.fillColor 
-      landedShape[cell[0]].fullCellsCount++
-      return true
-    })
+          loseGame()
+          return false
+        }
+        landedShape[cell[0]][cell[1]].fillColor = this.fillColor 
+        landedShape[cell[0]].fullCellsCount++
+        return true
+      })
     ){
       newActiveTetromino()
     }
@@ -378,11 +379,11 @@ function convertShapeMeshToOffsets(matrix, offsetPointXYFromTopLeft){
 function rotateMatrix(matrix, isClockwise = true){
   //rotate clockwise by default
   if (isClockwise){
-    //transpose, then reverse row content
-    return matrix.map((val, index) => matrix.map(row => row[index]).reverse())
+    //transpose, then reverse column content
+    return matrix.map((val, index) => matrix.map(row => row[index])).reverse()
   }
-  //transpose, then reverse column content
-  return matrix.map((val, index) => matrix.map(row => row[index])).reverse()
+  //transpose, then reverse row content
+  return matrix.map((val, index) => matrix.map(row => row[index]).reverse())
 }
 
 
