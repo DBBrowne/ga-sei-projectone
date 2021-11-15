@@ -603,6 +603,10 @@ if (isDebugMode){
 }
 
 // **************************************************************************
+// populate with at least one player
+players.push(new TetrisGame)
+
+// **************************************************************************
 // * export functions for testing
 try {
   exports = {
