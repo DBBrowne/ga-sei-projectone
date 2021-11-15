@@ -286,7 +286,7 @@ class TetrisGame {
   injectPlayerControlsIntoHTML(){
     // inject control legend
     for (const controlKey in playerInputScheme) { //todo: refactor to for-of
-      if (playerInputScheme[controlKey].player = this.playerNumber){
+      if ( playerInputScheme[controlKey].player === this.playerNumber){
         const controlLegendElement = this.playerSection.querySelector('.controls')
 
         const controlLegendItem = document.createElement('div')
