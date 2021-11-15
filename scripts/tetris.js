@@ -1,30 +1,5 @@
 //  * TETRIS
-// Constructors
-
-class LandedShape extends Array {
-  draw(){
-    if (!this.length){
-      return
-    }
-    this.forEach((row, rowIndex)=>{
-      if (row.fullCellsCount){
-        row.forEach((cell, columnIndex)=>{
-          if (cell.fillColor){
-            playMatrix[rowIndex][columnIndex].style.backgroundColor = cell.fillColor
-          }
-        })
-      }
-    })
-  }
-  newRow(length = playMatrixWidth){
-    const newRowArray = []
-    newRowArray.fullCellsCount = 0
-    for (let i = 0; i < length;i++){
-      newRowArray.push({})
-    }
-    this.push(newRowArray)
-  }
-}
+// Initialisation Constructors
 
 class TetrominoShape {
   constructor(shapeMap, fillColor = 'white'){
@@ -54,8 +29,6 @@ const players = []
 
 const playMatrixHeight = 20
 const playMatrixWidth = 16
-let playMatrix = new Array
-let landedShape = new LandedShape
 
 const tetrominoSpawnXY = [7,20]
 
@@ -243,6 +216,32 @@ const tetrominoSpawnYX = [tetrominoSpawnXY[1],tetrominoSpawnXY[0]]
 
 // **************************************************************************
 // Build play window
+class LandedShape extends Array {
+  draw(parent){
+    console.log(parent)
+    if (!this.length){
+      return
+    }
+    this.forEach((row, rowIndex)=>{
+      if (row.fullCellsCount){
+        row.forEach((cell, columnIndex)=>{
+          if (cell.fillColor){
+            parent.playMatrix[rowIndex][columnIndex].style.backgroundColor = cell.fillColor
+          }
+        })
+      }
+    })
+  }
+  newRow(length = playMatrixWidth){
+    const newRowArray = []
+    newRowArray.fullCellsCount = 0
+    for (let i = 0; i < length;i++){
+      newRowArray.push({})
+    }
+    this.push(newRowArray)
+  }
+}
+
 class TetrisGame {
   constructor(playerNumber = 1, displayParent = pageMain){
     this.playerNumber = playerNumber
@@ -285,11 +284,33 @@ class TetrisGame {
   }
   buildMatrix(){
     //todo: refactor to deconstruct return.  Currently causes "console.log(...) is undefined"
-    const buildReturn = buildNewPlayMatrix(playMatrixHeight + maxShapeSize, playMatrixWidth, this.playMatrixView)
+    const buildReturn = this.buildNewPlayMatrix(playMatrixHeight + maxShapeSize, playMatrixWidth, this.playMatrixView)
     this.playMatrix = buildReturn[0]
     this.landedShape = buildReturn[1]
 
     isDebugMode && console.log('build new matrix:',this.playerName, 'playmatrix',this.playMatrix,'landedshape', this.landedShape)
+  }
+  buildNewPlayMatrix(height, width, displayElement = this.playMatrixView){
+    displayElement.innerHTML = ''
+    const playMatrix = new Array
+    const landedShape = new LandedShape()
+    for (let y = 0; y < height; y++){
+      playMatrix.push([])
+      landedShape.newRow(width)
+      //count from width-1 to 0 to retain 0,0 at the lower left of the play view
+      for (let x = width - 1; x >= 0; x--){
+        const playCell = document.createElement('div')
+      
+        if (isDebugMode){
+          playCell.textContent = `${x}, ${y}`
+          playCell.classList.add('debug')
+        }
+      
+        displayElement.prepend(playCell)
+        playMatrix[y].push(playCell)
+      }
+    }
+    return [playMatrix, landedShape]
   }
   injectPlayerControlsIntoHTML(){
     // inject control legend
@@ -343,7 +364,7 @@ class TetrisGame {
     }
     if (clearedRows){
       this.clearPlayAreaView()
-      this.landedShape.draw()
+      this.landedShape.draw(this)
       this.addToScore(clearedRows)
       this.playerRowsCleared += clearedRows
       globalTickTime = globalTickTime * Math.pow(levelUpTickMultiplier, Math.ceil(this.playerRowsCleared / levelUpBreakPoint))
@@ -395,14 +416,14 @@ class Tetromino {
     }
     this.occupiedSpaces = [...this.nextOccupiedSpaces]
   }
-  colorPlayMatrixView(){
-    this.occupiedSpaces.forEach((space)=>{
-      this.parent.playMatrix[space[0]][space[1]].style.backgroundColor = this.fillColor
-    })
-  }
   mapOccupiedSpaces(address, shapeOffsets = this.shapeOffsets){
     return shapeOffsets.map(offset=>{
       return [address[0] + offset[0],address[1] + offset[1]]
+    })
+  }
+  colorPlayMatrixView(){
+    this.occupiedSpaces.forEach((space)=>{
+      this.parent.playMatrix[space[0]][space[1]].style.backgroundColor = this.fillColor
     })
   }
   checkNextOccupiedSpaces(){
@@ -412,20 +433,6 @@ class Tetromino {
         nextMoveCell[1] < playMatrixWidth &&
         !this.parent.landedShape[nextMoveCell[0]][nextMoveCell[1]].fillColor
     })
-  }
-  moveDown(){
-    const nextLocation = [this.baseLocation[0] - 1, this.baseLocation[1]]
-    this.nextOccupiedSpaces = this.mapOccupiedSpaces(nextLocation)
-
-    const noIntercepts = this.checkNextOccupiedSpaces()
-
-    if (!noIntercepts){
-      isDebugMode && console.log('intercept')
-      this.addToLandedShape()
-      return
-    }
-    this.baseLocation = nextLocation
-    this.update()
   }
   addToLandedShape(){
     if (
@@ -441,6 +448,20 @@ class Tetromino {
     ){
       this.parent.newActiveTetromino()
     }
+  }
+  moveDown(){
+    const nextLocation = [this.baseLocation[0] - 1, this.baseLocation[1]]
+    this.nextOccupiedSpaces = this.mapOccupiedSpaces(nextLocation)
+
+    const noIntercepts = this.checkNextOccupiedSpaces()
+
+    if (!noIntercepts){
+      isDebugMode && console.log('intercept')
+      this.addToLandedShape()
+      return
+    }
+    this.baseLocation = nextLocation
+    this.update()
   }
   move(direction){
     this.nextLocation = [this.baseLocation[0] + direction[0],this.baseLocation[1] + direction[1]]
@@ -488,8 +509,8 @@ function rotateMatrix(matrix, isClockwise = true){
 //potentially belongs to the playspace object
 function buildNewPlayMatrix(height, width, playMatrixView){
   playMatrixView.innerHTML = ''
-  playMatrix = new Array
-  landedShape = new LandedShape
+  const playMatrix = new Array
+  const landedShape = new LandedShape
   for (let y = 0; y < height; y++){
     playMatrix.push([])
     landedShape.newRow(width)
