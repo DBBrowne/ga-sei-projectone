@@ -35,6 +35,7 @@ function testJestConnection() {
 
 const playMatrixView = document.querySelector('.play-matrix')
 const playerScoreView = document.querySelector('.info .score-span')
+const globalPlayButton = document.querySelector('.play-button')
 // **************************************************************************
 // Variables
 
@@ -465,11 +466,19 @@ function handleKeyPress(e) {
     }
   }
 }
+function handlePlayButton(){
+  if (!isGameOngoing){
+    isGameOngoing = true
+    isDebugMode ? newActiveTetromino('red') : newActiveTetromino()
+    setTickSpeed()
+  }
+}
 // **************************************************************************
 // Events
 
 document,addEventListener('keydown', handleKeyPress)
 document,addEventListener('keyup',   handleKeyPress)
+globalPlayButton,addEventListener('click',   handlePlayButton)
 
 if (isDebugMode){
   document.querySelector('head').innerHTML += '<style>* {border: solid rgb(80, 80, 80) 0.2px;}</style>'
@@ -479,14 +488,6 @@ if (isDebugMode){
     console.log('game time over')
   },5000)
 }
-
-
-// **************************************************************************
-// * START GAME
-
-isGameOngoing = true
-newActiveTetromino('red')
-setTickSpeed()
 
 // **************************************************************************
 // * export functions for testing
