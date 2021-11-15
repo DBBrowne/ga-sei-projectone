@@ -19,7 +19,24 @@ class TetrominoShapesSelection extends Array {
     }
     // need to set original target to value
     // this[0] = value // infinite loop
-    return Reflect.set(value)
+    return value //Reflect.set(value)
+  }
+  set [1](value) {
+    console.log('new items',value)
+    console.log('new length',value.shapeMap.length)
+    console.log('thisMaxSize', this.maxShapeSize)
+    const newShapeSize = value.shapeMap.length
+    if (newShapeSize === 0){
+      value.maxShapeSize = this.reduce((acc,shape)=>{
+        return Math.max(acc, shape.shapeMap.length)
+      },0)
+    }
+    if (newShapeSize > this.maxShapeSize){
+      this.maxShapeSize = newShapeSize
+    }
+    // need to set original target to value
+    // this[0] = value // infinite loop
+    return value //Reflect.set(value)
   }
 }
 
