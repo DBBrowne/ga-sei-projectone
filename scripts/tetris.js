@@ -43,8 +43,8 @@ const isDebugMode = false
 
 const playMatrixHeight = 20
 const playMatrixWidth = 16
-let playMatrix = []
-let landedShape = []
+let playMatrix = new Array
+let landedShape = new LandedShape
 
 const tetrominoSpawnXY = [7,20]
 
