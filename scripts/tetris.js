@@ -47,7 +47,7 @@ const playerCoreHTML = '<div class="info"><p>Score:&nbsp;<span class="score-span
 // **************************************************************************
 // Variables
 
-const isDebugMode = true
+const isDebugMode = false
 
 const players = []
 
