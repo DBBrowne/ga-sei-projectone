@@ -43,6 +43,7 @@ function testJestConnection() {
 
 const globalPlayButton = document.querySelector('.play-button')
 const pageMain = document.querySelector('main')
+const newPlayerButton = document.querySelector('.new-player-button')
 const playerCoreHTML = '<div class="info"><p>Score:&nbsp;<span class="score-span">000</span></p><ul class="controls"><p>Controls:</p></ul></div><div class="play-decorator"><div class="play-matrix"></div></div>'
 // **************************************************************************
 // Variables
