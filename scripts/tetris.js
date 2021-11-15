@@ -26,6 +26,33 @@ class LandedShape extends Array {
   }
 }
 
+class TetrominoShape {
+  constructor(shapeMap, fillColor = 'white'){
+    this.shapeMap = shapeMap
+    this.fillColor = fillColor
+  }
+}
+class TetrominoShapesSelection extends Array {
+  constructor() {
+    this.maxShapeSize = 44
+  }
+  set(target, name, value, receiver) {
+    console.log(target.maxShapeSize)
+    const newShapeSize = value.shapeMap.length
+    if(newShapeSize = 0){
+        target.maxShapeSize = this.reduce((acc,shape)=>{
+            return Math.max(acc, shape.shapeMap.length)
+          },0)}
+    if(newShapeSize>target.maxShapeSize){
+    target.maxShapeSize = newShapeSize
+    }
+    return Reflect.set(target, name, value, receiver)
+  }
+}
+
+
+
+
 function testJestConnection() {
   console.log('hello')
   return 'hello'
@@ -65,71 +92,68 @@ const pointsPerRow = 100
 const pointsMultirowExponent = 1.5
 
 const tetrominoShapes = [
-  {
-    name: 'O',
-    shapeMap: [
+  new TetrominoShape('O',
+    [
       [0,0,0,0],
       [0,1,1,0],
       [0,1,1,0],
       [0,0,0,0]
     ],
-    fillColor: 'gold',
-  },
-  {
-    name: 'S',
+    'gold'
+  ),
+  new TetrominoShape('S',
     shapeMap: [
       [0,1,1],
       [1,1,0],
       [0,0,0]
     ],
-    fillColor: 'green',
-  },
-  {
-    name: 'I',
-    shapeMap: [
+    'green',
+  ),
+  new TetrominoShape('I',
+    [
       [0,0,0,0],
       [0,0,0,0],
       [1,1,1,1],
       [0,0,0,0]
     ],
-    fillColor: 'cyan',
-  },
-  {
-    name: 'Z',
-    shapeMap: [
+    'cyan',
+  ),
+  new TetrominoShape('Z',
+    [
       [1,1,0],
       [0,1,1],
       [0,0,0]
     ],
-    fillColor: 'darkred',
-  },
-  {
-    name: 'T',
-    shapeMap: [
+    'darkred',
+  ),
+  new TetrominoShape('T',
+    [
       [0,1,0],
       [1,1,1],
       [0,0,0]
     ],
-    fillColor: 'darkorchid',
-  },
-  {
-    name: 'L',
-    shapeMap: [
+    'darkorchid',
+  ),
+  new TetrominoShape('L',
+    [
       [0,0,1],
       [1,1,1],
       [0,0,0]
     ],
-    fillColor: 'darkorange',
-  },{
-    name: 'J',
-    shapeMap: [
+    'darkorange',
+  ),
+  new TetrominoShape('J',
+    [
       [1,0,0],
       [1,1,1],
       [0,0,0]
     ],
-    fillColor: 'darkblue',
-  }
+    'darkblue',
+  )
 ]
+const maxShapeSize = tetrominoShapes.reduce((acc,shape)=>{
+  return Math.max(acc, shape.shapeMap.length)
+},0)
 
 // **************************************************************************
 // Controls
@@ -223,9 +247,6 @@ const playerInputScheme = {
     control: playerControls.rotateCW,
   },
 }
-const maxShapeSize = tetrominoShapes.reduce((acc,shape)=>{
-  return Math.max(acc, shape.shapeMap.length)
-},0)
 
 // **************************************************************************
 // * From this point on, location arrays are referenced in the form [y,x],
