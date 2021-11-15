@@ -346,7 +346,7 @@ class TetrisGame {
       this.addToScore(clearedRows)
       this.playerRowsCleared += clearedRows
       globalTickTime = globalTickTime * Math.pow(levelUpTickMultiplier, Math.ceil(this.playerRowsCleared / levelUpBreakPoint))
-      console.log(globalTickTime)
+      isDebugMode && console.log(globalTickTime)
     }
   }
   addToScore(clearedRows){
@@ -354,7 +354,7 @@ class TetrisGame {
     this.playerScoreView.textContent = this.playerScore
   }
   newTetromino(fillColor, shapeChoice) {
-    console.log('newtetr parent:',parent)
+    isDebugMode && console.log('newtetr parent:',parent)
     shapeChoice = shapeChoice || Math.floor(Math.random() * tetrominoShapes.length)
     isDebugMode && console.log('new shape index:', shapeChoice)
     const shape = tetrominoShapes[shapeChoice]
