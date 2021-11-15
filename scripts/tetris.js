@@ -449,7 +449,7 @@ class Tetromino {
       this.parent.newActiveTetromino()
     }
   }
-  moveDown(){
+  moveDown(){ // TODO: refactor into move()
     const nextLocation = [this.baseLocation[0] - 1, this.baseLocation[1]]
     this.nextOccupiedSpaces = this.mapOccupiedSpaces(nextLocation)
 
@@ -592,8 +592,6 @@ try {
   exports = {
     Tetromino,
     testJestConnection,
-    buildNewPlayMatrix,
-
   }
 } catch {
   'suppress this error in the browser until solution'
