@@ -32,25 +32,6 @@ class TetrominoShape {
     this.fillColor = fillColor
   }
 }
-class TetrominoShapesSelection extends Array {
-  constructor() {
-    this.maxShapeSize = 44
-  }
-  set(target, name, value, receiver) {
-    console.log(target.maxShapeSize)
-    const newShapeSize = value.shapeMap.length
-    if(newShapeSize = 0){
-        target.maxShapeSize = this.reduce((acc,shape)=>{
-            return Math.max(acc, shape.shapeMap.length)
-          },0)}
-    if(newShapeSize>target.maxShapeSize){
-    target.maxShapeSize = newShapeSize
-    }
-    return Reflect.set(target, name, value, receiver)
-  }
-}
-
-
 
 
 function testJestConnection() {
@@ -92,7 +73,7 @@ const pointsPerRow = 100
 const pointsMultirowExponent = 1.5
 
 const tetrominoShapes = [
-  new TetrominoShape('O',
+  new TetrominoShape(
     [
       [0,0,0,0],
       [0,1,1,0],
@@ -101,24 +82,24 @@ const tetrominoShapes = [
     ],
     'gold'
   ),
-  new TetrominoShape('S',
-    shapeMap: [
+  new TetrominoShape(
+    [
       [0,1,1],
       [1,1,0],
       [0,0,0]
     ],
-    'green',
+    'green'
   ),
-  new TetrominoShape('I',
+  new TetrominoShape(
     [
       [0,0,0,0],
       [0,0,0,0],
       [1,1,1,1],
       [0,0,0,0]
     ],
-    'cyan',
+    'cyan'
   ),
-  new TetrominoShape('Z',
+  new TetrominoShape(
     [
       [1,1,0],
       [0,1,1],
@@ -126,29 +107,29 @@ const tetrominoShapes = [
     ],
     'darkred',
   ),
-  new TetrominoShape('T',
+  new TetrominoShape(
     [
       [0,1,0],
       [1,1,1],
       [0,0,0]
     ],
-    'darkorchid',
+    'darkorchid'
   ),
-  new TetrominoShape('L',
+  new TetrominoShape(
     [
       [0,0,1],
       [1,1,1],
       [0,0,0]
     ],
-    'darkorange',
+    'darkorange'
   ),
-  new TetrominoShape('J',
+  new TetrominoShape(
     [
       [1,0,0],
       [1,1,1],
       [0,0,0]
     ],
-    'darkblue',
+    'darkblue'
   )
 ]
 const maxShapeSize = tetrominoShapes.reduce((acc,shape)=>{
