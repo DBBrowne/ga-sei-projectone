@@ -41,7 +41,7 @@ function testJestConnection() {
 
 // DOM Elements
 
-const playMatrixView = document.querySelector('.player0 .play-matrix')
+const player0playMatrixView = document.querySelector('.player0 .play-matrix')
 const playerScoreView = document.querySelector('.player0 .info .score-span')
 const globalPlayButton = document.querySelector('.play-button')
 const pageMain = document.querySelector('main')
@@ -264,10 +264,13 @@ class TetrisGame {
     this.displayParent.appendChild(newPlayerSection)
 
     this.playMatrixView = newPlayerSection.querySelector('.play-matrix')
+    console.log(this.playMatrixView)
 
+    //todo: refactor to deconstruct return.  Currently causes "console.log(...) is undefined"
     const buildReturn = buildNewPlayMatrix(playMatrixHeight + maxShapeSize, playMatrixWidth, this.playMatrixView)
     this.playMatrix = buildReturn[0]
     this.landedShape = buildReturn[1]
+    isDebugMode && console.log('new matrix and landed shape:',this.playerName, this.playMatrix, this.landedShape)
   }
 }
 
@@ -297,8 +300,8 @@ function buildNewPlayMatrix(height, width, playMatrixView){
   }
   return [playMatrix, landedShape]
 }
-
-buildNewPlayMatrix(playMatrixHeight + maxShapeSize, playMatrixWidth, playMatrixView) //todo: refactor to use return
+// console.log(player0playMatrixView)
+// buildNewPlayMatrix(playMatrixHeight + maxShapeSize, playMatrixWidth, player0playMatrixView) //todo: refactor to use return
 
 // inject control legend
 for (const controlKey in playerInputScheme) { //todo: refactor to for-of
