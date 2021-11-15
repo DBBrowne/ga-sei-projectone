@@ -47,14 +47,18 @@ let landedShape = new LandedShape()
 
 const tetrominoSpawnXY = [7,20]
 
-const gameTickTime = 500
+const defaultGameTickTime = 500
+const levelUpTickMultiplier = 0.90
+const levelUpBreakPoint = 1
 const speedUpTickDivider = 5
 const dropTickDivider = 1000
 let gameTimer = null
 let isGameOngoing = false
+let gameTickTime = defaultGameTickTime
 
 let activeTetromino = null
 
+let playerRowsCleared = 0
 let playerScore = 0
 const pointsPerRow = 100
 const pointsMultirowExponent = 1.5
@@ -419,6 +423,9 @@ function checkForCompleteRows() {
     }))
     landedShape.draw()
     addToScore(clearedRows)
+    playerRowsCleared += clearedRows
+    gameTickTime = gameTickTime * Math.pow(levelUpTickMultiplier, Math.ceil(playerRowsCleared / levelUpBreakPoint))
+    console.log(gameTickTime)
   }
 }
 function loseGame(){
