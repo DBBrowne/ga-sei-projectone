@@ -263,9 +263,6 @@ class TetrisGame {
     this.gameTickTime = globalTickTime
     this.gameTimer = {}
 
-    this.playerRowsCleared = 0
-    this.playerScore = 0
-
     this.initPlayspace()
   }
 
@@ -314,8 +311,9 @@ class TetrisGame {
     this.activeTetromino = newTetromino(this,fillColor)
   }
   reset(){
-    this.buildMatrix
-    clearInterval(this.playerGameTimer)
+    clearInterval(this.gameTimer)
+    this.buildMatrix()
+    // this.clearPlayAreaView()
     this.playerRowsCleared = 0
     this.playerScore = 0
     this.playerScoreView.textContent = this.playerScore
@@ -500,7 +498,10 @@ function buildNewPlayMatrix(height, width, playMatrixView){
     for (let x = width - 1; x >= 0; x--){
       const playCell = document.createElement('div')
       
-      isDebugMode && (playCell.textContent = `${x}, ${y}`)
+      if (isDebugMode){
+        playCell.textContent = `${x}, ${y}`
+        playCell.classList.add('debug')
+      }
       
       playMatrixView.prepend(playCell)
       playMatrix[y].push(playCell)
@@ -539,6 +540,8 @@ function loseGame(){
 // }
 
 function resetGame() {
+  // todo does not stop game
+  // todo does not clear field
   isGameOngoing = false
   players.forEach(player=>player.reset())
   globalTickTime = defaultGameTickTime
