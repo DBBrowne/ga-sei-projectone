@@ -41,8 +41,6 @@ function testJestConnection() {
 
 // DOM Elements
 
-// const player0playMatrixView = document.querySelector('.player0 .play-matrix')
-const player0ScoreView = document.querySelector('.player0 .info .score-span')
 const globalPlayButton = document.querySelector('.play-button')
 const pageMain = document.querySelector('main')
 const playerCoreHTML = '<div class="info"><p>Score:&nbsp;<span class="score-span">000</span></p><ul class="controls"><p>Controls:</p></ul></div><div class="play-decorator"><div class="play-matrix"></div></div>'
@@ -361,7 +359,7 @@ class TetrisGame {
     isDebugMode && console.log('new shape index:', shapeChoice)
     const shape = tetrominoShapes[shapeChoice]
     return new Tetromino(shape.shapeMap, fillColor || shape.fillColor, this)
-}
+  }
 }
 
 // **************************************************************************
@@ -508,36 +506,16 @@ function buildNewPlayMatrix(height, width, playMatrixView){
     }
   }
   return [playMatrix, landedShape]
-  
 }
 
 
 // ************
 // * playspace functions
-
-function newTetromino(parent, fillColor, shapeChoice) {
-  console.log('newtetr parent:',parent)
-  shapeChoice = shapeChoice || Math.floor(Math.random() * tetrominoShapes.length)
-  isDebugMode && console.log('new shape index:', shapeChoice)
-  const shape = tetrominoShapes[shapeChoice]
-  return new Tetromino(shape.shapeMap, fillColor || shape.fillColor, parent)
-}
-// function clearPlayAreaView(){
-//   playMatrix.forEach(row=>row.forEach(cell=> {
-//     cell.style.backgroundColor = 'inherit'
-//   }))
-// }
 function loseGame(){
   isGameOngoing = false
   console.log('game over')
   players.forEach(player=>clearInterval(player.gameTimer))
 }
-// function setTickSpeed(tickSpeed = gameTickTime){
-//   clearInterval(gameTimer)
-//   return gameTimer = setInterval(()=>{
-//     gameTick()
-//   },tickSpeed)
-// }
 
 function resetGame() {
   // todo does not stop game
