@@ -327,8 +327,9 @@ class Tetromino {
     this.update()
   }
   addToLandedShape(){
+    if (
     this.occupiedSpaces.every(cell=>{
-      if (cell[0] > playMatrixHeight){
+        if (cell[0] >= playMatrixHeight){
         loseGame()
         return false
       }
@@ -336,7 +337,7 @@ class Tetromino {
       landedShape[cell[0]].fullCellsCount++
       return true
     })
-    if (isGameOngoing){
+    ){
       newActiveTetromino()
     }
   }
