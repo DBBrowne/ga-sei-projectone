@@ -419,9 +419,7 @@ function checkForCompleteRows() {
     landedShape.newRow()
   }
   if (clearedRows){
-    playMatrix.forEach(row=>row.forEach(cell=> {
-      cell.style.backgroundColor = 'inherit'
-    }))
+    clearPlayAreaView()
     landedShape.draw()
     addToScore(clearedRows)
     playerRowsCleared += clearedRows
@@ -429,6 +427,10 @@ function checkForCompleteRows() {
     console.log(gameTickTime)
   }
 }
+function clearPlayAreaView(){
+  playMatrix.forEach(row=>row.forEach(cell=> {
+    cell.style.backgroundColor = 'inherit'
+  }))
 function loseGame(){
   isGameOngoing = false
   console.log('game over')
