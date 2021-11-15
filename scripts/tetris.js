@@ -69,8 +69,6 @@ let gameTimer = null
 let isGameOngoing = false
 let gameTickTime = defaultGameTickTime
 
-let activeTetromino = null
-
 let playerRowsCleared = 0
 let playerScore = 0
 const pointsPerRow = 100
@@ -259,6 +257,12 @@ class TetrisGame {
     this.playMatrix = []
     this.landedShape = []
 
+    this.playerRowsCleared = 0
+    this.playerScore = 0
+    this.playerScoreView = {}
+
+    this.activeTetromino = {}
+
     this.initPlayspace()
   }
 
@@ -273,15 +277,20 @@ class TetrisGame {
 
     this.playMatrixView = newPlayerSection.querySelector('.play-matrix')
     console.log(this.playMatrixView)
+    this.playerScoreView = newPlayerSection.querySelector('.info .score-span')
 
+    this.buildMatrix()
+
+    this.injectPlayerControlsIntoHTML()
+    this.playerScoreView.textContent = this.playerScore
+  }
+  buildMatrix(){
     //todo: refactor to deconstruct return.  Currently causes "console.log(...) is undefined"
     const buildReturn = buildNewPlayMatrix(playMatrixHeight + maxShapeSize, playMatrixWidth, this.playMatrixView)
     this.playMatrix = buildReturn[0]
     this.landedShape = buildReturn[1]
 
     isDebugMode && console.log('new matrix and landed shape:',this.playerName, this.playMatrix, this.landedShape)
-
-    this.injectPlayerControlsIntoHTML()
   }
   injectPlayerControlsIntoHTML(){
     // inject control legend
@@ -299,7 +308,14 @@ class TetrisGame {
   }
   newActiveTetromino (fillColor) {
     setTickSpeed()
-    activeTetromino = newTetromino(fillColor)
+    this.activeTetromino = newTetromino(this,fillColor)
+  }
+  reset(){
+    this.buildMatrix
+    clearInterval(this.playerGameTimer)
+    this.playerRowsCleared = 0
+    this.playerScore = 0
+    this.playerScoreView.textContent = this.playerScore
   }
 }
 
@@ -313,13 +329,14 @@ players.push(new TetrisGame)
 // **************************************************************************
 // Functions
 class Tetromino {
-  constructor(shapeMap, fillColor, baseLocation = tetrominoSpawnYX) {
+  constructor(shapeMap, fillColor, parent, baseLocation = tetrominoSpawnYX) {
     this.baseLocation = baseLocation
     this.fillColor = fillColor
     this.shapeMap = shapeMap
     this.shapeOffsets = convertShapeMeshToOffsets(shapeMap)
     this.occupiedSpaces = []
     this.nextOccupiedSpaces = []
+    this.parent = parent
 
     //initialise shape
     this.update()
@@ -457,11 +474,11 @@ function buildNewPlayMatrix(height, width, playMatrixView){
 // ************
 // * playspace functions
 
-function newTetromino(fillColor, shapeChoice) {
+function newTetromino(parent, fillColor, shapeChoice) {
   shapeChoice = shapeChoice || Math.floor(Math.random() * tetrominoShapes.length)
   isDebugMode && console.log('new shape index:', shapeChoice)
   const shape = tetrominoShapes[shapeChoice]
-  return new Tetromino(shape.shapeMap, fillColor || shape.fillColor)
+  return new Tetromino(shape.shapeMap, fillColor || shape.fillColor, parent)
 }
 function addToScore(clearedRows){
   playerScore += Math.ceil(Math.pow(clearedRows, pointsMultirowExponent) * pointsPerRow)
@@ -507,17 +524,17 @@ function setTickSpeed(tickSpeed = gameTickTime){
 }
 
 function resetGame() {
-  buildNewPlayMatrix(playMatrixHeight + maxShapeSize, playMatrixWidth)
+  players.forEach(player=>player.reset())
   isGameOngoing = false
-  clearInterval(gameTimer)
   gameTickTime = defaultGameTickTime
-  playerRowsCleared = 0
-  playerScore = 0
-  player0ScoreView.textContent = playerScore
 }
 function startGame(){
   isGameOngoing = true
-  isDebugMode ? players[0].newActiveTetromino('red') : players[0].newActiveTetromino()
+  if (isDebugMode){
+    players.forEach(player=>player.newActiveTetromino('red'))
+  } else {
+    players.forEach(player=>player.newActiveTetromino())
+  }
   setTickSpeed()
 }
 // **************************************************************************
