@@ -41,8 +41,8 @@ function testJestConnection() {
 
 // DOM Elements
 
-const playMatrixView = document.querySelector('.play-matrix')
-const playerScoreView = document.querySelector('.info .score-span')
+const playMatrixView = document.querySelector('.player0 .play-matrix')
+const playerScoreView = document.querySelector('.player0 .info .score-span')
 const globalPlayButton = document.querySelector('.play-button')
 const pageMain = document.querySelector('main')
 const playerCoreHTML = '<div class="info"><p>Score:&nbsp;<span class="score-span">000</span></p><ul class="controls"><p>Controls:</p></ul></div><div class="play-decorator"><div class="play-matrix"></div></div>'
@@ -242,13 +242,16 @@ const playerInputScheme = {
 
 // **************************************************************************
 // Build play window
-
 class TetrisGame {
   constructor(playerNumber = 1, displayParent = pageMain){
     this.playerNumber = playerNumber
     this.playerName = 'player' + playerNumber
     this.displayParent = displayParent
+    this.playerSection = {}
+    this.playMatrixView = {}
     this.coreHTML = playerCoreHTML
+    this.playMatrix = []
+    this.landedShape = []
 
     this.initPlayspace()
   }
@@ -260,7 +263,11 @@ class TetrisGame {
 
     this.displayParent.appendChild(newPlayerSection)
 
-    this.playerSection = newPlayerSection
+    this.playMatrixView = newPlayerSection.querySelector('.play-matrix')
+
+    const buildReturn = buildNewPlayMatrix(playMatrixHeight + maxShapeSize, playMatrixWidth, this.playMatrixView)
+    this.playMatrix = buildReturn[0]
+    this.landedShape = buildReturn[1]
   }
 }
 
@@ -271,7 +278,7 @@ players.push(new TetrisGame)
 
 const tetrominoSpawnYX = [tetrominoSpawnXY[1],tetrominoSpawnXY[0]]
 
-function buildNewPlayMatrix(height, width){
+function buildNewPlayMatrix(height, width, playMatrixView){
   playMatrixView.innerHTML = ''
   playMatrix = new Array
   landedShape = new LandedShape
@@ -288,10 +295,10 @@ function buildNewPlayMatrix(height, width){
       playMatrix[y].push(playCell)
     }
   }
-  return (playMatrix, landedShape)
+  return [playMatrix, landedShape]
 }
 
-buildNewPlayMatrix(playMatrixHeight + maxShapeSize, playMatrixWidth) //todo: refactor to use return
+buildNewPlayMatrix(playMatrixHeight + maxShapeSize, playMatrixWidth, playMatrixView) //todo: refactor to use return
 
 // inject control legend
 for (const controlKey in playerInputScheme) { //todo: refactor to for-of
