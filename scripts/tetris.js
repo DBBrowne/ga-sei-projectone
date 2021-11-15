@@ -44,10 +44,14 @@ function testJestConnection() {
 const playMatrixView = document.querySelector('.play-matrix')
 const playerScoreView = document.querySelector('.info .score-span')
 const globalPlayButton = document.querySelector('.play-button')
+const pageMain = document.querySelector('main')
+const playerCoreHTML = '<div class="info"><p>Score:&nbsp;<span class="score-span">000</span></p><ul class="controls"><p>Controls:</p></ul></div><div class="play-decorator"><div class="play-matrix"></div></div>'
 // **************************************************************************
 // Variables
 
 const isDebugMode = false
+
+const players = []
 
 const playMatrixHeight = 20
 const playMatrixWidth = 16
@@ -238,6 +242,33 @@ const playerInputScheme = {
 
 // **************************************************************************
 // Build play window
+
+class TetrisGame {
+  constructor(playerNumber = 1, displayParent = pageMain){
+    this.playerNumber = playerNumber
+    this.playerName = 'player' + playerNumber
+    this.displayParent = displayParent
+    this.coreHTML = playerCoreHTML
+
+    this.initPlayspace()
+  }
+
+  initPlayspace(){
+    const newPlayerSection = document.createElement('section')
+    newPlayerSection.classList.add(this.playerName)
+    newPlayerSection.innerHTML = this.coreHTML
+
+    this.displayParent.appendChild(newPlayerSection)
+
+    this.playerSection = newPlayerSection
+  }
+}
+
+players.push(new TetrisGame)
+
+
+
+
 const tetrominoSpawnYX = [tetrominoSpawnXY[1],tetrominoSpawnXY[0]]
 
 function buildNewPlayMatrix(height, width){
