@@ -308,7 +308,7 @@ class TetrisGame {
   }
   newActiveTetromino (fillColor) {
     this.setTickSpeed()
-    this.activeTetromino = newTetromino(this,fillColor)
+    this.activeTetromino = this.newTetromino(fillColor)
   }
   reset(){
     clearInterval(this.gameTimer)
@@ -355,14 +355,14 @@ class TetrisGame {
     this.playerScore += Math.ceil(Math.pow(clearedRows, pointsMultirowExponent) * pointsPerRow)
     this.playerScoreView.textContent = this.playerScore
   }
+  newTetromino(fillColor, shapeChoice) {
+    console.log('newtetr parent:',parent)
+    shapeChoice = shapeChoice || Math.floor(Math.random() * tetrominoShapes.length)
+    isDebugMode && console.log('new shape index:', shapeChoice)
+    const shape = tetrominoShapes[shapeChoice]
+    return new Tetromino(shape.shapeMap, fillColor || shape.fillColor, this)
 }
-
-players.push(new TetrisGame)
-
-
-
-// console.log(player0playMatrixView)
-// buildNewPlayMatrix(playMatrixHeight + maxShapeSize, playMatrixWidth, player0playMatrixView) //todo: refactor to use return
+}
 
 // **************************************************************************
 // Functions
