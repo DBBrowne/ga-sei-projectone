@@ -210,26 +210,32 @@ const playerInputScheme = {
   ArrowLeft: {
     name: '&#8592;',
     control: playerControls.moveLeft,
+    player: 1,
   },
   ArrowRight: {
     name: '&#8594;',
     control: playerControls.moveRight,
+    player: 1,
   },
   ArrowDown: {
     name: '&#8595;',
     control: playerControls.speedUpPlay,
+    player: 1,
   },
   ArrowUp: {
     name: '&#8593;',
     control: playerControls.dropPiece,
+    player: 1,
   },
   Period: {
     name: '.',
     control: playerControls.rotateACW,
+    player: 1,
   },
   Slash: {
     name: '/',
     control: playerControls.rotateCW,
+    player: 1,
   },
 }
 
@@ -263,6 +269,8 @@ class TetrisGame {
 
     this.displayParent.appendChild(newPlayerSection)
 
+    this.playerSection = newPlayerSection
+
     this.playMatrixView = newPlayerSection.querySelector('.play-matrix')
     console.log(this.playMatrixView)
 
@@ -270,7 +278,24 @@ class TetrisGame {
     const buildReturn = buildNewPlayMatrix(playMatrixHeight + maxShapeSize, playMatrixWidth, this.playMatrixView)
     this.playMatrix = buildReturn[0]
     this.landedShape = buildReturn[1]
+
     isDebugMode && console.log('new matrix and landed shape:',this.playerName, this.playMatrix, this.landedShape)
+
+    this.injectPlayerControlsIntoHTML()
+  }
+  injectPlayerControlsIntoHTML(){
+    // inject control legend
+    for (const controlKey in playerInputScheme) { //todo: refactor to for-of
+      if (playerInputScheme[controlKey].player = this.playerNumber){
+        const controlLegendElement = this.playerSection.querySelector('.controls')
+
+        const controlLegendItem = document.createElement('div')
+        controlLegendItem.classList.add('control-key')
+        controlLegendItem.innerHTML = `<p><span>${playerInputScheme[controlKey].name}</span>${playerInputScheme[controlKey].control.name}</p>`
+
+        controlLegendElement.appendChild(controlLegendItem)
+      }
+    }
   }
 }
 
@@ -302,17 +327,6 @@ function buildNewPlayMatrix(height, width, playMatrixView){
 }
 // console.log(player0playMatrixView)
 // buildNewPlayMatrix(playMatrixHeight + maxShapeSize, playMatrixWidth, player0playMatrixView) //todo: refactor to use return
-
-// inject control legend
-for (const controlKey in playerInputScheme) { //todo: refactor to for-of
-  const controlLegend = document.querySelector('.player1 .controls')
-
-  const controlLegendItem = document.createElement('div')
-  controlLegendItem.classList.add('control-key')
-  controlLegendItem.innerHTML = `<p><span>${playerInputScheme[controlKey].name}</span>${playerInputScheme[controlKey].control.name}</p>`
-
-  controlLegend.appendChild(controlLegendItem)
-}
 
 // **************************************************************************
 // Functions
