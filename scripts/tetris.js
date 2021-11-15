@@ -252,7 +252,7 @@ const maxShapeSize = tetrominoShapes.reduce((acc,shape)=>{
 },0)
 buildPlayMatrix(playMatrixHeight + maxShapeSize, playMatrixWidth) //todo: refactor to use return
 
-// inject control scheme
+// inject control legend
 for (const controlKey in playerInputScheme) { //todo: refactor to for-of
   const controlLegend = document.querySelector('.player1 .controls')
 
