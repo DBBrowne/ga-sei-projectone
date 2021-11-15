@@ -506,30 +506,6 @@ function rotateMatrix(matrix, isClockwise = true){
   //transpose, then reverse row content
   return matrix.map((val, index) => matrix.map(row => row[index]).reverse())
 }
-//potentially belongs to the playspace object
-function buildNewPlayMatrix(height, width, playMatrixView){
-  playMatrixView.innerHTML = ''
-  const playMatrix = new Array
-  const landedShape = new LandedShape
-  for (let y = 0; y < height; y++){
-    playMatrix.push([])
-    landedShape.newRow(width)
-    //count from width-1 to 0 to retain 0,0 at the lower left of the play view
-    for (let x = width - 1; x >= 0; x--){
-      const playCell = document.createElement('div')
-      
-      if (isDebugMode){
-        playCell.textContent = `${x}, ${y}`
-        playCell.classList.add('debug')
-      }
-      
-      playMatrixView.prepend(playCell)
-      playMatrix[y].push(playCell)
-    }
-  }
-  return [playMatrix, landedShape]
-}
-
 
 // ************
 // * playspace functions
@@ -616,7 +592,7 @@ try {
   exports = {
     Tetromino,
     testJestConnection,
-    buildPlayMatrix: buildNewPlayMatrix,
+    buildNewPlayMatrix,
 
   }
 } catch {
