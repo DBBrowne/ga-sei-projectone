@@ -565,12 +565,16 @@ function handlePlayButton(){
     globalPlayButton.textContent = 'play'
   }
 }
+function addNewPlayer(){
+  players.push(new TetrisGame)
+}
 // **************************************************************************
 // Events
 
 document.addEventListener('keydown', handleKeyPress)
 document.addEventListener('keyup',   handleKeyPress)
 globalPlayButton.addEventListener('click',   handlePlayButton)
+newPlayerButton.addEventListener('click', addNewPlayer)
 
 if (isDebugMode){
   document.querySelector('head').innerHTML += '<style>* {border: solid rgb(80, 80, 80) 0.2px;}</style>'
