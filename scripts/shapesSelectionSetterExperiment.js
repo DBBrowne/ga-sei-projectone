@@ -3,6 +3,7 @@ class TetrominoShapesSelection extends Array {
     super()
     this.maxShapeSize = 0
   }
+  // need expression to select all ints
   set [0](value) {
     console.log('new items',value)
     console.log('new length',value.shapeMap.length)
@@ -15,6 +16,7 @@ class TetrominoShapesSelection extends Array {
     if (newShapeSize > value.maxShapeSize){
       this.maxShapeSize = newShapeSize
     }
+    // need to set original target to value
     return value // Reflect.set(value)
   }
 }
