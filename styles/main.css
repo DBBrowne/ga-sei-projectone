@@ -30,6 +30,14 @@ section{
   display: flex;
 }
 
+small{
+  font-size:60%;
+}
+
+.rebinding-input{
+  border: outset red 2px;
+}
+
 .info{
   display: flex;
   flex-direction: column;
