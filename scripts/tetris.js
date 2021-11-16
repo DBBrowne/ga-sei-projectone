@@ -606,7 +606,7 @@ function startGame(){
 function redefinePlayerInput(legendElement,keyCode){
   const targetPlayerNumber = parseInt(legendElement.dataset.playerNumber)
   const actionToBind = legendElement.dataset.controlAction
-  console.log('binding:',targetPlayerNumber, keyCode, actionToBind)
+  isDebugMode && console.log('binding:',targetPlayerNumber, keyCode, actionToBind)
   //if reference to this keypress exists already, alert user
   if (inputKeyBindings[keyCode]){
     window.alert(`Key is already in use!\n\nPlayer${inputKeyBindings[keyCode].player} : ${inputKeyBindings[keyCode].control.name}`)
@@ -623,7 +623,7 @@ function redefinePlayerInput(legendElement,keyCode){
       keyBinding.player === targetPlayerNumber &&
       keyBinding.control === playerControls[actionToBind]
     ){
-      console.log('deleting')
+      isDebugMode && console.log('deleting old key binding')
       delete inputKeyBindings[keyBindingLabel]
     }
   }
@@ -636,7 +636,7 @@ function redefinePlayerInput(legendElement,keyCode){
 
   legendElement.querySelector('span').innerHTML = keyCode
   
-  console.log('new key bindings:',inputKeyBindings)
+  isDebugMode && console.log('new key bindings:',inputKeyBindings)
   
   legendElement.classList.remove('rebinding-input')
   redefineKeyMode.isOn = false
