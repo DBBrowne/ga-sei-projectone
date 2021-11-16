@@ -572,8 +572,13 @@ function globalAddClearedRows(playerNumSendingRows, clearedRows){
     if (player.playerNumber !== playerNumSendingRows){
       isDebugMode && console.log(`adding ${clearedRows} rows to Player${player.playerNumber}`)
       for (let i = 0; i < clearedRows; i++){
+        // add active shape to landed if it would  overwritten by new landed shape
+        player.clearPlayAreaView()
+        player.activeTetromino.move([1,0])
+        // redraw new landed shape
         player.landedShape.newRow(true)
         player.landedShape.draw(player)
+        player.gameTick()
       }
     }
   })
