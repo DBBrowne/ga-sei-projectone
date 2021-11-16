@@ -115,8 +115,8 @@ const maxShapeSize = tetrominoShapes.reduce((acc,shape)=>{
 const playerControls = {
   moveLeft: {
     name: 'Move Left',
-    keydown(){
-      globalPlayers[0].activeTetromino.move([0,1])
+    keydown(targetPlayerIndex){
+      globalPlayers[targetPlayerIndex].activeTetromino.move([0,1])
     },
     keyup(){
       return 'event inactive'
@@ -124,8 +124,8 @@ const playerControls = {
   },
   moveRight: {
     name: 'Move Right',
-    keydown(){
-      globalPlayers[0].activeTetromino.move([0,-1])
+    keydown(targetPlayerIndex){
+      globalPlayers[targetPlayerIndex].activeTetromino.move([0,-1])
     },
     keyup(){
       return 'event inactive'
@@ -133,22 +133,22 @@ const playerControls = {
   },
   speedUpPlay: {
     name: 'Speed Up',
-    keydown(repeat){
+    keydown(targetPlayerIndex,repeat){
       if (isGameOngoing && !repeat){
-        globalPlayers[0].setTickSpeed(globalPlayers[0].gameTickTime / speedUpTickDivider)
+        globalPlayers[targetPlayerIndex].setTickSpeed(globalPlayers[0].gameTickTime / speedUpTickDivider)
       }
     },
-    keyup(){
+    keyup(targetPlayerIndex){
       if (isGameOngoing){
-        globalPlayers[0].setTickSpeed() 
+        globalPlayers[targetPlayerIndex].setTickSpeed() 
       }
     },
   },
   dropPiece: {
     name: 'Drop',
-    keydown(){
+    keydown(targetPlayerIndex){
       if (isGameOngoing){
-        globalPlayers[0].setTickSpeed(globalPlayers[0].gameTickTime / dropTickDivider)
+        globalPlayers[targetPlayerIndex].setTickSpeed(globalPlayers[0].gameTickTime / dropTickDivider)
       }
     },
     keyup(){
@@ -157,8 +157,8 @@ const playerControls = {
   },
   rotateACW: {
     name: '&#8630;',
-    keydown(){
-      globalPlayers[0].activeTetromino.rotateShape(false)
+    keydown(targetPlayerIndex){
+      globalPlayers[targetPlayerIndex].activeTetromino.rotateShape(false)
     },
     keyup(){
       return 'event inactive'
@@ -166,8 +166,8 @@ const playerControls = {
   },
   rotateCW: {
     name: '&#8631;',
-    keydown(){
-      globalPlayers[0].activeTetromino.rotateShape(true)
+    keydown(targetPlayerIndex){
+      globalPlayers[targetPlayerIndex].activeTetromino.rotateShape(true)
     },
     keyup(){
       return 'event inactive'
@@ -565,7 +565,8 @@ function handleKeyPress(e) {
   // user keys
   e.preventDefault()
   try {
-    playerInputScheme[e.code].control[e.type](e.repeat)
+    keyBoundPlayerIndex = playerInputScheme[e.code].player -1
+    playerInputScheme[e.code].control[e.type](keyBoundPlayerIndex, e.repeat)
   } catch (err) {
     if (isDebugMode){
       console.log(err)
