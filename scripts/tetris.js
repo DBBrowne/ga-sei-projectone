@@ -702,7 +702,7 @@ if (isDebugMode){
   setTimeout(()=>{
     globalPlayers.forEach(player=> clearInterval(player.gameTimer))
     console.log('game time over')
-  },5000)
+  },11500)
 }
 
 // **************************************************************************
