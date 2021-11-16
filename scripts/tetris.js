@@ -112,9 +112,11 @@ const maxShapeSize = tetrominoShapes.reduce((acc,shape)=>{
 // **************************************************************************
 // Controls
 // define behaviour for a control
-const playerControls = {
+const playerControls = { //todo: refactor into TetrisGame object
+  // todo: setter: legendClassName = 'input-symbol-' + playerControls[controlAction].name.toLowerCase().replace(/ /g,'-')
   moveLeft: {
     name: 'Move Left',
+    legendClassName: 'input-symbol-move-left',
     keydown(targetPlayerIndex){
       globalPlayers[targetPlayerIndex].activeTetromino.move([0,1])
     },
@@ -124,6 +126,7 @@ const playerControls = {
   },
   moveRight: {
     name: 'Move Right',
+    legendClassName: 'input-symbol-move-right',
     keydown(targetPlayerIndex){
       globalPlayers[targetPlayerIndex].activeTetromino.move([0,-1])
     },
@@ -133,6 +136,7 @@ const playerControls = {
   },
   speedUpPlay: {
     name: 'Speed Up',
+    legendClassName: 'input-symbol-speed-up',
     keydown(targetPlayerIndex, keypressRepeatFlag){
       if (isGameOngoing && !keypressRepeatFlag){
         globalPlayers[targetPlayerIndex].setTickSpeed(globalPlayers[targetPlayerIndex].gameTickTime / speedUpTickDivider)
@@ -146,6 +150,7 @@ const playerControls = {
   },
   dropPiece: {
     name: 'Drop',
+    legendClassName: 'input-symbol-drop-piece',
     keydown(targetPlayerIndex){
       if (isGameOngoing){
         globalPlayers[targetPlayerIndex].setTickSpeed(globalPlayers[targetPlayerIndex].gameTickTime / dropTickDivider)
@@ -157,6 +162,7 @@ const playerControls = {
   },
   rotateACW: {
     name: '&#8630;',
+    legendClassName: 'input-symbol-rotate-acw',
     keydown(targetPlayerIndex){
       globalPlayers[targetPlayerIndex].activeTetromino.rotateShape(false)
     },
@@ -166,6 +172,7 @@ const playerControls = {
   },
   rotateCW: {
     name: '&#8631;',
+    legendClassName: 'input-symbol-rotate-cw',
     keydown(targetPlayerIndex){
       globalPlayers[targetPlayerIndex].activeTetromino.rotateShape(true)
     },
@@ -352,15 +359,21 @@ class TetrisGame {
   }
   injectPlayerControlsIntoHTML(){
     // inject control legend
-    for (const inputType in playerControls) {
         const controlLegendElement = this.playerSection.querySelector('.controls')
+    for (const controlAction in playerControls) {
+      const playerControl = playerControls[controlAction]
 
         const controlLegendItem = document.createElement('div')
         controlLegendItem.classList.add('control-key')
-      controlLegendItem.innerHTML = `<p><span></span>${playerControls[inputType].name}</p>`
+      controlLegendItem.innerHTML = `<p><span class="${playerControl.legendClassName}"></span>${playerControl.name}</p>`
 
         controlLegendElement.appendChild(controlLegendItem)
     }
+    // if controls are already defined for this player, inject them
+    for (const definedInput in playerInputScheme){
+      const input = playerInputScheme[definedInput]
+      if ( input.player === this.playerNumber){
+        this.playerSection.querySelector(`.${input.control.legendClassName}`).innerHTML = input.name
       }
     }
   }
