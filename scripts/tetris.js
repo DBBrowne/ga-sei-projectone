@@ -587,7 +587,7 @@ function loseGame(){
 
 function resetGame() {
   // todo does not stop game
-  // todo does not clear field
+  // todo if game state is ended, requires doubleclick to clear field
   isGameOngoing = false
   globalPlayers.forEach(player=>player.reset())
   globalTickTime = defaultGameTickTime
