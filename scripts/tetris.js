@@ -26,7 +26,7 @@ const playerCoreHTML = '<div class="info"><p>Score:&nbsp;<span class="score-span
 const isDebugMode = false
 const redefineKeyMode = { 
   isOn: false, 
-  legendElement:{}, 
+  legendElement: {}, 
 }
 
 const globalPlayers = []
@@ -627,9 +627,9 @@ function redefinePlayerInput(legendElement,keyCode){
   }
   // bind new key
   inputKeyBindings[keyCode] = {
-    name:keyCode,
+    name: keyCode,
     control: playerControls[actionToBind],
-    player: targetPlayerNumber
+    player: targetPlayerNumber,
   }
 
   legendElement.querySelector('span').innerHTML = keyCode
