@@ -25,7 +25,7 @@ const playerCoreHTML = '<div class="info"><p>Score:&nbsp;<span class="score-span
 
 const isDebugMode = false
 
-const glboalPlayers = []
+const globalPlayers = []
 
 const playMatrixHeight = 20
 const playMatrixWidth = 16
@@ -116,7 +116,7 @@ const playerControls = {
   moveLeft: {
     name: 'Move Left',
     keydown(){
-      glboalPlayers[0].activeTetromino.move([0,1])
+      globalPlayers[0].activeTetromino.move([0,1])
     },
     keyup(){
       return 'event inactive'
@@ -125,7 +125,7 @@ const playerControls = {
   moveRight: {
     name: 'Move Right',
     keydown(){
-      glboalPlayers[0].activeTetromino.move([0,-1])
+      globalPlayers[0].activeTetromino.move([0,-1])
     },
     keyup(){
       return 'event inactive'
@@ -135,12 +135,12 @@ const playerControls = {
     name: 'Speed Up',
     keydown(repeat){
       if (isGameOngoing && !repeat){
-        glboalPlayers[0].setTickSpeed(glboalPlayers[0].gameTickTime / speedUpTickDivider)
+        globalPlayers[0].setTickSpeed(globalPlayers[0].gameTickTime / speedUpTickDivider)
       }
     },
     keyup(){
       if (isGameOngoing){
-        glboalPlayers[0].setTickSpeed() 
+        globalPlayers[0].setTickSpeed() 
       }
     },
   },
@@ -148,7 +148,7 @@ const playerControls = {
     name: 'Drop',
     keydown(){
       if (isGameOngoing){
-        glboalPlayers[0].setTickSpeed(glboalPlayers[0].gameTickTime / dropTickDivider)
+        globalPlayers[0].setTickSpeed(globalPlayers[0].gameTickTime / dropTickDivider)
       }
     },
     keyup(){
@@ -158,7 +158,7 @@ const playerControls = {
   rotateACW: {
     name: '&#8630;',
     keydown(){
-      glboalPlayers[0].activeTetromino.rotateShape(false)
+      globalPlayers[0].activeTetromino.rotateShape(false)
     },
     keyup(){
       return 'event inactive'
@@ -167,7 +167,7 @@ const playerControls = {
   rotateCW: {
     name: '&#8631;',
     keydown(){
-      glboalPlayers[0].activeTetromino.rotateShape(true)
+      globalPlayers[0].activeTetromino.rotateShape(true)
     },
     keyup(){
       return 'event inactive'
@@ -251,7 +251,7 @@ class LandedShape extends Array {
 }
 
 class TetrisGame {
-  constructor(playerNumber = glboalPlayers.length + 1, displayParent = pageMain){
+  constructor(playerNumber = globalPlayers.length + 1, displayParent = pageMain){
     this.playerNumber = playerNumber
     this.playerName = 'player' + playerNumber
     this.displayParent = displayParent
@@ -516,7 +516,7 @@ function rotateMatrix(matrix, isClockwise = true){
 function globalAddClearedRows(playerNumSendingRows, clearedRows){
   globalClearedRows += clearedRows
   globalTickTime = globalTickTime * Math.pow(levelUpTickMultiplier, Math.ceil(globalClearedRows / levelUpBreakPoint))
-  glboalPlayers.forEach(player=>{
+  globalPlayers.forEach(player=>{
     if (player.playerNumber !== playerNumSendingRows){
       isDebugMode && console.log(`adding ${clearedRows} rows to Player${player.playerNumber}`)
       for (let i = 0; i < clearedRows; i++){
@@ -532,25 +532,25 @@ function globalAddClearedRows(playerNumSendingRows, clearedRows){
 function loseGame(){
   isGameOngoing = false
   console.log('game over')
-  glboalPlayers.forEach(player=>clearInterval(player.gameTimer))
+  globalPlayers.forEach(player=>clearInterval(player.gameTimer))
 }
 
 function resetGame() {
   // todo does not stop game
   // todo does not clear field
   isGameOngoing = false
-  glboalPlayers.forEach(player=>player.reset())
+  globalPlayers.forEach(player=>player.reset())
   globalTickTime = defaultGameTickTime
 }
 function startGame(){
   isGameOngoing = true
   if (isDebugMode){
-    glboalPlayers.forEach(player=>{
+    globalPlayers.forEach(player=>{
       player.newActiveTetromino('red')
       player.setTickSpeed()
     })
   } else {
-    glboalPlayers.forEach(player=>player.newActiveTetromino())
+    globalPlayers.forEach(player=>player.newActiveTetromino())
   }
 }
 // **************************************************************************
@@ -583,7 +583,7 @@ function handlePlayButton(){
   }
 }
 function addNewPlayer(){
-  glboalPlayers.push(new TetrisGame)
+  globalPlayers.push(new TetrisGame)
 }
 // **************************************************************************
 // Events
@@ -597,14 +597,14 @@ if (isDebugMode){
   document.querySelector('head').innerHTML += '<style>* {border: solid rgb(80, 80, 80) 0.2px;}</style>'
   document.querySelectorAll('*').forEach(node=> node.classList.add('debug'))
   setTimeout(()=>{
-    glboalPlayers.forEach(player=> clearInterval(player.gameTimer))
+    globalPlayers.forEach(player=> clearInterval(player.gameTimer))
     console.log('game time over')
   },5000)
 }
 
 // **************************************************************************
 // populate with at least one player
-glboalPlayers.push(new TetrisGame)
+globalPlayers.push(new TetrisGame)
 
 // **************************************************************************
 // * export functions for testing
