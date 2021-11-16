@@ -135,7 +135,7 @@ const playerControls = {
     name: 'Speed Up',
     keydown(targetPlayerIndex, keypressRepeatFlag){
       if (isGameOngoing && !keypressRepeatFlag){
-        globalPlayers[targetPlayerIndex].setTickSpeed(globalPlayers[0].gameTickTime / speedUpTickDivider)
+        globalPlayers[targetPlayerIndex].setTickSpeed(globalPlayers[targetPlayerIndex].gameTickTime / speedUpTickDivider)
       }
     },
     keyup(targetPlayerIndex){
@@ -148,7 +148,7 @@ const playerControls = {
     name: 'Drop',
     keydown(targetPlayerIndex){
       if (isGameOngoing){
-        globalPlayers[targetPlayerIndex].setTickSpeed(globalPlayers[0].gameTickTime / dropTickDivider)
+        globalPlayers[targetPlayerIndex].setTickSpeed(globalPlayers[targetPlayerIndex].gameTickTime / dropTickDivider)
       }
     },
     keyup(){
