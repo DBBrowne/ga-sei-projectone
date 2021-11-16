@@ -26,9 +26,7 @@ const playerCoreHTML = '<div class="info"><p>Score:&nbsp;<span class="score-span
 const isDebugMode = false
 const redefineKeyMode = { 
   isOn: false, 
-  targetPlayerNumber: 0, 
-  actionToRedefine: '',
-  keyDisplaySpan:{} 
+  legendElement:{}, 
 }
 
 const globalPlayers = []
@@ -605,11 +603,16 @@ function startGame(){
     globalPlayers.forEach(player=>player.newActiveTetromino())
   }
 }
-function redefinePlayerInput(targetPlayerNumber, actionToBind, keyCode){
+function redefinePlayerInput(legendElement,keyCode){
+  const targetPlayerNumber = legendElement.dataset.playerNumber
+  const actionToBind = legendElement.dataset.controlAction
   console.log('binding:',targetPlayerNumber, keyCode, actionToBind)
   //if reference to this keypress exists already, alert user
   if (inputKeyBindings[keyCode]){
     window.alert(`Key is already in use!\n\nPlayer${inputKeyBindings[keyCode].player} : ${inputKeyBindings[keyCode].control.name}`)
+    
+    legendElement.classList.remove('rebinding-input')
+    redefineKeyMode.isOn = false
     return
   }
   // todo: if binding for this player/control already exists, clear it
@@ -629,7 +632,12 @@ function redefinePlayerInput(targetPlayerNumber, actionToBind, keyCode){
     player: targetPlayerNumber
   }
   
-  console.log(inputKeyBindings)
+  legendElement.querySelector('span').innerHTML = keyCode
+  
+  console.log('new key bindings:',inputKeyBindings)
+  
+  legendElement.classList.remove('rebinding-input')
+  redefineKeyMode.isOn = false
 }
 // **************************************************************************
 // keypress handler
@@ -644,8 +652,9 @@ function handleKeyPress(e) {
   e.preventDefault()
 
   if (redefineKeyMode.isOn){
-    redefinePlayerInput(redefineKeyMode.targetPlayerNumber, redefineKeyMode.actionToRedefine, e.code)
-    redefineKeyMode.isOn = false
+    redefinePlayerInput(
+      redefineKeyMode.legendElement,
+      e.code)
     return
   }
   try {
@@ -668,11 +677,9 @@ function handlePlayButton(){
   }
 }
 function handleRedefineInput(){
-  console.log(this)
   redefineKeyMode.isOn = true
-  redefineKeyMode.targetPlayerNumber = this.dataset.playerNumber
-  redefineKeyMode.actionToRedefine = this.dataset.controlAction
-  redefineKeyMode.keyDisplaySpan = this.querySelector('span')
+  redefineKeyMode.legendElement = this
+  this.classList.add('rebinding-input')
 }
 function addNewPlayer(){
   globalPlayers.push(new TetrisGame)
