@@ -33,8 +33,8 @@ const playMatrixWidth = 16
 const tetrominoSpawnXY = [7,20]
 
 const defaultGameTickTime = 500
-const levelUpTickMultiplier = 0.90
-const levelUpBreakPoint = 1
+const levelUpTickTimeMultiplier = 0.90
+const levelUpTickTimeRowsBreakpoint = 1
 const speedUpTickDivider = 5
 const dropTickDivider = 1000
 let globalClearedRows = 0
@@ -515,7 +515,7 @@ function rotateMatrix(matrix, isClockwise = true){
 }
 function globalAddClearedRows(playerNumSendingRows, clearedRows){
   globalClearedRows += clearedRows
-  globalTickTime = globalTickTime * Math.pow(levelUpTickMultiplier, Math.ceil(globalClearedRows / levelUpBreakPoint))
+  globalTickTime = globalTickTime * Math.pow(levelUpTickTimeMultiplier, Math.ceil(globalClearedRows / levelUpTickTimeRowsBreakpoint))
   globalPlayers.forEach(player=>{
     if (player.playerNumber !== playerNumSendingRows){
       isDebugMode && console.log(`adding ${clearedRows} rows to Player${player.playerNumber}`)
