@@ -639,14 +639,15 @@ function handleKeyPress(e) {
   if (e.code === 'F5'){
     return true
   }
-  console.log(e)
+  
+  // game keys
+  e.preventDefault()
+
   if (redefineKeyMode.isOn){
     redefinePlayerInput(redefineKeyMode.targetPlayerNumber, redefineKeyMode.actionToRedefine, e.code)
     redefineKeyMode.isOn = false
     return
   }
-  // user keys
-  e.preventDefault()
   try {
     const keyBoundPlayerIndex = inputKeyBindings[e.code].player - 1
     inputKeyBindings[e.code].control[e.type](keyBoundPlayerIndex, e.repeat)
