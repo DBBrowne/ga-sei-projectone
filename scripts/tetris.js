@@ -604,7 +604,7 @@ function startGame(){
   }
 }
 function redefinePlayerInput(legendElement,keyCode){
-  const targetPlayerNumber = legendElement.dataset.playerNumber
+  const targetPlayerNumber = parseInt(legendElement.dataset.playerNumber)
   const actionToBind = legendElement.dataset.controlAction
   console.log('binding:',targetPlayerNumber, keyCode, actionToBind)
   //if reference to this keypress exists already, alert user
@@ -615,13 +615,15 @@ function redefinePlayerInput(legendElement,keyCode){
     redefineKeyMode.isOn = false
     return
   }
-  // todo: if binding for this player/control already exists, clear it
+  // if binding for this player/control already exists, clear it
   for (const keyBindingLabel in inputKeyBindings){
     const keyBinding = inputKeyBindings[keyBindingLabel]
+
     if (
       keyBinding.player === targetPlayerNumber &&
-      keyBinding.control.name === actionToBind
+      keyBinding.control === playerControls[actionToBind]
     ){
+      console.log('deleting')
       delete inputKeyBindings[keyBindingLabel]
     }
   }
