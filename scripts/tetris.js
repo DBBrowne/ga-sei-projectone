@@ -182,7 +182,7 @@ const playerControls = { //todo: refactor into TetrisGame object
   },
 }
 // attach input to abstract control behaviour
-const playerInputScheme = {
+const inputKeyBindings = {
   ArrowLeft: {
     name: '&#8592;',
     control: playerControls.moveLeft,
@@ -359,19 +359,19 @@ class TetrisGame {
   }
   injectPlayerControlsIntoHTML(){
     // inject control legend
-        const controlLegendElement = this.playerSection.querySelector('.controls')
+    const controlLegendElement = this.playerSection.querySelector('.controls')
     for (const controlAction in playerControls) {
       const playerControl = playerControls[controlAction]
 
-        const controlLegendItem = document.createElement('div')
-        controlLegendItem.classList.add('control-key')
+      const controlLegendItem = document.createElement('div')
+      controlLegendItem.classList.add('control-key')
       controlLegendItem.innerHTML = `<p><span class="${playerControl.legendClassName}"></span>${playerControl.name}</p>`
 
-        controlLegendElement.appendChild(controlLegendItem)
+      controlLegendElement.appendChild(controlLegendItem)
     }
     // if controls are already defined for this player, inject them
-    for (const definedInput in playerInputScheme){
-      const input = playerInputScheme[definedInput]
+    for (const definedInput in inputKeyBindings){
+      const input = inputKeyBindings[definedInput]
       if ( input.player === this.playerNumber){
         this.playerSection.querySelector(`.${input.control.legendClassName}`).innerHTML = input.name
       }
@@ -604,12 +604,13 @@ function handleKeyPress(e) {
   if (e.code === 'F5'){
     return true
   }
+  console.log(e)
 
   // user keys
   e.preventDefault()
   try {
-    const keyBoundPlayerIndex = playerInputScheme[e.code].player - 1
-    playerInputScheme[e.code].control[e.type](keyBoundPlayerIndex, e.repeat)
+    const keyBoundPlayerIndex = inputKeyBindings[e.code].player - 1
+    inputKeyBindings[e.code].control[e.type](keyBoundPlayerIndex, e.repeat)
   } catch (err) {
     if (isDebugMode){
       console.log(err)
