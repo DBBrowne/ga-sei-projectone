@@ -133,8 +133,8 @@ const playerControls = {
   },
   speedUpPlay: {
     name: 'Speed Up',
-    keydown(targetPlayerIndex,repeat){
-      if (isGameOngoing && !repeat){
+    keydown(targetPlayerIndex, keypressRepeatFlag){
+      if (isGameOngoing && !keypressRepeatFlag){
         globalPlayers[targetPlayerIndex].setTickSpeed(globalPlayers[0].gameTickTime / speedUpTickDivider)
       }
     },
