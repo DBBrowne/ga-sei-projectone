@@ -24,6 +24,12 @@ const playerCoreHTML = '<div class="info"><p>Score:&nbsp;<span class="score-span
 // Variables
 
 const isDebugMode = false
+const redefineKeyMode = { 
+  isOn: false, 
+  targetPlayerNumber: 0, 
+  actionToRedefine: '',
+  keyDisplaySpan:{} 
+}
 
 const globalPlayers = []
 
@@ -365,7 +371,10 @@ class TetrisGame {
 
       const controlLegendItem = document.createElement('div')
       controlLegendItem.classList.add('control-key')
+      controlLegendItem.dataset.controlAction = controlAction
+      controlLegendItem.dataset.playerNumber = this.playerNumber
       controlLegendItem.innerHTML = `<p><span class="${playerControl.legendClassName}"></span>${playerControl.name}</p>`
+      controlLegendItem.addEventListener('click', handleRedefineInput)
 
       controlLegendElement.appendChild(controlLegendItem)
     }
@@ -596,6 +605,32 @@ function startGame(){
     globalPlayers.forEach(player=>player.newActiveTetromino())
   }
 }
+function redefinePlayerInput(targetPlayerNumber, actionToBind, keyCode){
+  console.log('binding:',targetPlayerNumber, keyCode, actionToBind)
+  //if reference to this keypress exists already, alert user
+  if (inputKeyBindings[keyCode]){
+    window.alert(`Key is already in use!\n\nPlayer${inputKeyBindings[keyCode].player} : ${inputKeyBindings[keyCode].control.name}`)
+    return
+  }
+  // todo: if binding for this player/control already exists, clear it
+  for (const keyBindingLabel in inputKeyBindings){
+    const keyBinding = inputKeyBindings[keyBindingLabel]
+    if (
+      keyBinding.player === targetPlayerNumber &&
+      keyBinding.control.name === actionToBind
+    ){
+      delete keyBinding
+    }
+  }
+  // bind new key
+  inputKeyBindings[keyCode] = {
+    name:keyCode,
+    control: playerControls[actionToBind],
+    player: targetPlayerNumber
+  }
+  
+  console.log(inputKeyBindings)
+}
 // **************************************************************************
 // keypress handler
 
@@ -605,7 +640,11 @@ function handleKeyPress(e) {
     return true
   }
   console.log(e)
-
+  if (redefineKeyMode.isOn){
+    redefinePlayerInput(redefineKeyMode.targetPlayerNumber, redefineKeyMode.actionToRedefine, e.code)
+    redefineKeyMode.isOn = false
+    return
+  }
   // user keys
   e.preventDefault()
   try {
@@ -626,6 +665,13 @@ function handlePlayButton(){
     resetGame()
     globalPlayButton.textContent = 'play'
   }
+}
+function handleRedefineInput(){
+  console.log(this)
+  redefineKeyMode.isOn = true
+  redefineKeyMode.targetPlayerNumber = this.dataset.playerNumber
+  redefineKeyMode.actionToRedefine = this.dataset.controlAction
+  redefineKeyMode.keyDisplaySpan = this.querySelector('span')
 }
 function addNewPlayer(){
   globalPlayers.push(new TetrisGame)
