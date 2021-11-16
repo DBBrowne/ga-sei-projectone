@@ -24,6 +24,7 @@ const playerCoreHTML = '<div class="info"><p>Score:&nbsp;<span class="score-span
 // Variables
 
 const isDebugMode = false
+const isDebugVerbose = false
 const redefineKeyMode = { 
   isOn: false, 
   legendElement: {}, 
@@ -397,7 +398,7 @@ class TetrisGame {
     this.playerScoreView.textContent = this.playerScore
   }
   gameTick(){
-    isDebugMode && console.log(this.playerName, 'tick')
+    isDebugMode && isDebugVerbose && console.log(this.playerName, 'tick')
     this.activeTetromino.moveDown()
     this.checkForCompleteRows()
   }
@@ -425,7 +426,7 @@ class TetrisGame {
       this.landedShape.draw(this)
       this.addToScore(clearedRows)
       globalAddClearedRows(this.playerNumber, clearedRows)
-      isDebugMode && console.log(globalTickTime)
+      isDebugMode && console.log('global tick time updated:',globalTickTime)
     }
   }
   addToScore(clearedRows){
@@ -433,7 +434,7 @@ class TetrisGame {
     this.playerScoreView.textContent = this.playerScore
   }
   newTetromino(fillColor, shapeChoice) {
-    isDebugMode && console.log('newtetr parent:',parent)
+    isDebugMode && console.log('newtetr parent:', this)
     shapeChoice = shapeChoice || Math.floor(Math.random() * tetrominoShapes.length)
     isDebugMode && console.log('new shape index:', shapeChoice)
     const shape = tetrominoShapes[shapeChoice]
@@ -521,6 +522,7 @@ class Tetromino {
     this.update()
   }
   move(direction){
+    isDebugMode && isDebugVerbose && console.log('moving', direction, this)
     this.nextLocation = [this.baseLocation[0] + direction[0],this.baseLocation[1] + direction[1]]
     this.nextOccupiedSpaces = this.mapOccupiedSpaces(this.nextLocation)
     
@@ -664,7 +666,7 @@ function handleKeyPress(e) {
     inputKeyBindings[e.code].control[e.type](keyBoundPlayerIndex, e.repeat)
   } catch (err) {
     if (isDebugMode){
-      console.log(err)
+      isDebugVerbose && console.log(err)
       console.log('unrecognised key event:', e.code, e.type)
     }
   }
