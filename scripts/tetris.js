@@ -622,7 +622,7 @@ function redefinePlayerInput(legendElement,keyCode){
       keyBinding.player === targetPlayerNumber &&
       keyBinding.control.name === actionToBind
     ){
-      delete keyBinding
+      delete inputKeyBindings[keyBindingLabel]
     }
   }
   // bind new key
