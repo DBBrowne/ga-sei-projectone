@@ -206,6 +206,36 @@ const playerInputScheme = {
     control: playerControls.rotateCW,
     player: 1,
   },
+  KeyA: {
+    name: 'A',
+    control: playerControls.moveLeft,
+    player: 2,
+  },
+  KeyD: {
+    name: 'D',
+    control: playerControls.moveRight,
+    player: 2,
+  },
+  KeyS: {
+    name: 'S',
+    control: playerControls.speedUpPlay,
+    player: 2,
+  },
+  KeyW: {
+    name: 'W',
+    control: playerControls.dropPiece,
+    player: 2,
+  },
+  KeyC: {
+    name: 'C',
+    control: playerControls.rotateACW,
+    player: 2,
+  },
+  KeyV: {
+    name: 'V',
+    control: playerControls.rotateCW,
+    player: 2,
+  },
 }
 
 // **************************************************************************
