@@ -595,7 +595,7 @@ function handleKeyPress(e) {
   // user keys
   e.preventDefault()
   try {
-    keyBoundPlayerIndex = playerInputScheme[e.code].player -1
+    const keyBoundPlayerIndex = playerInputScheme[e.code].player - 1
     playerInputScheme[e.code].control[e.type](keyBoundPlayerIndex, e.repeat)
   } catch (err) {
     if (isDebugMode){
