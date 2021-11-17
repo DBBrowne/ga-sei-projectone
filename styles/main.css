@@ -2,6 +2,7 @@
   /* set some defaults incase of JS failure */
   --playmatrix-width-count: 16;
   --playmatrix-height-count: 20;
+  --playmatrix-cell-edge-length:50px;
 }
 
 * {
@@ -146,6 +147,8 @@ small{
 }
 
 .play-matrix div{
+  /* width: var(--playmatrix-cell-edge-length); */
+  height: var(--playmatrix-cell-edge-length);
   border: inset rgba(10,10,10, 0.5) 3px;
 }
 
@@ -198,7 +201,7 @@ small{
 	100% {
 		transform: scale(1.0);
     background-position:0% 75%;
-}
+	}
 }
 
 @media only screen and (max-width: 800px) {

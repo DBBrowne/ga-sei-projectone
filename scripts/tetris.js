@@ -20,6 +20,7 @@ const globalPlayButton = document.querySelector('.play-button')
 const pageMain = document.querySelector('main')
 const newPlayerButton = document.querySelector('.new-player-button')
 const playerCoreHTML = '<div class="info"><div class="score-container"><p>Score:&nbsp;</p><span class="score-span">000</span></div><ul class="controls"><p>Controls:<br><small>click to redefine, then press new key</small></p></ul></div><div class="play-decorator"><div class="play-matrix"></div></div>'
+const htmlRoot = document.documentElement
 // **************************************************************************
 // Variables
 
@@ -361,7 +362,7 @@ class TetrisGame {
         playMatrix[y].push(playCell)
       }
     }
-
+    setPlayViewCellHeight(displayElement)
     return [playMatrix, landedShape]
   }
   injectScoreIntoHTML(){
@@ -599,6 +600,36 @@ function toggleElementClassFilled(element, fillColor) {
   }
 }
 
+function setCssGridProperties(rows, columns){
+  const gridRows = !isDebugMode ? rows - maxShapeSize : rows
+  htmlRoot.style.setProperty('--playmatrix-width-count', columns)
+  htmlRoot.style.setProperty('--playmatrix-height-count', gridRows)
+}
+function setPlayViewCellHeight(playMatrixViewHtmlElement){
+  console.log(playMatrixViewHtmlElement)
+  const playerViewCell = playMatrixViewHtmlElement.lastChild
+  // const playerViewCell = document.querySelector('.play-matrix > div')
+  console.log(playerViewCell)
+  const playMatrixCellEdgeLength = playerViewCell.offsetWidth//.getBoundingClientRect()// / columns
+    
+  // isDebugMode && 
+  console.log(playMatrixCellEdgeLength)
+
+  htmlRoot.style.setProperty('--playmatrix-cell-edge-length', `${playMatrixCellEdgeLength}px`)
+}
+function resizeMatrixCells(){
+  console.log('resizing')
+  const playfieldSectionWidth = pageMain.querySelector('section').getBoundingClientRect().width
+  const playfieldInfoWidth = pageMain.querySelector('.info').offsetWidth
+  const playfieldWidth = playfieldSectionWidth - playfieldInfoWidth
+  const cssExpectedPlayMatrixWidthCount = htmlRoot.style.getPropertyValue('--playmatrix-width-count')
+  const playMatrixCellEdgeLength = playfieldWidth / cssExpectedPlayMatrixWidthCount
+
+  console.log(playfieldWidth)
+  console.log(cssExpectedPlayMatrixWidthCount)
+  console.log(playMatrixCellEdgeLength)
+  htmlRoot.style.setProperty('--playmatrix-cell-edge-length', `${playMatrixCellEdgeLength}px`)
+}
 // ************
 // * playspace functions
 function loseGame(){
@@ -710,6 +741,11 @@ function handleRedefineInput(){
 function addNewPlayer(){
   globalPlayers.push(new TetrisGame)
 }
+
+function resizeHandler(){
+  setPlayViewCellHeight(pageMain.querySelector('.play-matrix'))
+}
+
 // **************************************************************************
 // Events
 
@@ -726,6 +762,8 @@ if (isDebugMode){
     console.log('game time over')
   },11500)
 }
+
+window.onresize =  resizeHandler
 
 // **************************************************************************
 // populate with at least one player
