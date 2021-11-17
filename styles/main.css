@@ -8,26 +8,50 @@ html {
 }
 
 header{
+  height: 5vh;
   display: flex;
   justify-content: center;
+  align-items: center;
+  margin: 5px;
 }
 
 h1{
-  margin: 0.2em 0;
+  margin: 0;
+  font-size: 5vh;
+  font-weight: bolder;
+  font-family: monospace;
 }
 
 header button{
-  margin: 0 20px;
+  background-color: #cebabae8;
+  margin: 0 0 0 2vh;
+  height: 3vh;
+  width: 12vh;
+  border-style: none;
+  font-size: 1.5vh;
+  text-transform: capitalize;
+}
+header button:hover{
+  background-size: 800% 500%;
+  background-image: repeating-linear-gradient(45deg, violet, indigo, blue, green, orange, red, violet);
+  color:#cebabae8;
+  animation: pulse 2s linear infinite;
 }
 
 main {
   display: flex;
   justify-content: center;
+  /* flex-wrap: wrap; */
+  max-width: 100vw;
   height:70vh;
 }
 
 section{
   display: flex;
+  border: outset rgba(150, 150, 150, 0.75) 10px;
+  -webkit-box-shadow: inset 0px 10px 27px -8px #050505, 4px 4px 11px 4px rgba(150, 150, 150, 0.6); 
+box-shadow: inset 0px 10px 27px -8px #050505, 4px 4px 11px 4px rgba(150, 150, 150, 0.5);
+  margin: 1vw;
 }
 
 small{
@@ -36,6 +60,7 @@ small{
 
 .rebinding-input{
   border: outset red 2px;
+  animation: pulse 2s linear infinite;
 }
 
 .info{
@@ -43,31 +68,51 @@ small{
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
+  margin: 0 1.5vw 0 1vw;
+}
 
-  margin: 0 2vw;
+.score-container{
+  font-weight: bolder;
+  text-transform: uppercase;
+  min-width: 10em;
+  display: inline;
+}
+.score-container>p{
+  display: inline-block;
+}
+.score-container>span{
+  display: inline-block;
+  text-align: right;
+  min-width: 4em;
 }
 
 .controls{
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: flex-end;
   border: outset rgb(50,50,50) 2px;
   padding:0;
 }
-
 .controls *{
   margin: 0.1em 0;
 }
-
 .controls span {
   display: inline-block;
-  width: 1.1em;
+  min-width: 2em;
+  width: fit-content;
   text-align: center;
+}
+.control-key>p{
+  display: inline-block;
+  width: 7em;
 }
 
 .play-decorator{
-  border: double gold 5px;
-  width: calc(((70vh)*16/20));
+  border: double gold 0.4vh;
+  width: 100%;
+  max-width: calc(((70vh)*16/20));
+  min-width: 540px;
   height: 100%
 }
 
@@ -83,39 +128,86 @@ small{
 }
 
 .play-matrix div{
-
-  border: solid rgb(10,10,10) 0.1px;
-}
-
-.play-matrix div.debug{
-  color: grey;
-  font-size: 6px;
+  border: inset rgba(10,10,10, 0.5) 0.5vw;
 }
 
 .play-matrix div:nth-child(-n +64){
   background-color: hotpink;
   display: none;
 }
-.play-matrix div:nth-child(-n +64).debug{
+
+.play-matrix div.debug{
+  color: grey;
+  font-size: 6px;
   display: inherit;
 }
 
-@media only screen and (max-width: 900px) {
+.play-matrix div.filled{
+  border: outset 0.5vw;
+}
+.rainbow-text {
+  background-image: repeating-linear-gradient(45deg, violet, indigo, blue, green, yellow, orange, red, violet);
+  background-size: 800% 500%;
+  -webkit-background-clip: text;
+  background-clip:text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: rainbow 15s linear infinite;
+}
+
+.allcaps {
+  text-transform: uppercase;
+}
+
+@keyframes rainbow { 
+    0%{background-position:0% 75%}
+    50%{background-position:100% 25%}
+    100%{background-position:0% 75%}
+}
+@keyframes pulse {
+	0% {
+		transform: scale(1.0);
+		box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+    background-position:0% 75%
+	}
+
+	50% {
+		transform: scale(1.2);
+		box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+    background-position:100% 25%;
+	}
+
+	100% {
+		transform: scale(1.0);
+    background-position:0% 75%;
+	}
+}
+
+@media only screen and (max-width: 800px) {
+  .new-player-button{
+    filter: opacity(0.4);
+  }
   section{
     flex-direction: column-reverse;
+    align-items: center;
   }
   .info{
+    width: 100%;
     align-items: center;
     margin: 0;
   }
   .info *{
     margin: 0;
   }
+  .control-key>p{
+    width: fit-content;
+  }
   ul>p {
     display: none;
   }
+  /* calc(((90vh)*16/24)) */
   .controls{
-    width: calc(((90vh)*16/24));
+    width: 100%;
     flex-direction: row;
     flex-wrap: wrap;
   }
