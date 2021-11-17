@@ -140,6 +140,8 @@ small{
 }
 
 .play-matrix div{
+  border: inset rgba(10,10,10, 0.5) 3px;
+}
 
 .play-matrix div:nth-child(-n + 64){
   background-color: hotpink;
