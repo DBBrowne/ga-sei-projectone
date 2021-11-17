@@ -1,3 +1,9 @@
+:root {
+  /* set some defaults incase of JS failure */
+  --playmatrix-width-count: 16;
+  --playmatrix-height-count: 20;
+}
+
 * {
   box-sizing: border-box;
 }
