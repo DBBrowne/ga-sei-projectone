@@ -340,15 +340,16 @@ class TetrisGame {
 
     isDebugMode && console.log('build new matrix:',this.playerName, 'playmatrix',this.playMatrix,'landedshape', this.landedShape)
   }
-  buildNewPlayMatrix(height, width, displayElement = this.playMatrixView){
+  buildNewPlayMatrix(rows, columns, displayElement = this.playMatrixView){
+    setCssGridProperties(rows, columns, displayElement)
     displayElement.innerHTML = ''
     const playMatrix = new Array
     const landedShape = new LandedShape()
-    for (let y = 0; y < height; y++){
+    for (let y = 0; y < rows; y++){
       playMatrix.push([])
-      landedShape.newRow(false, width)
+      landedShape.newRow(false, columns)
       //count from width-1 to 0 to retain 0,0 at the lower left of the play view
-      for (let x = width - 1; x >= 0; x--){
+      for (let x = columns - 1; x >= 0; x--){
         const playCell = document.createElement('div')
       
         if (isDebugMode){
