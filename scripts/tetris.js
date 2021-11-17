@@ -19,7 +19,7 @@ function testJestConnection() {
 const globalPlayButton = document.querySelector('.play-button')
 const pageMain = document.querySelector('main')
 const newPlayerButton = document.querySelector('.new-player-button')
-const playerCoreHTML = '<div class="info"><p>Score:&nbsp;<span class="score-span">000</span></p><ul class="controls"><p>Controls:<br><small>click to redefine, then press new key</small></p></ul></div><div class="play-decorator"><div class="play-matrix"></div></div>'
+const playerCoreHTML = '<div class="info"><div class="score-container"><p>Score:&nbsp;</p><span class="score-span">000</span></div><ul class="controls"><p>Controls:<br><small>click to redefine, then press new key</small></p></ul></div><div class="play-decorator"><div class="play-matrix"></div></div>'
 // **************************************************************************
 // Variables
 
@@ -268,7 +268,7 @@ class LandedShape extends Array {
       if (row.fullCellsCount){
         row.forEach((cell, columnIndex)=>{
           if (cell.fillColor){
-            parent.playMatrix[rowIndex][columnIndex].style.backgroundColor = cell.fillColor
+            toggleElementClassFilled(parent.playMatrix[rowIndex][columnIndex], cell.fillColor)
           }
         })
       }
@@ -330,7 +330,7 @@ class TetrisGame {
     this.buildMatrix()
 
     this.injectPlayerControlsIntoHTML()
-    this.playerScoreView.textContent = this.playerScore
+    this.injectScoreIntoHTML()
   }
   buildMatrix(){
     //todo: refactor to deconstruct return.  Currently causes "console.log(...) is undefined"
@@ -360,7 +360,11 @@ class TetrisGame {
         playMatrix[y].push(playCell)
       }
     }
+
     return [playMatrix, landedShape]
+  }
+  injectScoreIntoHTML(){
+    this.playerScoreView.textContent = this.playerScore.toLocaleString(undefined, { minimumIntegerDigits: 3 })
   }
   injectPlayerControlsIntoHTML(){
     // inject control legend
@@ -372,7 +376,7 @@ class TetrisGame {
       controlLegendItem.classList.add('control-key')
       controlLegendItem.dataset.controlAction = controlAction
       controlLegendItem.dataset.playerNumber = this.playerNumber
-      controlLegendItem.innerHTML = `<p><span class="${playerControl.legendClassName}"></span>${playerControl.name}</p>`
+      controlLegendItem.innerHTML = `<span class="${playerControl.legendClassName}"></span><p>&nbsp;${playerControl.name}</p>`
       controlLegendItem.addEventListener('click', handleRedefineInput)
 
       controlLegendElement.appendChild(controlLegendItem)
@@ -395,7 +399,7 @@ class TetrisGame {
     // this.clearPlayAreaView()
     this.playerRowsCleared = 0
     this.playerScore = 0
-    this.playerScoreView.textContent = this.playerScore
+    this.injectScoreIntoHTML()
   }
   gameTick(){
     isDebugMode && isDebugVerbose && console.log(this.playerName, 'tick')
@@ -410,7 +414,7 @@ class TetrisGame {
   }
   clearPlayAreaView(){
     this.playMatrix.forEach(row=>row.forEach(cell=> {
-      cell.style.backgroundColor = 'inherit'
+      toggleElementClassFilled(cell)
     }))
   }
   checkForCompleteRows() {
@@ -464,7 +468,7 @@ class Tetromino {
   }
   clearCurrentLocation(){
     this.occupiedSpaces.forEach(space=>{
-      this.parent.playMatrix[space[0]][space[1]].style.backgroundColor = 'inherit'
+      toggleElementClassFilled(this.parent.playMatrix[space[0]][space[1]])
     })
   }
   updateOccupiedSpaces(){
@@ -481,7 +485,8 @@ class Tetromino {
   }
   colorPlayMatrixView(){
     this.occupiedSpaces.forEach((space)=>{
-      this.parent.playMatrix[space[0]][space[1]].style.backgroundColor = this.fillColor
+      toggleElementClassFilled(
+        this.parent.playMatrix[space[0]][space[1]], this.fillColor)
     })
   }
   checkNextOccupiedSpaces(){
@@ -679,10 +684,12 @@ function handleKeyPress(e) {
 function handlePlayButton(){
   if (!isGameOngoing){
     startGame()
-    globalPlayButton.textContent = 'RESET'
+    globalPlayButton.textContent = 'reset'
+    globalPlayButton.classList.add('allcaps')
   } else {
     resetGame()
-    globalPlayButton.textContent = 'play'
+    globalPlayButton.textContent = 'start game'
+    globalPlayButton.classList.remove('allcaps')
   }
 }
 function handleRedefineInput(){

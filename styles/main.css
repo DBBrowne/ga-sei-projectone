@@ -123,8 +123,12 @@ small{
 .play-matrix div.debug{
   color: grey;
   font-size: 6px;
+  display: inherit;
 }
 
+.play-matrix div.filled{
+  border: outset 3px;
+}
 .rainbow-text {
   background-image: repeating-linear-gradient(45deg, violet, indigo, blue, green, yellow, orange, red, violet);
   background-size: 800% 500%;
