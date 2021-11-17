@@ -446,9 +446,6 @@ class TetrisGame {
     return new Tetromino(shape.shapeMap, fillColor || shape.fillColor, this)
   }
 }
-
-// **************************************************************************
-// Functions
 class Tetromino {
   constructor(shapeMap, fillColor, parent, baseLocation = tetrominoSpawnYX) {
     this.baseLocation = baseLocation
@@ -578,12 +575,13 @@ function globalAddClearedRows(playerNumSendingRows, clearedRows){
     if (player.playerNumber !== playerNumSendingRows){
       isDebugMode && console.log(`adding ${clearedRows} rows to Player${player.playerNumber}`)
       for (let i = 0; i < clearedRows; i++){
-        // add active shape to landed if it would  overwritten by new landed shape
+        // move active shape away from new row to prevent conflicts
         player.clearPlayAreaView()
         player.activeTetromino.move([1,0])
         // redraw new landed shape
         player.landedShape.newRow(true)
         player.landedShape.draw(player)
+        // restore previous position and calculate intercepts with new landed shape
         player.gameTick()
       }
     }
