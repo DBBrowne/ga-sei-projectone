@@ -617,19 +617,6 @@ function setPlayViewCellHeight(playMatrixViewHtmlElement){
 
   htmlRoot.style.setProperty('--playmatrix-cell-edge-length', `${playMatrixCellEdgeLength}px`)
 }
-function resizeMatrixCells(){
-  console.log('resizing')
-  const playfieldSectionWidth = pageMain.querySelector('section').getBoundingClientRect().width
-  const playfieldInfoWidth = pageMain.querySelector('.info').offsetWidth
-  const playfieldWidth = playfieldSectionWidth - playfieldInfoWidth
-  const cssExpectedPlayMatrixWidthCount = htmlRoot.style.getPropertyValue('--playmatrix-width-count')
-  const playMatrixCellEdgeLength = playfieldWidth / cssExpectedPlayMatrixWidthCount
-
-  console.log(playfieldWidth)
-  console.log(cssExpectedPlayMatrixWidthCount)
-  console.log(playMatrixCellEdgeLength)
-  htmlRoot.style.setProperty('--playmatrix-cell-edge-length', `${playMatrixCellEdgeLength}px`)
-}
 // ************
 // * playspace functions
 function loseGame(){
