@@ -1,3 +1,10 @@
+:root {
+  /* set some defaults incase of JS failure */
+  --playmatrix-width-count: 16;
+  --playmatrix-height-count: 24;
+  --playmatrix-cell-edge-length:10px;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -5,8 +12,8 @@
 html {
   background-color: black;
   color: white;
+  height: 100vh;
 }
-
 header{
   height: 5vh;
   display: flex;
@@ -41,17 +48,26 @@ header button:hover{
 main {
   display: flex;
   justify-content: center;
-  /* flex-wrap: wrap; */
-  max-width: 100vw;
-  height:70vh;
+  flex-wrap: wrap;
+  width: 100vw;
+  height:95vh;
+  border-left: solid transparent 10px;
+  border-right: solid transparent 10px;
+  /* margin:0 10px; */
 }
 
 section{
+  flex-grow: 1;
   display: flex;
+
   border: outset rgba(150, 150, 150, 0.75) 10px;
   -webkit-box-shadow: inset 0px 10px 27px -8px #050505, 4px 4px 11px 4px rgba(150, 150, 150, 0.6); 
-box-shadow: inset 0px 10px 27px -8px #050505, 4px 4px 11px 4px rgba(150, 150, 150, 0.5);
+box-shadow: inset 0px 10px 20px -8px #050505, 4px 4px 5px 4px rgba(150, 150, 150, 0.4);
+
   margin: 1vw;
+  margin-top:0;
+  min-width: 540px;
+  height:fit-content;
 }
 
 small{
@@ -68,7 +84,7 @@ small{
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
-  margin: 0 1.5vw 0 1vw;
+  margin: 0 1vw 0 0.5vw;
 }
 
 .score-container{
@@ -109,18 +125,21 @@ small{
 }
 
 .play-decorator{
+  flex-grow: 1;
+  /* max-width: max-content; */
   border: double gold 0.4vh;
-  width: 100%;
-  max-width: calc(((70vh)*16/20));
-  min-width: 540px;
-  height: 100%
+  /* width: 100%; */
+  /* max-width: calc(((70vh)*16/20)); */
+  /* min-width: 540px; */
+  /* height: 100%; */
 }
 
 .play-matrix{
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(16, 1fr);
+  grid-template-columns: repeat(var(--playmatrix-width-count), 1fr);
+  grid-template-rows: repeat(var(--playmatrix-height-count), 1fr);
 }
 
 .play-matrix .debug {
@@ -128,10 +147,12 @@ small{
 }
 
 .play-matrix div{
-  border: inset rgba(10,10,10, 0.5) 0.5vw;
+  width: var(--playmatrix-cell-edge-length);
+  height: var(--playmatrix-cell-edge-length);
+  border: inset rgba(10,10,10, 0.5) 3px;
 }
 
-.play-matrix div:nth-child(-n +64){
+.play-matrix div:nth-child(-n + 64){
   background-color: hotpink;
   display: none;
 }
@@ -143,7 +164,7 @@ small{
 }
 
 .play-matrix div.filled{
-  border: outset 0.5vw;
+  border: outset 3px;
 }
 .rainbow-text {
   background-image: repeating-linear-gradient(45deg, violet, indigo, blue, green, yellow, orange, red, violet);
@@ -190,6 +211,11 @@ small{
   section{
     flex-direction: column-reverse;
     align-items: center;
+    /* height: 100%; */
+  }
+  .play-decorator{
+    flex-grow: 1;
+    /* height:fit-content; */
   }
   .info{
     width: 100%;
