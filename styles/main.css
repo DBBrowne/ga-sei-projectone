@@ -23,7 +23,19 @@ h1{
 }
 
 header button{
-  margin: 0 20px;
+  background-color: #cebabae8;
+  margin: 0 0 0 2vh;
+  height: 3vh;
+  width: 12vh;
+  border-style: none;
+  font-size: 1.5vh;
+  text-transform: capitalize;
+}
+header button:hover{
+  background-size: 800% 500%;
+  background-image: repeating-linear-gradient(45deg, violet, indigo, blue, green, orange, red, violet);
+  color:#cebabae8;
+  animation: pulse 2s linear infinite;
 }
 
 main {
@@ -113,12 +125,42 @@ small{
   font-size: 6px;
 }
 
-.play-matrix div:nth-child(-n +64){
-  background-color: hotpink;
-  display: none;
+.rainbow-text {
+  background-image: repeating-linear-gradient(45deg, violet, indigo, blue, green, yellow, orange, red, violet);
+  background-size: 800% 500%;
+  -webkit-background-clip: text;
+  background-clip:text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: rainbow 15s linear infinite;
 }
-.play-matrix div:nth-child(-n +64).debug{
-  display: inherit;
+
+.allcaps {
+  text-transform: uppercase;
+}
+
+@keyframes rainbow { 
+    0%{background-position:0% 75%}
+    50%{background-position:100% 25%}
+    100%{background-position:0% 75%}
+}
+@keyframes pulse {
+	0% {
+		transform: scale(1.0);
+		box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+    background-position:0% 75%
+	}
+
+	50% {
+		transform: scale(1.2);
+		box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+    background-position:100% 25%;
+	}
+
+	100% {
+		transform: scale(1.0);
+    background-position:0% 75%;
+}
 }
 
 @media only screen and (max-width: 900px) {
