@@ -163,22 +163,36 @@ small{
 }
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 800px) {
+  .new-player-button{
+    filter: opacity(0.4);
+  }
   section{
     flex-direction: column-reverse;
+    align-items: center;
+    /* height: 100%; */
+  }
+  .play-decorator{
+    flex-grow: 1;
+    /* height:fit-content; */
   }
   .info{
+    width: 100%;
     align-items: center;
     margin: 0;
   }
   .info *{
     margin: 0;
   }
+  .control-key>p{
+    width: fit-content;
+  }
   ul>p {
     display: none;
   }
+  /* calc(((90vh)*16/24)) */
   .controls{
-    width: calc(((90vh)*16/24));
+    width: 100%;
     flex-direction: row;
     flex-wrap: wrap;
   }
