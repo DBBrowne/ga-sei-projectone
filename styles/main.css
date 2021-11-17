@@ -69,6 +69,7 @@ small{
 
 .rebinding-input{
   border: outset red 2px;
+  animation: pulse 2s linear infinite;
 }
 
 .info{
@@ -76,39 +77,62 @@ small{
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
+  margin: 0 1vw 0 0.5vw;
+}
 
-  margin: 0 2vw;
+.score-container{
+  font-weight: bolder;
+  text-transform: uppercase;
+  min-width: 10em;
+  display: inline;
+}
+.score-container>p{
+  display: inline-block;
+}
+.score-container>span{
+  display: inline-block;
+  text-align: right;
+  min-width: 4em;
 }
 
 .controls{
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: flex-end;
   border: outset rgb(50,50,50) 2px;
   padding:0;
 }
-
 .controls *{
   margin: 0.1em 0;
 }
-
 .controls span {
   display: inline-block;
-  width: 1.1em;
+  min-width: 2em;
+  width: fit-content;
   text-align: center;
+}
+.control-key>p{
+  display: inline-block;
+  width: 7em;
 }
 
 .play-decorator{
-  border: double gold 5px;
-  width: calc(((70vh)*16/20));
-  height: 100%
+  flex-grow: 1;
+  /* max-width: max-content; */
+  border: double gold 0.4vh;
+  /* width: 100%; */
+  /* max-width: calc(((70vh)*16/20)); */
+  /* min-width: 540px; */
+  /* height: 100%; */
 }
 
 .play-matrix{
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(16, 1fr);
+  grid-template-columns: repeat(var(--playmatrix-width-count), 1fr);
+  grid-template-rows: repeat(var(--playmatrix-height-count), 1fr);
 }
 
 .play-matrix .debug {
@@ -117,7 +141,9 @@ small{
 
 .play-matrix div{
 
-  border: solid rgb(10,10,10) 0.1px;
+.play-matrix div:nth-child(-n + 64){
+  background-color: hotpink;
+  display: none;
 }
 
 .play-matrix div.debug{
