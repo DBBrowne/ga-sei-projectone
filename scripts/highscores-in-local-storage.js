@@ -68,6 +68,25 @@ const localHiscores = {
   capturePlayerName(){
     return window.prompt('NEW HIGH SCORE!\n\nEnter your name:') || 'PLAYER'
   },
+  updateHiscoreScroller(newHiscores = this.records){
+    const hiscorePlayersElement = document.querySelector('.hiscore-players')
+    const hiscoreScoresElement = document.querySelector('.hiscore-scores')
+
+    //clear old list and initialise new list titles
+    hiscorePlayersElement.innerHTML = '<li>high</li>'
+    hiscoreScoresElement.innerHTML = '<li>scores</li>'
+
+    newHiscores.forEach(record=>{
+      const newPlayerElement = document.createElement('li')
+      const newScoreElement = document.createElement('li')
+      
+      newPlayerElement.textContent = record.playerName
+      newScoreElement.textContent =  record.score
+
+      hiscorePlayersElement.appendChild(newPlayerElement)
+      hiscoreScoresElement.appendChild(newScoreElement)
+    })
+  },
 }
 
 
