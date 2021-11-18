@@ -607,10 +607,10 @@ function setCssGridProperties(rows, columns){
 }
 function setPlayViewCellHeight(playMatrixViewHtmlElement){
   console.log(playMatrixViewHtmlElement)
-  const playerViewCell = playMatrixViewHtmlElement.lastChild
-  // const playerViewCell = document.querySelector('.play-matrix > div')
+  // const playerViewCell = playMatrixViewHtmlElement.lastChild
+  const playerViewCell = document.querySelector('.player1 .play-matrix').lastChild
   console.log(playerViewCell)
-  const playMatrixCellEdgeLength = playerViewCell.offsetWidth//.getBoundingClientRect()// / columns
+  const playMatrixCellEdgeLength = playerViewCell.offsetWidth
     
   // isDebugMode && 
   console.log(playMatrixCellEdgeLength)

@@ -59,15 +59,15 @@ main {
 section{
   flex-grow: 1;
   display: flex;
-
+  justify-content: center;
   border: outset rgba(150, 150, 150, 0.75) 10px;
   -webkit-box-shadow: inset 0px 10px 27px -8px #050505, 4px 4px 11px 4px rgba(150, 150, 150, 0.6); 
 box-shadow: inset 0px 10px 20px -8px #050505, 4px 4px 5px 4px rgba(150, 150, 150, 0.4);
-
   margin: 1vw;
   margin-top:0;
-  min-width: 540px;
-  height:fit-content;
+  /* min-width: 540px; */
+  height:max-content;
+  /* height:fit-content; */
 }
 
 small{
@@ -129,7 +129,7 @@ small{
   /* max-width: max-content; */
   border: double gold 0.4vh;
   /* width: 100%; */
-  /* max-width: calc(((70vh)*16/20)); */
+  max-width: calc(((90vh)*var(--playmatrix-width-count)/var(--playmatrix-height-count)));
   /* min-width: 540px; */
   /* height: 100%; */
 }
@@ -141,31 +141,32 @@ small{
   grid-template-columns: repeat(var(--playmatrix-width-count), 1fr);
   grid-template-rows: repeat(var(--playmatrix-height-count), 1fr);
 }
-
 .play-matrix .debug {
   background-color: rgb(50,50,50);
 }
-
 .play-matrix div{
   /* width: var(--playmatrix-cell-edge-length); */
   height: var(--playmatrix-cell-edge-length);
-  border: inset rgba(10,10,10, 0.5) 3px;
+  border: inset rgba(10,10,10, 0.5) 0.6vw;
 }
-
+/* .player1 .play-matrix div{ */
+  /* width: auto; */
+  /* flex-grow: 0; */
+  /* width: min-content; */
+/* } */
+.play-matrix div.filled{
+  border: outset 0.6vw;
+}
 .play-matrix div:nth-child(-n + 64){
   background-color: hotpink;
   display: none;
 }
-
 .play-matrix div.debug{
   color: grey;
   font-size: 6px;
   display: inherit;
 }
 
-.play-matrix div.filled{
-  border: outset 3px;
-}
 .rainbow-text {
   background-image: repeating-linear-gradient(45deg, violet, indigo, blue, green, yellow, orange, red, violet);
   background-size: 800% 500%;
@@ -175,7 +176,6 @@ small{
   color: transparent;
   animation: rainbow 15s linear infinite;
 }
-
 .allcaps {
   text-transform: uppercase;
 }
@@ -209,13 +209,19 @@ small{
     filter: opacity(0.4);
   }
   section{
+    flex-grow: 0;
     flex-direction: column-reverse;
     align-items: center;
-    /* height: 100%; */
+    width: min-content;
+    min-width: min-content;
+    max-width: 95vw;
+    /* max-height: 90vh; */
+    /* height: calc(((90vh)*16/24)); */
   }
   .play-decorator{
     flex-grow: 1;
-    /* height:fit-content; */
+    height:fit-content;
+    width:90vw;
   }
   .info{
     width: 100%;
