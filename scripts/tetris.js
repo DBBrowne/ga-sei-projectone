@@ -687,9 +687,22 @@ function redefinePlayerInput(legendElement,keyCode){
 
 function handleKeyPress(e) {
   // system keys
-  if (e.code === 'F5'){
-    return true
+  switch (e.code){
+    case 'F5': 
+      return true
+    case 'F12':
+      if (e.type === 'keydown'){
+        e.preventDefault()
+        handlePauseButton()
+      }
+      return
+    default:
+      break
   }
+
+  // if (e.code === 'F5'){
+  //   return true
+  // }
   
   // game keys
   e.preventDefault()
