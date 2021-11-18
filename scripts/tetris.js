@@ -21,7 +21,7 @@ const globalPlayButton = document.querySelector('.play-button')
 const globalPauseButton = document.querySelector('.pause-button')
 const pageMain = document.querySelector('main')
 const newPlayerButton = document.querySelector('.new-player-button')
-const playerCoreHTML = '<div class="info"><div class="score-container"><p>Score:&nbsp;</p><span class="score-span">000</span></div><ul class="controls"><p>Controls:<br><small>click to redefine, then press new key</small></p></ul></div><div class="play-decorator"><div class="play-matrix"></div></div>'
+const playerCoreHTML = '<div class="info"><div class="score-container"><p>Score:&nbsp;</p><span class="score-span">000</span></div><ul class="controls"><p>Controls:<br><small>click to redefine, then press new key</small></p></ul></div><div class="play-decorator"><tetris-overlay class="pause-overlay"><p class = "rainbow-text">pause</p></tetris-overlay><div class="play-matrix"></div></div>'
 const htmlRoot = document.documentElement
 // **************************************************************************
 // Variables
@@ -449,6 +449,9 @@ class TetrisGame {
     const shape = tetrominoShapes[shapeChoice]
     return new Tetromino(shape.shapeMap, fillColor || shape.fillColor, this)
   }
+  togglePauseOverlay(){
+    this.playerSection.querySelector('.pause-overlay').classList.toggle('enable-overlay')
+  }
 }
 class Tetromino {
   constructor(shapeMap, fillColor, parent, baseLocation = tetrominoSpawnYX) {
@@ -733,12 +736,18 @@ function handlePauseButton() {
     isGameOngoing = false
     isGamePaused = true
     console.log('game paused')
-    globalPlayers.forEach(player=>clearInterval(player.gameTimer))
+    globalPlayers.forEach(player=>{
+      clearInterval(player.gameTimer)
+      player.togglePauseOverlay()
+    })
   } else if (isGamePaused) {
     console.log('game unpaused')
     isGamePaused = false
     isGameOngoing = true
-    globalPlayers.forEach(player=>player.setTickSpeed())
+    globalPlayers.forEach(player=>{
+      player.setTickSpeed()
+      player.togglePauseOverlay()
+    })
   }
   
 }

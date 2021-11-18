@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Audiowide&display=swap');
+
 :root {
   /* set some defaults incase of JS failure */
   --playmatrix-width-count: 16;
@@ -124,10 +126,32 @@ small{
 
 .play-decorator{
   flex-grow: 1;
+  position: relative;
   border: double gold 0.4vh;
   max-width: calc(((90vh)*var(--playmatrix-width-count)/var(--playmatrix-height-count)));
 }
+tetris-overlay{
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0,0,0,0.5);
 
+  /* Initialise as hidden */
+  display: none;
+}
+tetris-overlay.enable-overlay{
+  display: flex;
+}
+.pause-overlay{
+  width: calc(var(--playmatrix-cell-edge-length)*var(--playmatrix-width-count));
+  height: calc(var(--playmatrix-cell-edge-length)*var(--playmatrix-height-count));
+}
+.pause-overlay>p{
+  font-family: Audiowide, sans-serif;
+  font-size: calc(var(--playmatrix-cell-edge-length)*var(--playmatrix-width-count)/3);
+    transform: rotate(-45deg);
+}
 .play-matrix{
   width: 100%;
   height: 100%;
