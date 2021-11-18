@@ -561,7 +561,7 @@ class Tetromino {
 }
 // **************
 // * local storage manager
-const localHiscoresManager = {
+const hiscoresManager = {
   records: [],
   storageKey: localHiscoresStorageKey,
   setStoredHiscores(newHiScores = this.records, key = this.storageKey){
@@ -607,7 +607,7 @@ const localHiscoresManager = {
     this.setStoredHiscores()
     return true
   },
-  checkNewHiscore(newScore){
+  checkForNewHiscore(newScore){
     const lowestScore = this.records[this.records.length - 1].score
 
     if (newScore < lowestScore){
@@ -617,6 +617,7 @@ const localHiscoresManager = {
     localStorageDebugMode && console.log('New High Score!')
     const newRecordPlayerName = this.capturePlayerName()
     this.addNewRecordToHiscores(newRecordPlayerName, newScore)
+    this.updateHiscoreScroller()
 
     return this.records
   },
@@ -641,6 +642,7 @@ const localHiscoresManager = {
       hiscorePlayersElement.appendChild(newPlayerElement)
       hiscoreScoresElement.appendChild(newScoreElement)
     })
+    return newHiscores
   },
 }
 
@@ -713,7 +715,10 @@ function setPlayViewCellHeight(playMatrixViewHtmlElement){
 function loseGame(){
   isGameOngoing = false
   console.log('game over')
-  globalPlayers.forEach(player=>clearInterval(player.gameTimer))
+  globalPlayers.forEach(player=>{
+    clearInterval(player.gameTimer)
+    hiscoresManager.checkForNewHiscore(player.playerScore)
+  })
 }
 
 function resetGame() {
@@ -876,7 +881,7 @@ window.onresize =  handleWindowResize
 // populate with at least one player
 globalPlayers.push(new TetrisGame)
 // init highscores
-localHiscoresManager.populateLocalHighscores()
+hiscoresManager.populateLocalHighscores()
 
 // **************************************************************************
 // * export functions for testing
