@@ -592,7 +592,7 @@ function toggleElementClassFilled(element, fillColor) {
   if (!fillColor){
     element.classList.remove('filled')
     element.style.backgroundColor = 'initial'
-    element.style.borderColor = 'rgb(10,10,10)'
+    element.style.borderColor = 'rgba(10,10,10, 0.5)'
   } else {
     element.classList.add('filled')
     element.style.backgroundColor = fillColor
