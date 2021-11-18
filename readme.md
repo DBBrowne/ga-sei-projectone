@@ -22,3 +22,9 @@ Small challenges that felt like wins -
 
 Big challenges - 
 
+retaining square playfield cells at all zoom levels and window sizes.  Easy to get something that looked ok with either 
+  - fixed pixel size of cells (not resposneive to screen size or playfield size))
+or 
+  - cells that resize, but do not stay square.
+
+Solution was a few failed attempts with JS before allowing flexbox to set cell width, and js to apply cell width to cell height.

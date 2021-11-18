@@ -399,7 +399,6 @@ class TetrisGame {
   reset(){
     clearInterval(this.gameTimer)
     this.buildMatrix()
-    // this.clearPlayAreaView()
     this.playerRowsCleared = 0
     this.playerScore = 0
     this.injectScoreIntoHTML()
