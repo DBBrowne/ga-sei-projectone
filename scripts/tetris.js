@@ -735,13 +735,13 @@ function handlePauseButton() {
   if (isGameOngoing){
     isGameOngoing = false
     isGamePaused = true
-    console.log('game paused')
+    isDebugMode && console.log('game paused')
     globalPlayers.forEach(player=>{
       clearInterval(player.gameTimer)
       player.togglePauseOverlay()
     })
   } else if (isGamePaused) {
-    console.log('game unpaused')
+    isDebugMode && console.log('game unpaused')
     isGamePaused = false
     isGameOngoing = true
     globalPlayers.forEach(player=>{
