@@ -1,44 +1,76 @@
 
-const storageDebugMode = true
+const localStorageDebugMode = true
 
 const localHiscoresStorageKey = 'tentris-hiscores'
 
 const winningscore = 650
 
-storageDebugMode && console.log('local storage', localHiscoresStorageKey,':' , localStorage.getItem(localHiscoresStorageKey))
+localStorageDebugMode && console.log('local storage', localHiscoresStorageKey,':' , localStorage.getItem(localHiscoresStorageKey))
 
-function setLocalHiscores(newHiScores, key=localHiscoresStorageKey){
-  const newHiscoresString = JSON.stringify(newHiScores.map((record=>JSON.stringify(record))))
-  localStorage.setItem(key, newHiscoresString)
+const localHiscores = {
+  records: [],
+  lowestScore: 0,
+  setStoredHiscores(newHiScores = this.records, key = localHiscoresStorageKey){
+    const newHiscoresString = JSON.stringify(newHiScores.map((record=>JSON.stringify(record))))
 
-  storageDebugMode && console.log('new local highscores : ',newHiscoresString)
-  return newHiscoresString
+    localStorage.setItem(key, newHiscoresString)
+
+    localStorageDebugMode && console.log('new local highscores : ',newHiscoresString)
+
+    return newHiscoresString
+  },
+  populateLocalHighscores(key = localHiscoresStorageKey){
+    // if key does not exist set to default.  If key exists already, set this.records and return parsed contents.
+
+    const localStorageItem = localStorage.getItem(key)
+
+    if (!localStorageItem){
+      localStorageDebugMode && console.log('no Hiscores found.  Setting to default')
+
+      const defaultHiscores = [ { playerName: 'abc', score: 1000 }, { playerName: 'def', score: 900 },{ playerName: 'ghi', score: 800 },{ playerName: 'jkl', score: 700 },{ playerName: 'mno', score: 600 },{ playerName: 'pqr', score: 500 },{ playerName: 'stu', score: 400 },{ playerName: 'vwx', score: 300 },{ playerName: 'yza',score: 100 },{ playerName: 'bcd', score: 50 } ]
+
+      return this.setStoredHiscores(defaultHiscores)
+    }
+
+    const parsedLocalItem = JSON.parse(
+      localStorage.getItem(localHiscoresStorageKey)
+    ).map(record=>JSON.parse(record))
+      
+    this.records = parsedLocalItem
+    this.setLowestScore()
+    localStorageDebugMode && console.log(this.records)
+    return parsedLocalItem
+  },
+  setLowestScore(){
+    this.lowestScore = this.records[this.records.length - 1].score
+  },
+  addNewRecordToHiscores(playerName, newScore){
+    this.records.pop()
+    this.records.push({ playerName: playerName, score: newScore })
+    this.records.sort((a, b) => b.score - a.score)
+
+    this.setStoredHiscores()
+    return true
+  },
+  checkNewHiscore(newScore){
+    if (newScore < this.lowestScore){
+      localStorageDebugMode && console.log('Score lower than minimum')
+      return false
+    }
+    localStorageDebugMode && console.log('New High Score!')
+    const newRecordPlayerName = this.capturePlayerName()
+
+    this.addNewRecordToHiscores(newRecordPlayerName, newScore)
+
+    return this.records
+  },
+  capturePlayerName(){
+    return 'winrararar'
+  },
 }
 
-if (!localStorage.getItem(localHiscoresStorageKey)){
-  const defaultHiscores = [ { playerName: 'abc', score: 1000 }, { playerName: 'def', score: 900 },{ playerName: 'ghi', score: 800 },{ playerName: 'jkl', score: 700 },{ playerName: 'mno', score: 600 },{ playerName: 'pqr', score: 500 },{ playerName: 'stu', score: 400 },{ playerName: 'vwx', score: 300 },{ playerName: 'yza',score: 100 },{ playerName: 'bcd', score: 50 } ]
-  
-  setLocalHiscores(defaultHiscores)
-}
 
-const localHiscores = JSON.parse(
-  localStorage.getItem(localHiscoresStorageKey)
-)
+localHiscores.populateLocalHighscores()
+localHiscores.checkNewHiscore(winningscore)
 
-storageDebugMode && console.log(localHiscores)
-
-if (winningscore > localHiscores[localHiscores.length - 1].score){
-  storageDebugMode && console.log('New High Score!')
-  //capture name
-  const playerName = 'winrararar'
-
-  const newHiscore = { playerName: playerName, score: winningscore }
-
-  localHiscores.pop()
-  console.log('popped', localHiscores)
-  localHiscores.push(newHiscore)
-  localHiscores.sort((a, b) => b.score - a.score)
-
-  localStorage.setItem(localHiscoresStorageKey, localHiscores)
-}
-console.log(localHiscores)
+console.log(localHiscores.populateLocalHighscores())
