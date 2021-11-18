@@ -25,7 +25,7 @@ const playerCoreHTML = '<div class="info"><div class="score-container"><p>Score:
 const htmlRoot = document.documentElement
 // **************************************************************************
 // Variables
-
+// todo: refactor to enum
 const isDebugMode = false
 const isDebugVerbose = false
 
@@ -48,6 +48,7 @@ const speedUpTickDivider = 5
 const dropTickDivider = 1000
 let globalClearedRows = 0
 
+// todo: refactor to enum
 let isGameOngoing = false
 let isGamePaused = false
 let globalTickTime = defaultGameTickTime
