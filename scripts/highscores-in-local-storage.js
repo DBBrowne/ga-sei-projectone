@@ -45,6 +45,7 @@ const localHiscores = {
     this.lowestScore = this.records[this.records.length - 1].score
   },
   addNewRecordToHiscores(playerName, newScore){
+    // todo: refactor to add new high score above existing matching scores
     this.records.pop()
     this.records.push({ playerName: playerName, score: newScore })
     this.records.sort((a, b) => b.score - a.score)
@@ -65,12 +66,12 @@ const localHiscores = {
     return this.records
   },
   capturePlayerName(){
-    return 'winrararar'
+    return window.prompt('NEW HIGH SCORE!\n\nEnter your name:') || 'PLAYER'
   },
 }
 
 
 localHiscores.populateLocalHighscores()
-localHiscores.checkNewHiscore(winningscore)
+// localHiscores.checkNewHiscore(winningscore)
 
 console.log(localHiscores.populateLocalHighscores())
