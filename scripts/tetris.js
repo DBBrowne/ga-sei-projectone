@@ -731,7 +731,7 @@ function addNewPlayer(){
   globalPlayers.push(new TetrisGame)
 }
 
-function resizeHandler(){
+function handleWindowResize(){
   setPlayViewCellHeight(pageMain.querySelector('.play-matrix'))
 }
 
@@ -752,7 +752,7 @@ if (isDebugMode){
   },11500)
 }
 
-window.onresize =  resizeHandler
+window.onresize =  handleWindowResize
 
 // **************************************************************************
 // populate with at least one player
