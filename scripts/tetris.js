@@ -696,15 +696,7 @@ function handleKeyPress(e) {
         handlePauseButton()
       }
       return
-    default:
-      break
   }
-
-  // if (e.code === 'F5'){
-  //   return true
-  // }
-  
-  // game keys
   e.preventDefault()
 
   if (redefineKeyMode.isOn){
