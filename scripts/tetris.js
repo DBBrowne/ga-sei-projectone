@@ -150,7 +150,7 @@ const playerControls = { //todo: refactor into TetrisGame object
       }
     },
     keyup(targetPlayerIndex){
-      if (isGameOngoing){
+      if (isGameOngoing){ //retain this check so that other keys will still work within debug mode
         globalPlayers[targetPlayerIndex].setTickSpeed() 
       }
     },
@@ -159,7 +159,7 @@ const playerControls = { //todo: refactor into TetrisGame object
     name: 'Drop',
     legendClassName: 'input-symbol-drop-piece',
     keydown(targetPlayerIndex){
-      if (isGameOngoing){
+      if (isGameOngoing){ //retain this check so that other keys will still work within debug mode
         globalPlayers[targetPlayerIndex].setTickSpeed(globalPlayers[targetPlayerIndex].gameTickTime / dropTickDivider)
       }
     },
@@ -700,8 +700,10 @@ function handleKeyPress(e) {
     return
   }
   try {
-    const keyBoundPlayerIndex = inputKeyBindings[e.code].player - 1
-    inputKeyBindings[e.code].control[e.type](keyBoundPlayerIndex, e.repeat)
+    if (isGameOngoing || isDebugMode ){
+      const keyBoundPlayerIndex = inputKeyBindings[e.code].player - 1
+      inputKeyBindings[e.code].control[e.type](keyBoundPlayerIndex, e.repeat)
+    }
   } catch (err) {
     if (isDebugMode){
       isDebugVerbose && console.log(err)
