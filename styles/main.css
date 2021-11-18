@@ -24,19 +24,20 @@ header{
 }
 
 header * {
-  margin: 0.5vh 0 0.5vh 2vh;
+  margin: 0.5vh;
 }
 
 h1{
   font-size: 6vh;
   font-weight: bolder;
   font-family: monospace;
+  margin: 0.5vh 1vh 0.5vh 1vh;
 }
 
 header button{
   background-color: #cebabae8;
   height: 3vh;
-  width: 12vh;
+  width: 10vh;
   border-style: none;
   font-size: 1.5vh;
   text-transform: capitalize;
@@ -47,22 +48,51 @@ header button:hover{
   color:#cebabae8;
   animation: pulse 2s linear infinite;
 }
+header button span {
+  margin: 0;
+}
 .hiscores{
   text-transform: uppercase;
   overflow: hidden;
-  height: 4vh;
+  height: 3vh;
   position: relative;
+  margin:0;
+  line-height: 1.23;
 }
+/* credit for soft fading- https://codepen.io/poopsplat/pen/VLdNZq */
+.hiscores::before {
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    content: '';
+    height: 10px;
+    position: absolute;
+    background: linear-gradient(180deg, rgba(0,0,0,1), rgba(0,0,0,0));
+  }
+  .hiscores::after {
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+    width: 100%;
+    content: '';
+    height: 8px;
+    position: absolute;
+    background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,1));
+  }
 .hiscores ul{
   list-style: none;
   display: inline-block;
   padding:0;
   margin:0;
-  font-size: 3vh;
+  font-size: 2vh;
 }
 .hiscore-players{
-  text-align: right;
+  direction:rtl;
+  /* text-align: end; */
   animation: vertical-scroll 12s ease infinite;
+  width:10vh;
+  text-overflow: hidden;
 }
 .hiscore-scores{
   text-align: left;
@@ -248,23 +278,80 @@ tetris-overlay.enable-overlay{
 @keyframes vertical-scroll {
   0%   { transform:translateY(    0); }
   10%  { transform:translateY(    0); }
-  18%  { transform:translateY( -4vh); }
-  26%  { transform:translateY( -8vh); }
-  34%  { transform:translateY(-12vh); }
-  42%  { transform:translateY(-16vh); }
-  50%  { transform:translateY(-20vh); }
-  58%  { transform:translateY(-24vh); }
-  66%  { transform:translateY(-28vh); }
-  71%  { transform:translateY(-32vh); }
-  82%  { transform:translateY(-36vh); }
-  90%  { transform:translateY(-40vh); }
-  98%  { transform:translateY(-40vh); }
+  18%  { transform:translateY( -3vh); }
+  26%  { transform:translateY( -6vh); }
+  34%  { transform:translateY( -9vh); }
+  42%  { transform:translateY(-12vh); }
+  50%  { transform:translateY(-15vh); }
+  58%  { transform:translateY(-18vh); }
+  66%  { transform:translateY(-21vh); }
+  71%  { transform:translateY(-24vh); }
+  82%  { transform:translateY(-27vh); }
+  90%  { transform:translateY(-30vh); }
+  98%  { transform:translateY(-30vh); }
   100% { transform:translateY(    0); }
 }
 
-@media only screen and (max-width: 800px) {
+@keyframes horizontal-scroll{
+  0%   {transform:translateX(  0);}
+  100% {transform:translateX(-100%);}
+}
+
+@media screen and (max-width: 800px) {
+  header h1{
+    margin: 0 0.5vw 0 0.5vw;
+  }
+
+  header button{
+    font-size: 50%;
+    margin: 0 0.5vw 0 0.5vw;
+    width: 10vw;
+  }
+  header button span {
+    display: none;
+  }
+  .pause-button{
+    order:1;
+  }
   .new-player-button{
+    display: none;
     filter: opacity(0.4);
+  }
+  .hiscores{
+    overflow: hidden;
+    width: 10vw;
+    height: 100%;
+    font-weight: bolder;
+  }
+  .hiscores ul {
+    display: block;
+    overflow: hidden;
+    font-size: 50%;
+    height: 50%;
+    width: 170vw;
+    margin: 0;
+
+    display: flex;
+    flex-wrap: nowrap;
+  }
+  .hiscores li {
+    margin:0;
+    width: 15vw;
+    text-align: center;
+    display: inline-block;
+  }
+  .hiscore-players{
+    align-items: flex-end;
+    height: fit-content;
+    direction:ltr;
+    animation: horizontal-scroll 60s linear infinite;
+  }
+  .hiscore-scores{
+    animation: horizontal-scroll 60s linear infinite;
+  }
+  main{
+    align-content: center;
+    border: 0;
   }
   section{
     flex-grow: 0;
@@ -272,12 +359,14 @@ tetris-overlay.enable-overlay{
     align-items: center;
     width: min-content;
     min-width: min-content;
-    max-width: 95vw;
+    /* max-width: 95vw; */
+    margin:0;
+    box-shadow: none;
   }
   .play-decorator{
     flex-grow: 1;
     height:fit-content;
-    width:90vw;
+    width:95vw;
   }
   .info{
     width: 100%;
