@@ -5,7 +5,7 @@ const localHiscoresStorageKey = 'tentris-hiscores'
 
 const winningscore = 650
 
-storageDebugMode && console.log(localStorage.getItem(localHiscoresStorageKey))
+storageDebugMode && console.log('local storage', localHiscoresStorageKey,':' , localStorage.getItem(localHiscoresStorageKey))
 
 if (!localStorage.getItem(localHiscoresStorageKey)){
   const defaultHiscores = JSON.stringify(
@@ -14,5 +14,16 @@ if (!localStorage.getItem(localHiscoresStorageKey)){
   localStorage.setItem(localHiscoresStorageKey, defaultHiscores)
 }
 
-storageDebugMode && console.log(localStorage.getItem(localHiscoresStorageKey))
+const localHiscores = JSON.parse(localStorage.getItem(localHiscoresStorageKey))
 
+storageDebugMode && console.log(localHiscores)
+
+const lowestHiscore = localHiscores[localHiscores.length - 1]
+
+if (winningscore > lowestHiscore){
+  localHiscores.pop()
+  localHiscores.push(winningscore)
+  localHiscores.sort((a, b) => b - a)
+}
+
+console.log(localHiscores)
