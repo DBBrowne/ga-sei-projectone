@@ -119,9 +119,10 @@ section{
   border: outset rgba(150, 150, 150, 0.75) 10px;
   -webkit-box-shadow: inset 0px 10px 27px -8px #050505, 4px 4px 11px 4px rgba(150, 150, 150, 0.6); 
 box-shadow: inset 0px 10px 20px -8px #050505, 4px 4px 5px 4px rgba(150, 150, 150, 0.4);
-  margin: 1vw;
+  margin: 1vh;
   margin-top:0;
   height:max-content;
+  min-width: 450px;
 }
 
 small{
