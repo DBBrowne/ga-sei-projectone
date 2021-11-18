@@ -606,14 +606,12 @@ function setCssGridProperties(rows, columns){
   htmlRoot.style.setProperty('--playmatrix-height-count', gridRows)
 }
 function setPlayViewCellHeight(playMatrixViewHtmlElement){
-  console.log(playMatrixViewHtmlElement)
-  // const playerViewCell = playMatrixViewHtmlElement.lastChild
+  isDebugMode && console.log(playMatrixViewHtmlElement)
   const playerViewCell = document.querySelector('.player1 .play-matrix').lastChild
-  console.log(playerViewCell)
+  isDebugMode && console.log(playerViewCell)
   const playMatrixCellEdgeLength = playerViewCell.offsetWidth
     
-  // isDebugMode && 
-  console.log(playMatrixCellEdgeLength)
+  isDebugMode && console.log(playMatrixCellEdgeLength)
 
   htmlRoot.style.setProperty('--playmatrix-cell-edge-length', `${playMatrixCellEdgeLength}px`)
 }
