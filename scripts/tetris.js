@@ -4,6 +4,7 @@
 class TetrominoShape {
   constructor(shapeMap, fillColor = 'white'){
     this.shapeMap = shapeMap
+    //todo: hash classname for new shape or use hexCode, add to css, set fill colour and border entirely with class
     this.fillColor = fillColor
   }
 }

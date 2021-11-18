@@ -15,3 +15,10 @@ Tetronimos:
 		<img src="https://static.wikia.nocookie.net/tetrisconcept/images/c/ca/Tetromino_image.png/revision/latest/scale-to-width-down/350?cb=20090706171943" srcset="https://static.wikia.nocookie.net/tetrisconcept/images/c/ca/Tetromino_image.png/revision/latest/scale-to-width-down/350?cb=20090706171943 1x, https://static.wikia.nocookie.net/tetrisconcept/images/c/ca/Tetromino_image.png/revision/latest/scale-to-width-down/700?cb=20090706171943 2x" class="pi-image-thumbnail" alt="" data-image-key="Tetromino_image.png" data-image-name="Tetromino image.png" width="270" height="90">
 	<figcaption class="pi-item-spacing pi-caption">The various types of tetrominoes, from tetris.fandom.com</figcaption>
 </figure>
+
+Small challenges that felt like wins - 
+
+(hash new shape colour or use hex code as class name) to ccreate unique classes for each new shape to allow setting all filled shape properties with class without having to manually create classes.
+
+Big challenges - 
+
