@@ -352,7 +352,6 @@ class TetrisGame {
 
     // attach bomb
     const bombFigure = newPlayerSection.querySelector('.bomb')
-    bombFigure.addEventListener('click', this.handleBombClick)
     const bombImg = document.createElement('img')
     bombImg.src = './assets/bomb.gif' 
     bombImg.alt = 'bomb'
@@ -362,6 +361,8 @@ class TetrisGame {
 
     bombFigure.appendChild(bombImg)
     bombFigure.appendChild(bombImgCaption)
+
+    this.armBomb()
 
     this.buildMatrix()
 
@@ -429,6 +430,11 @@ class TetrisGame {
         this.playerSection.querySelector(`.${input.control.legendClassName}`).innerHTML = input.name
       }
     }
+  }
+  armBomb(){
+    const bombFigure = this.playerSection.querySelector('.bomb')
+    bombFigure.addEventListener('click', this.handleBombClick)
+    bombFigure.style.visibility = 'unset'
   }
   handleBombClick(){
     // target the data-layer player object
@@ -513,6 +519,8 @@ class TetrisGame {
     this.activeTetromino.clearCurrentLocation()
     this.resumeFromPause()
     this.buildMatrix()
+    this.armBomb()
+    
     this.playerRowsCleared = 0
     this.playerScore = 0
     this.injectScoreIntoHTML()
