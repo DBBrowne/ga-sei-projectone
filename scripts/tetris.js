@@ -757,13 +757,13 @@ function resetGame() {
 }
 function startGame(){
   globalIsGameOngoing = true
-  if (isDebugMode){
     globalPlayers.forEach(player=>{
-      player.startGame('red')
+    let forceTetrColor = null
+    isDebugMode && (forceTetrColor = 'red')
+
+    player.startGame(forceTetrColor)
     })
-  } else {
-    globalPlayers.forEach(player=>player.startGame())
-  }
+  
 }
 function redefinePlayerInput(legendElement,keyCode){
   const targetPlayerNumber = parseInt(legendElement.dataset.playerNumber)
