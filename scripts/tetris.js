@@ -30,7 +30,7 @@ const playerCoreHTML = '<div class="info"><div class="score-container"><p>Score:
 // todo: refactor to enum
 const isDebugMode = false
 const isDebugVerbose = false
-const localStorageDebugMode = true
+const localStorageDebugMode = false
 
 const redefineKeyMode = { 
   isOn: false, 
@@ -53,8 +53,8 @@ const dropTickDivider = 1000
 let globalClearedRows = 0
 
 // todo: refactor to enum
-let isGameOngoing = false
-let isGamePaused = false
+let globalIsGameOngoing = false
+let globalIsGamePaused = false
 let globalTickTime = defaultGameTickTime
 
 const pointsPerRow = 100
@@ -153,12 +153,12 @@ const playerControls = { //todo: refactor into TetrisGame object
     name: 'Speed Up',
     legendClassName: 'input-symbol-speed-up',
     keydown(targetPlayerIndex, keypressRepeatFlag){
-      if (isGameOngoing && !keypressRepeatFlag){
+      if (globalIsGameOngoing && !keypressRepeatFlag){
         globalPlayers[targetPlayerIndex].setTickSpeed(globalPlayers[targetPlayerIndex].gameTickTime / speedUpTickDivider)
       }
     },
     keyup(targetPlayerIndex){
-      if (isGameOngoing){ //retain this check so that other keys will still work within debug mode
+      if (globalIsGameOngoing){ //retain this check so that other keys will still work within debug mode
         globalPlayers[targetPlayerIndex].setTickSpeed() 
       }
     },
@@ -167,7 +167,7 @@ const playerControls = { //todo: refactor into TetrisGame object
     name: 'Drop',
     legendClassName: 'input-symbol-drop-piece',
     keydown(targetPlayerIndex){
-      if (isGameOngoing){ //retain this check so that other keys will still work within debug mode
+      if (globalIsGameOngoing){ //retain this check so that other keys will still work within debug mode
         globalPlayers[targetPlayerIndex].setTickSpeed(globalPlayers[targetPlayerIndex].gameTickTime / dropTickDivider)
       }
     },
@@ -321,6 +321,8 @@ class TetrisGame {
     this.gameTickTime = globalTickTime
     this.gameTimer = {}
 
+    this.gameOngoing = false
+
     this.initPlayspace()
   }
 
@@ -401,11 +403,11 @@ class TetrisGame {
     }
   }
   newActiveTetromino (fillColor) {
-    this.setTickSpeed()
+    this.setGameTimer()
     this.activeTetromino = this.newTetromino(fillColor)
   }
   reset(){
-    clearInterval(this.gameTimer)
+    this.stopGameTimer()
     this.buildMatrix()
     this.playerRowsCleared = 0
     this.playerScore = 0
@@ -416,11 +418,15 @@ class TetrisGame {
     this.activeTetromino.moveDown()
     this.checkForCompleteRows()
   }
-  setTickSpeed(tickSpeed = globalTickTime){
-    clearInterval(this.gameTimer)
+  setGameTimer(tickSpeed = globalTickTime){
+    isDebugMode && console.log(`new game timer.  Player: ${this.playerNumber}, TickSpeed: ${tickSpeed}, GlobalTickspeed: ${globalTickTime}`)
+    this.stopGameTimer()
     return this.gameTimer = setInterval(()=>{
       this.gameTick()
     },tickSpeed)
+  }
+  stopGameTimer(){
+    clearInterval(this.gameTimer)
   }
   clearPlayAreaView(){
     this.playMatrix.forEach(row=>row.forEach(cell=> {
@@ -456,6 +462,14 @@ class TetrisGame {
   }
   togglePauseOverlay(){
     this.playerSection.querySelector('.pause-overlay').classList.toggle('enable-overlay')
+  }
+  pauseGame(){
+    this.stopGameTimer()
+    this.togglePauseOverlay()
+  }
+  resumeFromPause(){
+    this.togglePauseOverlay()
+    this.setGameTimer()
   }
 }
 class Tetromino {
@@ -670,6 +684,7 @@ function globalAddClearedRows(playerNumSendingRows, clearedRows){
   globalClearedRows += clearedRows
   globalTickTime = globalTickTime * Math.pow(levelUpTickTimeMultiplier, Math.ceil(globalClearedRows / levelUpTickTimeRowsBreakpoint))
   globalPlayers.forEach(player=>{
+    player.gameTimer
     if (player.playerNumber !== playerNumSendingRows){
       isDebugMode && console.log(`adding ${clearedRows} rows to Player${player.playerNumber}`)
       for (let i = 0; i < clearedRows; i++){
@@ -683,7 +698,9 @@ function globalAddClearedRows(playerNumSendingRows, clearedRows){
         player.gameTick()
       }
     }
+    player.setTickSpeed()
   })
+
 }
 function toggleElementClassFilled(element, fillColor) {
   if (!fillColor){
@@ -715,10 +732,10 @@ function setPlayViewCellHeight(playMatrixViewHtmlElement){
 // ************
 // * playspace functions
 function loseGame(){
-  isGameOngoing = false
+  globalIsGameOngoing = false
   console.log('game over')
   globalPlayers.forEach(player=>{
-    clearInterval(player.gameTimer)
+    player.stopGameTimer()
     hiscoresManager.checkForNewHiscore(player.playerScore)
   })
 }
@@ -726,12 +743,12 @@ function loseGame(){
 function resetGame() {
   // todo does not stop game
   // todo if game state is ended, requires doubleclick to clear field
-  isGameOngoing = false
+  globalIsGameOngoing = false
   globalPlayers.forEach(player=>player.reset())
   globalTickTime = defaultGameTickTime
 }
 function startGame(){
-  isGameOngoing = true
+  globalIsGameOngoing = true
   if (isDebugMode){
     globalPlayers.forEach(player=>{
       player.newActiveTetromino('red')
@@ -803,7 +820,7 @@ function handleKeyPress(e) {
     return
   }
   try {
-    if (isGameOngoing || isDebugMode ){
+    if (globalIsGameOngoing || isDebugMode ){
       const keyBoundPlayerIndex = inputKeyBindings[e.code].player - 1
       inputKeyBindings[e.code].control[e.type](keyBoundPlayerIndex, e.repeat)
     }
@@ -815,7 +832,7 @@ function handleKeyPress(e) {
   }
 }
 function handlePlayButton(){
-  if (!isGameOngoing){
+  if (!globalIsGameOngoing){
     startGame()
     globalPlayButton.textContent = 'reset'
     globalPlayButton.classList.add('allcaps')
@@ -832,21 +849,19 @@ function handlePlayButton(){
   }
 }
 function handlePauseButton() {
-  if (isGameOngoing){
-    isGameOngoing = false
-    isGamePaused = true
+  if (globalIsGameOngoing){
+    globalIsGameOngoing = false
+    globalIsGamePaused = true
     isDebugMode && console.log('game paused')
     globalPlayers.forEach(player=>{
-      clearInterval(player.gameTimer)
-      player.togglePauseOverlay()
+      player.pauseGame()
     })
-  } else if (isGamePaused) {
+  } else if (globalIsGamePaused) {
     isDebugMode && console.log('game unpaused')
-    isGamePaused = false
-    isGameOngoing = true
+    globalIsGamePaused = false
+    globalIsGameOngoing = true
     globalPlayers.forEach(player=>{
-      player.setTickSpeed()
-      player.togglePauseOverlay()
+      player.resumeFromPause()
     })
   }
   
@@ -857,7 +872,7 @@ function handleRedefineInput(){
   this.classList.add('rebinding-input')
 }
 function addNewPlayer(){
-  if (isGameOngoing){
+  if (globalIsGameOngoing){
     return false
   }
   // init new play field and return new player number
@@ -882,7 +897,7 @@ if (isDebugMode){
   document.querySelector('head').innerHTML += '<style>* {border: solid rgb(80, 80, 80) 0.2px;}</style>'
   document.querySelectorAll('*').forEach(node=> node.classList.add('debug'))
   setTimeout(()=>{
-    globalPlayers.forEach(player=> clearInterval(player.gameTimer))
+    globalPlayers.forEach(player=> player.stopGameTimer())
     console.log('game time over')
   },11500)
 }
