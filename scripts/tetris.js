@@ -154,12 +154,12 @@ const playerControls = { //todo: refactor into TetrisGame object
     legendClassName: 'input-symbol-speed-up',
     keydown(targetPlayerIndex, keypressRepeatFlag){
       if (globalIsGameOngoing && !keypressRepeatFlag){
-        globalPlayers[targetPlayerIndex].setTickSpeed(globalPlayers[targetPlayerIndex].gameTickTime / speedUpTickDivider)
+        globalPlayers[targetPlayerIndex].setGameTimer(globalPlayers[targetPlayerIndex].gameTickTime / speedUpTickDivider)
       }
     },
     keyup(targetPlayerIndex){
       if (globalIsGameOngoing){ //retain this check so that other keys will still work within debug mode
-        globalPlayers[targetPlayerIndex].setTickSpeed() 
+        globalPlayers[targetPlayerIndex].setGameTimer() 
       }
     },
   },
@@ -168,7 +168,7 @@ const playerControls = { //todo: refactor into TetrisGame object
     legendClassName: 'input-symbol-drop-piece',
     keydown(targetPlayerIndex){
       if (globalIsGameOngoing){ //retain this check so that other keys will still work within debug mode
-        globalPlayers[targetPlayerIndex].setTickSpeed(globalPlayers[targetPlayerIndex].gameTickTime / dropTickDivider)
+        globalPlayers[targetPlayerIndex].setGameTimer(globalPlayers[targetPlayerIndex].gameTickTime / dropTickDivider)
       }
     },
     keyup(){
@@ -706,7 +706,7 @@ function globalAddClearedRows(playerNumSendingRows, clearedRows){
         player.gameTick()
       }
     }
-    player.setTickSpeed()
+    player.setGameTimer()
   })
 
 }
