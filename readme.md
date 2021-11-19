@@ -7,7 +7,7 @@ There are a **LOT** of commits on this project.  These would normally exist on a
 
 [Initial designs](https://github.com/DBBrowne/ga-sei-projectone/wiki/initial-layouts)
 
-[Deployed Here! - not yet!]()
+[Deployed Here!](https://dbbrowne.github.io/ga-sei-projectone/)
 
 Tetronimos:
 <figure class="pi-item pi-image" data-source="image">
