@@ -819,11 +819,16 @@ function handlePlayButton(){
     startGame()
     globalPlayButton.textContent = 'reset'
     globalPlayButton.classList.add('allcaps')
-
+    
+    globalNewPlayerButton.removeEventListener('click', addNewPlayer)
+    globalNewPlayerButton.classList.add('inactive-element')
   } else {
     resetGame()
     globalPlayButton.textContent = 'start game'
     globalPlayButton.classList.remove('allcaps')
+
+    globalNewPlayerButton.addEventListener('click', addNewPlayer)
+    globalNewPlayerButton.classList.remove('inactive-element')
   }
 }
 function handlePauseButton() {

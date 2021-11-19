@@ -252,6 +252,9 @@ tetris-overlay.enable-overlay{
 .allcaps {
   text-transform: uppercase;
 }
+.inactive-element {
+  filter:brightness(30%);
+}
 
 @keyframes rainbow { 
     0%{background-position:0% 75%}
