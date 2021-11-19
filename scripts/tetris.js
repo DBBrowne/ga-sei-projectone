@@ -614,13 +614,25 @@ class Tetromino {
         this.parent.playMatrix[space[0]][space[1]], this.fillColor)
     })
   }
-  checkNextOccupiedSpaces(){
-    return  this.nextOccupiedSpaces.every(nextMoveCell=>{
-      return nextMoveCell[0] >= 0 &&
+  findNextCellsOccupied(){
+    // return false if empty, otherwise return first obstructed cell
+    let obstructedCell = []
+    const allNextCellsClear = this.nextOccupiedSpaces.every(nextMoveCell=>{
+      if (nextMoveCell[0] >= 0 &&
         nextMoveCell[1] >= 0 &&
         nextMoveCell[1] < playMatrixWidth &&
         !this.parent.landedShape[nextMoveCell[0]][nextMoveCell[1]].fillColor
+      ){
+        return true
+      }
+      obstructedCell = nextMoveCell
+      return false
     })
+    if (allNextCellsClear){
+      return false
+    } 
+    return obstructedCell
+
   }
   addToLandedShape(){
     if (
@@ -641,9 +653,9 @@ class Tetromino {
     const nextLocation = [this.baseLocation[0] - 1, this.baseLocation[1]]
     this.nextOccupiedSpaces = this.mapOccupiedSpaces(nextLocation)
 
-    const noIntercepts = this.checkNextOccupiedSpaces()
+    const interceptOnNextSpaces = this.findNextCellsOccupied()
 
-    if (!noIntercepts){
+    if (interceptOnNextSpaces){
       isDebugMode && console.log('intercept')
       this.addToLandedShape()
       return
@@ -656,12 +668,15 @@ class Tetromino {
     this.nextLocation = [this.baseLocation[0] + direction[0],this.baseLocation[1] + direction[1]]
     this.nextOccupiedSpaces = this.mapOccupiedSpaces(this.nextLocation)
     
-    if (this.checkNextOccupiedSpaces()){
+    if (!this.findNextCellsOccupied()){
       this.baseLocation = this.nextLocation
       this.update()
+      return true
     }
+    return false
   }
   rotateShape(isClockwise = true){
+    
     const rotatedShapeMap = rotateMatrix(this.shapeMap, isClockwise)
     const rotatedOffsets = convertShapeMeshToOffsets(rotatedShapeMap)
 
