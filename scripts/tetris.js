@@ -679,27 +679,26 @@ class Tetromino {
     
     const rotatedShapeMap = rotateMatrix(this.shapeMap, isClockwise)
     const rotatedOffsets = convertShapeMeshToOffsets(rotatedShapeMap)
+    const rotatedBaseLocation = this.baseLocation
 
-    this.nextOccupiedSpaces = this.mapOccupiedSpaces(this.baseLocation, rotatedOffsets)
+    this.nextOccupiedSpaces = this.mapOccupiedSpaces(rotatedBaseLocation, rotatedOffsets)
     let nextLocationOccupiedCell = this.findNextCellsOccupied()
     
     console.log(nextLocationOccupiedCell[1])
     //check if wallkick allows rotation
     if (nextLocationOccupiedCell){
-      console.log('wallkick')
-      // console.log(nextLocationOccupiedCell)
-      console.log('wallkick2')
-      console.log('2',nextLocationOccupiedCell[1])
-      console.log('3',nextLocationOccupiedCell[1] - this.parent.playMatrix[0].length - 1)
-      console.log('4',nextLocationOccupiedCell[1] - this.baseLocation[1])
-      const wallkickDirection = nextLocationOccupiedCell[1] - this.baseLocation[1]
-      console.log('wallkick direction', wallkickDirection)
-      this.nextOccupiedSpaces = this.mapOccupiedSpaces([this.baseLocation[0], this.baseLocation[1] + wallkickDirection], rotatedOffsets)
+      const wallkickDirection = nextLocationOccupiedCell[1] - rotatedBaseLocation[1]
+
+      rotatedBaseLocation[1] = rotatedBaseLocation[1] - wallkickDirection
+
+      this.nextOccupiedSpaces = this.mapOccupiedSpaces(rotatedBaseLocation, rotatedOffsets)
+
       nextLocationOccupiedCell = this.findNextCellsOccupied()
     }
 
-    console.log('after')
+    console.log('after nextcells:', nextLocationOccupiedCell)
     if (!nextLocationOccupiedCell){
+      this.baseLocation = rotatedBaseLocation
       this.shapeOffsets = rotatedOffsets
       this.shapeMap = rotatedShapeMap
     } else {
