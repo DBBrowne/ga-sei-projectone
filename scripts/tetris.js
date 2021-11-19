@@ -346,6 +346,8 @@ class TetrisGame {
     isDebugMode && console.log(this.playMatrixView)
     this.playerScoreView = newPlayerSection.querySelector('.info .score-span')
 
+    newPlayerSection.querySelector('.bomb').addEventListener('mousedown', this.handleBombMouseDown)
+
     this.buildMatrix()
 
     this.injectPlayerControlsIntoHTML()
@@ -408,6 +410,26 @@ class TetrisGame {
         this.playerSection.querySelector(`.${input.control.legendClassName}`).innerHTML = input.name
       }
     }
+  }
+  handleBombMouseDown(){
+    // target the data-layer player object
+    const playerDOMSection = this.parentElement.parentElement
+    const playerIndex = parseInt(playerDOMSection.classList[0].replace(/player/, '')) - 1
+    const playerObject = globalPlayers[playerIndex]
+
+    isDebugMode && 1
+    console.log('pickup bomb.  player:', playerObject)
+    //add event listener to playfield
+    playerObject.playMatrixView.addEventListener('mouseup', playerObject.handleBombDrop, 'once')
+    //remove event listener if bomb is dragged outside player section
+    playerObject.playerSection.addEventListener('mouseout', playerObject.handleBombOutsideSection)
+  }
+  handleBombOutsideSection(){
+    console.log('out')
+    this.removeEventListener('mouseout', this.handleBombOutsideSection)
+  }
+  handleBombDrop(e){
+
   }
   startGame(firstTetrominoColor){
     this.isGameOngoing = true

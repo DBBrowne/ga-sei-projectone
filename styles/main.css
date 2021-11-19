@@ -182,6 +182,7 @@ small{
 .bomb{
   align-self: center;
   width: 75px;
+  cursor:grabbing;
 }
 
 .play-decorator{
