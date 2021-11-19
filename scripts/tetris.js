@@ -563,13 +563,13 @@ class TetrisGame {
     this.isGameOngoing = false
     this.stopGameTimer()
     this.applyArt(gameOverArtArray)
-    console.log('Game Over.  player:', this.playerNumber)
+    isDebugMode && console.log('Game Over.  player:', this.playerNumber)
     hiscoresManager.checkForNewHiscore(this.playerScore)
   }
   applyArt(artArray){
     artArray.forEach(cell => {
       // play view is mirrored, so mirror array to make drawing art easier
-      toggleElementClassFilled(this.playMatrix[cell[1]][15 - cell[0]], 'orange')
+      toggleElementClassFilled(this.playMatrix[cell[1]][15 - cell[0]], 'chartreuse')
     })
   }
 }
