@@ -321,7 +321,7 @@ class TetrisGame {
     this.gameTickTime = globalTickTime
     this.gameTimer = {}
 
-    this.gameOngoing = false
+    this.isGameOngoing = false
 
     this.initPlayspace()
   }
@@ -402,6 +402,10 @@ class TetrisGame {
       }
     }
   }
+  startGame(firstTetrominoColor){
+    this.isGameOngoing = true
+    this.newActiveTetromino(firstTetrominoColor)
+  }
   newActiveTetromino (fillColor) {
     this.setGameTimer()
     this.activeTetromino = this.newTetromino(fillColor)
@@ -471,6 +475,10 @@ class TetrisGame {
     this.togglePauseOverlay()
     this.setGameTimer()
   }
+  loseGame(){
+    this.isGameOngoing = false
+    this.stopGameTimer()
+  }
 }
 class Tetromino {
   constructor(shapeMap, fillColor, parent, baseLocation = tetrominoSpawnYX) {
@@ -525,7 +533,7 @@ class Tetromino {
     if (
       this.occupiedSpaces.every(cell=>{
         if (cell[0] >= playMatrixHeight){
-          loseGame()
+          this.parent.loseGame()
           return false
         }
         this.parent.landedShape[cell[0]][cell[1]].fillColor = this.fillColor 
@@ -751,11 +759,10 @@ function startGame(){
   globalIsGameOngoing = true
   if (isDebugMode){
     globalPlayers.forEach(player=>{
-      player.newActiveTetromino('red')
-      player.setTickSpeed()
+      player.startGame('red')
     })
   } else {
-    globalPlayers.forEach(player=>player.newActiveTetromino())
+    globalPlayers.forEach(player=>player.startGame())
   }
 }
 function redefinePlayerInput(legendElement,keyCode){
