@@ -125,6 +125,10 @@ box-shadow: inset 0px 10px 20px -8px #050505, 4px 4px 5px 4px rgba(150, 150, 150
   min-width: 450px;
 }
 
+section.bomb-cursor{
+  cursor: url("../assets/bomb-cursor.gif"), auto;
+}
+
 small{
   font-size:60%;
 }

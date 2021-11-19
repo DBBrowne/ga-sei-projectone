@@ -29,7 +29,7 @@ const globalPlayButton = document.querySelector('.play-button')
 const globalPauseButton = document.querySelector('.pause-button')
 const globalNewPlayerButton = document.querySelector('.new-player-button')
 
-const playerCoreHTML = '<div class="info"><div class="score-container"><p>Score:&nbsp;</p><span class="score-span">000</span></div><ul class="controls"><p>Controls:<br><small>click to redefine, then press new key</small></p></ul><img class="bomb" src="./assets/bomb.gif" alt="bomb"></div><div class="play-decorator"><tetris-overlay class="pause-overlay"><p class = "rainbow-text">pause</p></tetris-overlay><div class="play-matrix"></div></div>'
+const playerCoreHTML = '<div class="info"><div class="score-container"><p>Score:&nbsp;</p><span class="score-span">000</span></div><ul class="controls"><p>Controls:<br><small>click to redefine, then press new key</small></p></ul><figure class="bomb"></figure></div><div class="play-decorator"><tetris-overlay class="pause-overlay"><p class = "rainbow-text">pause</p></tetris-overlay><div class="play-matrix"></div></div>'
 // **************************************************************************
 // Variables
 // todo: refactor to enum
@@ -346,7 +346,18 @@ class TetrisGame {
     isDebugMode && console.log(this.playMatrixView)
     this.playerScoreView = newPlayerSection.querySelector('.info .score-span')
 
-    newPlayerSection.querySelector('.bomb').addEventListener('dragstart', this.handleBombMouseDown)
+    // attach bomb
+    const bombFigure = newPlayerSection.querySelector('.bomb')
+    bombFigure.addEventListener('click', this.handleBombClick)
+    const bombImg = document.createElement('img')
+    bombImg.src = './assets/bomb.gif' 
+    bombImg.alt = 'bomb'
+    bombImg.style.height = '75px'
+    const bombImgCaption = document.createElement('figcaption')
+    bombImgCaption.textContent = 'click me!!'
+
+    bombFigure.appendChild(bombImg)
+    bombFigure.appendChild(bombImgCaption)
 
     this.buildMatrix()
 
@@ -415,27 +426,42 @@ class TetrisGame {
       }
     }
   }
-  handleBombMouseDown(){
+  handleBombClick(){
     // target the data-layer player object
     const playerDOMSection = this.parentElement.parentElement
     const playerIndex = parseInt(playerDOMSection.classList[0].replace(/player/, '')) - 1
     const playerObject = globalPlayers[playerIndex]
 
-    isDebugMode && 1
-    console.log('pickup bomb.  player:', playerObject)
+    isDebugMode && console.log('pickup bomb.  player:', playerObject)
     // add event listener to playfield
-    playerObject.playMatrixView.addEventListener('mouseup', playerObject.handleBombDrop, 'once')
-    // remove event listener if bomb is dragged outside player section
-    // does not work as intended as dragging carries the host element WITH THE MOUSE.  Solution is to use mousemove to monitor the absolute mouse location and compare to section locations
+    playerObject.playMatrixView.addEventListener('click',playerObject.handleBombDrop)
+
+    playerObject.playerSection.classList.add('bomb-cursor')
+
+    this.style.visibility = 'hidden'
+
+    // remove event listener if bomb is moved outside player section
     playerObject.playerSection.addEventListener('mouseleave', playerObject.handleBombOutsideSection)
   }
   handleBombOutsideSection(){
     const playerObject = globalPlayers[parseInt(this.classList[0].replace(/player/, '')) - 1]
     console.log('out', this)
-    this.removeEventListener('mouseleave', playerObject.handleBombOutsideSection)
+    playerObject.clearBombCommonTasks()
+    
+    playerObject.playerSection.querySelector('.bomb').style.visibility = 'unset'
+
   }
-  handleBombDrop(){
-    console.log(this)
+  handleBombDrop(e){
+    const playerObject = globalPlayers[parseInt(e.target.dataset.playerNumber) - 1]
+    this.style.backgroundColor = 'red'
+    playerObject.clearBombCommonTasks()
+    console.log('drop', this)
+    console.log('drop', e.target)
+  }
+  clearBombCommonTasks(){
+    this.playMatrixView.removeEventListener('click',this.handleBombDrop)
+    this.playerSection.removeEventListener('mouseleave', this.handleBombOutsideSection)
+    this.playerSection.classList.remove('bomb-cursor')
   }
   startGame(firstTetrominoColor){
     this.isGameOngoing = true
