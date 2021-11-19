@@ -346,7 +346,7 @@ class TetrisGame {
     isDebugMode && console.log(this.playMatrixView)
     this.playerScoreView = newPlayerSection.querySelector('.info .score-span')
 
-    newPlayerSection.querySelector('.bomb').addEventListener('mousedown', this.handleBombMouseDown)
+    newPlayerSection.querySelector('.bomb').addEventListener('dragstart', this.handleBombMouseDown)
 
     this.buildMatrix()
 
@@ -372,7 +372,11 @@ class TetrisGame {
       //count from width-1 to 0 to retain 0,0 at the lower left of the play view
       for (let x = columns - 1; x >= 0; x--){
         const playCell = document.createElement('div')
-      
+        
+        playCell.dataset.matrixCoordinateY = y
+        playCell.dataset.matrixCoordinateX = x
+        playCell.dataset.playerNumber = this.playerNumber
+
         if (isDebugMode){
           playCell.textContent = `${x}, ${y}`
           playCell.classList.add('debug')
@@ -419,17 +423,19 @@ class TetrisGame {
 
     isDebugMode && 1
     console.log('pickup bomb.  player:', playerObject)
-    //add event listener to playfield
+    // add event listener to playfield
     playerObject.playMatrixView.addEventListener('mouseup', playerObject.handleBombDrop, 'once')
-    //remove event listener if bomb is dragged outside player section
-    playerObject.playerSection.addEventListener('mouseout', playerObject.handleBombOutsideSection)
+    // remove event listener if bomb is dragged outside player section
+    // does not work as intended as dragging carries the host element WITH THE MOUSE.  Solution is to use mousemove to monitor the absolute mouse location and compare to section locations
+    playerObject.playerSection.addEventListener('mouseleave', playerObject.handleBombOutsideSection)
   }
   handleBombOutsideSection(){
-    console.log('out')
-    this.removeEventListener('mouseout', this.handleBombOutsideSection)
+    const playerObject = globalPlayers[parseInt(this.classList[0].replace(/player/, '')) - 1]
+    console.log('out', this)
+    this.removeEventListener('mouseleave', playerObject.handleBombOutsideSection)
   }
-  handleBombDrop(e){
-
+  handleBombDrop(){
+    console.log(this)
   }
   startGame(firstTetrominoColor){
     this.isGameOngoing = true
