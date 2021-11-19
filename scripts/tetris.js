@@ -124,6 +124,89 @@ const maxShapeSize = tetrominoShapes.reduce((acc,shape)=>{
   return Math.max(acc, shape.shapeMap.length)
 },0)
 
+const gameOverArtArray = [
+  [0,1],
+  [0,5],
+  [0,8],
+  [0,9],
+  [0,10],
+  [0,11],
+  [0,12],
+  [0,14],
+  [1,0],
+  [1,2],
+  [1,4],
+  [1,6],
+  [1,8],
+  [1,12],
+  [1,14],
+  [2,0],
+  [2,2],
+  [2,4],
+  [2,6],
+  [2,8],
+  [2,9],
+  [2,10],
+  [2,12],
+  [2,13],
+  [3,0],
+  [3,2],
+  [3,4],
+  [3,6],
+  [3,8],
+  [3,12],
+  [3,14],
+  [4,1],
+  [4,4],
+  [4,6],
+  [4,8],
+  [4,9],
+  [4,10],
+  [4,12],
+  [4,13],
+  [6,1],
+  [6,4],
+  [6,6],
+  [6,8],
+  [6,12],
+  [6,14],
+  [6,15],
+  [7,0],
+  [7,2],
+  [7,4],
+  [7,6],
+  [7,8],
+  [7,12],
+  [7,14],
+  [8,0],
+  [8,2],
+  [8,4],
+  [8,5],
+  [8,6],
+  [8,8],
+  [8,10],
+  [8,12],
+  [8,14],
+  [8,15],
+  [9,0],
+  [9,4],
+  [9,6],
+  [9,8],
+  [9,9],
+  [9,11],
+  [9,12],
+  [9,14],
+  [10,1],
+  [10,2],
+  [10,4],
+  [10,5],
+  [10,6],
+  [10,8],
+  [10,12],
+  [10,14],
+  [0,15]
+]
+
 // **************************************************************************
 // Controls
 // define behaviour for a control
@@ -429,9 +512,9 @@ class TetrisGame {
     isDebugMode && console.log(`new game timer.  Player: ${this.playerNumber}, TickSpeed: ${tickSpeed}, GlobalTickspeed: ${globalTickTime}`)
     this.stopGameTimer()
     if (this.isGameOngoing && !globalIsGamePaused){
-    return this.gameTimer = setInterval(()=>{
-      this.gameTick()
-    },tickSpeed)
+      return this.gameTimer = setInterval(()=>{
+        this.gameTick()
+      },tickSpeed)
     }
   }
   stopGameTimer(){
@@ -753,12 +836,12 @@ function resetGame() {
 }
 function startGame(){
   globalIsGameOngoing = true
-    globalPlayers.forEach(player=>{
+  globalPlayers.forEach(player=>{
     let forceTetrColor = null
     isDebugMode && (forceTetrColor = 'red')
 
     player.startGame(forceTetrColor)
-    })
+  })
   
 }
 function redefinePlayerInput(legendElement,keyCode){
