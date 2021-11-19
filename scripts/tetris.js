@@ -1,4 +1,9 @@
 //  * TETRIS
+
+// asset credits:
+// bomb: https://tenor.com/view/bomb-explode-gif-12917124
+// explosion: https://i.pinimg.com/originals/66/e6/40/66e6407c40863b263f4ed8e2bc1a3119.gif
+
 // Initialisation Constructors
 
 class TetrominoShape {
