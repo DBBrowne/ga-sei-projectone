@@ -17,12 +17,14 @@ function testJestConnection() {
 
 // DOM Elements
 
+const pageMain = document.querySelector('main')
+const htmlRoot = document.documentElement
+
 const globalPlayButton = document.querySelector('.play-button')
 const globalPauseButton = document.querySelector('.pause-button')
-const pageMain = document.querySelector('main')
-const newPlayerButton = document.querySelector('.new-player-button')
+const globalNewPlayerButton = document.querySelector('.new-player-button')
+
 const playerCoreHTML = '<div class="info"><div class="score-container"><p>Score:&nbsp;</p><span class="score-span">000</span></div><ul class="controls"><p>Controls:<br><small>click to redefine, then press new key</small></p></ul></div><div class="play-decorator"><tetris-overlay class="pause-overlay"><p class = "rainbow-text">pause</p></tetris-overlay><div class="play-matrix"></div></div>'
-const htmlRoot = document.documentElement
 // **************************************************************************
 // Variables
 // todo: refactor to enum
@@ -817,6 +819,7 @@ function handlePlayButton(){
     startGame()
     globalPlayButton.textContent = 'reset'
     globalPlayButton.classList.add('allcaps')
+
   } else {
     resetGame()
     globalPlayButton.textContent = 'start game'
@@ -849,7 +852,12 @@ function handleRedefineInput(){
   this.classList.add('rebinding-input')
 }
 function addNewPlayer(){
-  globalPlayers.push(new TetrisGame)
+  if (isGameOngoing){
+    return false
+  }
+  // init new play field and return new player number
+  return globalPlayers.push(new TetrisGame)
+  
 }
 
 function handleWindowResize(){
@@ -862,7 +870,7 @@ function handleWindowResize(){
 document.addEventListener('keydown', handleKeyPress)
 document.addEventListener('keyup',   handleKeyPress)
 globalPlayButton.addEventListener('click',   handlePlayButton)
-newPlayerButton.addEventListener('click', addNewPlayer)
+globalNewPlayerButton.addEventListener('click', addNewPlayer)
 globalPauseButton.addEventListener('click', handlePauseButton)
 
 if (isDebugMode){
