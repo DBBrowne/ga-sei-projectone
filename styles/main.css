@@ -179,6 +179,11 @@ small{
   width: 7em;
 }
 
+.bomb{
+  align-self: center;
+  width: 75px;
+}
+
 .play-decorator{
   flex-grow: 1;
   position: relative;

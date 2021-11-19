@@ -29,7 +29,7 @@ const globalPlayButton = document.querySelector('.play-button')
 const globalPauseButton = document.querySelector('.pause-button')
 const globalNewPlayerButton = document.querySelector('.new-player-button')
 
-const playerCoreHTML = '<div class="info"><div class="score-container"><p>Score:&nbsp;</p><span class="score-span">000</span></div><ul class="controls"><p>Controls:<br><small>click to redefine, then press new key</small></p></ul></div><div class="play-decorator"><tetris-overlay class="pause-overlay"><p class = "rainbow-text">pause</p></tetris-overlay><div class="play-matrix"></div></div>'
+const playerCoreHTML = '<div class="info"><div class="score-container"><p>Score:&nbsp;</p><span class="score-span">000</span></div><ul class="controls"><p>Controls:<br><small>click to redefine, then press new key</small></p></ul><img class="bomb" src="./assets/bomb.gif" alt="bomb"></div><div class="play-decorator"><tetris-overlay class="pause-overlay"><p class = "rainbow-text">pause</p></tetris-overlay><div class="play-matrix"></div></div>'
 // **************************************************************************
 // Variables
 // todo: refactor to enum
