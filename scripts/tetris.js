@@ -37,18 +37,22 @@ const isDebugMode = false
 const isDebugVerbose = false
 const localStorageDebugMode = false
 
-const redefineKeyMode = { 
-  isOn: false, 
-  legendElement: {}, 
-}
-
-const globalPlayers = []
-
 const playMatrixHeight = 20
 const playMatrixWidth = 16
 
 const tetrominoSpawnXY = [7,20]
+
+const bombSize = 1
+const deadRowFill = 'lightgrey'
+
+const globalPlayers = []
+
 const localHiscoresStorageKey = 'tentris-hiscores'
+
+const redefineKeyMode = { 
+  isOn: false, 
+  legendElement: {}, 
+}
 
 const defaultGameTickTime = 500
 const levelUpTickTimeMultiplier = 0.90
@@ -295,7 +299,7 @@ class LandedShape extends Array {
     const newRowArray = []
     for (let i = 0; i < length;i++){
       newRowArray.push({})
-      deadRow && (newRowArray[i].fillColor = 'lightgrey')
+      deadRow && (newRowArray[i].fillColor = deadRowFill)
     }
     if (deadRow){
       newRowArray.fullCellsCount = length + 1
@@ -452,11 +456,43 @@ class TetrisGame {
 
   }
   handleBombDrop(e){
-    const playerObject = globalPlayers[parseInt(e.target.dataset.playerNumber) - 1]
-    this.style.backgroundColor = 'red'
-    playerObject.clearBombCommonTasks()
-    console.log('drop', this)
-    console.log('drop', e.target)
+    const targetDivData = e.target.dataset
+    const targetPlayerObject = globalPlayers[parseInt(targetDivData.playerNumber) - 1]
+    targetPlayerObject.clearBombCommonTasks()
+    const targetLandedShape = targetPlayerObject.landedShape
+
+    const targetY = parseInt(targetDivData.matrixCoordinateY)
+    const targetX = playMatrixWidth - parseInt(targetDivData.matrixCoordinateX) - 1
+
+    const targets = []
+    console.log(targets)
+    for (let y = -bombSize;y <= bombSize; y++){
+      for (let x = -bombSize;x <= bombSize; x++){
+        targets.push([targetY + y, targetX + x])
+      }
+    }
+    [[targetY + bombSize + 1, targetX], [targetY - bombSize - 1, targetX], [targetY, targetX + bombSize + 1], [targetY, targetX - bombSize - 1]].forEach(target => targets.push(target))
+
+    console.log(targets)
+
+    targets.forEach(target=>{
+      const targetRow = targetLandedShape[target[0]]
+      let targetFill = ''
+      try {
+        targetFill = targetRow[target[1]].fillColor
+        delete targetRow[target[1]].fillColor
+
+        if (!(targetFill === deadRowFill)){
+          targetRow.fullCellsCount--
+        }
+      } catch (e){
+        isDebugMode && console.log(e)
+      }
+    })
+
+    targetPlayerObject.clearPlayAreaView()
+    targetPlayerObject.landedShape.draw(targetPlayerObject)
+    isDebugMode && console.log('bomb', e.target)
   }
   clearBombCommonTasks(){
     this.playMatrixView.removeEventListener('click',this.handleBombDrop)
