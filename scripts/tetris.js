@@ -580,6 +580,7 @@ class Tetromino {
     this.shapeMap = shapeMap
     this.shapeOffsets = convertShapeMeshToOffsets(shapeMap)
     this.occupiedSpaces = []
+    // todo: pass nextOccupiedSpaces directly from function to function ot avoid storage?
     this.nextOccupiedSpaces = []
     this.parent = parent
 
@@ -682,31 +683,27 @@ class Tetromino {
     const rotatedBaseLocation = [...this.baseLocation]
 
     this.nextOccupiedSpaces = this.mapOccupiedSpaces(rotatedBaseLocation, rotatedOffsets)
-    let nextLocationOccupiedCell = this.findNextCellsOccupied()
+    let nextLocationObstructedCell = this.findNextCellsOccupied()
     
-    console.log(nextLocationOccupiedCell[1])
-    //check if wallkick allows rotation
-    if (nextLocationOccupiedCell){
-      //determine direction to kick off wall
-      const wallkickDirection = nextLocationOccupiedCell[1] - rotatedBaseLocation[1]
+    // check if wallkick allows rotation.  Check additional times for larger shapes
+    for (let i = 0;i < Math.floor(this.shapeMap.length / 2); i++){
+      if (nextLocationObstructedCell){
+        const wallkickDirection = 1 * Math.sign(nextLocationObstructedCell[1] - rotatedBaseLocation[1])
+        isDebugMode && console.log('wallkick direction:', wallkickDirection)
+        rotatedBaseLocation[1] = rotatedBaseLocation[1] - wallkickDirection
 
-      rotatedBaseLocation[1] = rotatedBaseLocation[1] - wallkickDirection
-
-      this.nextOccupiedSpaces = this.mapOccupiedSpaces(rotatedBaseLocation, rotatedOffsets)
-      // check that new spaces are free
-      nextLocationOccupiedCell = this.findNextCellsOccupied()
+        this.nextOccupiedSpaces = this.mapOccupiedSpaces(rotatedBaseLocation, rotatedOffsets)
+        // check that new spaces are free
+        nextLocationObstructedCell = this.findNextCellsOccupied()
+      }
     }
-
-    console.log('after nextcells:', nextLocationOccupiedCell)
-    console.log(this.nextOccupiedSpaces)
-    if (!nextLocationOccupiedCell){
+    if (!nextLocationObstructedCell){
       this.baseLocation = rotatedBaseLocation
       this.shapeOffsets = rotatedOffsets
       this.shapeMap = rotatedShapeMap
     } else {
       this.nextOccupiedSpaces = this.occupiedSpaces
     }
-    console.log(this.nextOccupiedSpaces)
     this.update()
   }
 }
