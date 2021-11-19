@@ -412,6 +412,9 @@ class TetrisGame {
   }
   reset(){
     this.stopGameTimer()
+    this.isGameOngoing = false
+    this.activeTetromino.clearCurrentLocation()
+    this.resumeFromPause()
     this.buildMatrix()
     this.playerRowsCleared = 0
     this.playerScore = 0
@@ -425,9 +428,11 @@ class TetrisGame {
   setGameTimer(tickSpeed = globalTickTime){
     isDebugMode && console.log(`new game timer.  Player: ${this.playerNumber}, TickSpeed: ${tickSpeed}, GlobalTickspeed: ${globalTickTime}`)
     this.stopGameTimer()
+    if (this.isGameOngoing && !globalIsGamePaused){
     return this.gameTimer = setInterval(()=>{
       this.gameTick()
     },tickSpeed)
+    }
   }
   stopGameTimer(){
     clearInterval(this.gameTimer)
@@ -464,20 +469,19 @@ class TetrisGame {
     const shape = tetrominoShapes[shapeChoice]
     return new Tetromino(shape.shapeMap, fillColor || shape.fillColor, this)
   }
-  togglePauseOverlay(){
-    this.playerSection.querySelector('.pause-overlay').classList.toggle('enable-overlay')
-  }
   pauseGame(){
     this.stopGameTimer()
-    this.togglePauseOverlay()
+    this.playerSection.querySelector('.pause-overlay').classList.add('enable-overlay')
   }
   resumeFromPause(){
-    this.togglePauseOverlay()
+    this.playerSection.querySelector('.pause-overlay').classList.remove('enable-overlay')
     this.setGameTimer()
   }
   loseGame(){
     this.isGameOngoing = false
     this.stopGameTimer()
+    console.log('Game Over.  player:', this.playerNumber)
+    hiscoresManager.checkForNewHiscore(this.playerScore)
   }
 }
 class Tetromino {
@@ -739,19 +743,11 @@ function setPlayViewCellHeight(playMatrixViewHtmlElement){
 }
 // ************
 // * playspace functions
-function loseGame(){
-  globalIsGameOngoing = false
-  console.log('game over')
-  globalPlayers.forEach(player=>{
-    player.stopGameTimer()
-    hiscoresManager.checkForNewHiscore(player.playerScore)
-  })
-}
 
 function resetGame() {
-  // todo does not stop game
   // todo if game state is ended, requires doubleclick to clear field
   globalIsGameOngoing = false
+  globalIsGamePaused = false
   globalPlayers.forEach(player=>player.reset())
   globalTickTime = defaultGameTickTime
 }
