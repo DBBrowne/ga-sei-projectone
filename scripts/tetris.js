@@ -44,6 +44,7 @@ let tetrominoSpawnXY = [(playMatrixWidth / 2) - 1,playMatrixHeight]
 
 const bombSize = 1
 const deadRowFill = 'lightgrey'
+const gameOverFill = 'chartreuse'
 
 const globalPlayers = []
 
@@ -134,6 +135,7 @@ const maxShapeSize = tetrominoShapes.reduce((acc,shape)=>{
 },0)
 
 const gameOverArtArray = [[1, 0],[5, 0],[8, 0],[9, 0],[10, 0],[12, 0],[14, 0],[0, 1],[2, 1],[4, 1],[6, 1],[8, 1],[12, 1],[14, 1],[0, 2],[2, 2],[4, 2],[6, 2],[8, 2],[9, 2],[10, 2],[12, 2],[13, 2],[0, 3],[2, 3],[4, 3],[6, 3],[8, 3],[12, 3],[14, 3],[1, 4],[4, 4],[6, 4],[8, 4],[9, 4],[10, 4],[12, 4],[13, 4],[1, 6],[4, 6],[6, 6],[8, 6],[12, 6],[14, 6],[15, 6],[0, 7],[2, 7],[4, 7],[6, 7],[8, 7],[12, 7],[14, 7],[0, 8],[2, 8],[4, 8],[5, 8],[6, 8],[8, 8],[10, 8],[12, 8],[14, 8],[15, 8],[0, 9],[4, 9],[6, 9],[8, 9],[9, 9],[11, 9],[12, 9],[14, 9],[1, 10],[2, 10],[4, 10],[5, 10],[6, 10],[8, 10],[12, 10],[14, 10],[15, 10]]
+gameOverArtArray.height = 11
 
 // **************************************************************************
 // Controls
@@ -362,6 +364,16 @@ class TetrisGame {
     bombFigure.appendChild(bombImg)
     bombFigure.appendChild(bombImgCaption)
 
+    const additionalFeaturesElement = newPlayerSection.querySelector('.info')
+    const resizeButton = document.createElement('button')
+    resizeButton.textContent = 'resize'
+    resizeButton.addEventListener('click', handleResizeButton)
+
+    additionalFeaturesElement.appendChild(resizeButton)
+    
+    
+    
+    
     this.armBomb()
 
     this.buildMatrix()
@@ -371,6 +383,7 @@ class TetrisGame {
   }
   buildMatrix(){
     //todo: refactor to deconstruct return.  Currently causes "console.log(...) is undefined"
+    isDebugMode && console.log('new matrix', playMatrixHeight + maxShapeSize, playMatrixWidth)
     const buildReturn = this.buildNewPlayMatrix(playMatrixHeight + maxShapeSize, playMatrixWidth, this.playMatrixView)
     this.playMatrix = buildReturn[0]
     this.landedShape = buildReturn[1]
@@ -592,14 +605,23 @@ class TetrisGame {
   loseGame(){
     this.isGameOngoing = false
     this.stopGameTimer()
-    this.applyArt(gameOverArtArray)
+    this.applyArt(gameOverArtArray, gameOverFill)
     isDebugMode && console.log('Game Over.  player:', this.playerNumber)
     hiscoresManager.checkForNewHiscore(this.playerScore)
   }
-  applyArt(artArray){
+  applyArt(artArray, fillColor){
+    const translationToCenterX = 15 + Math.floor((playMatrixWidth - 15) / 2)
+    const translationToCenterY = Math.floor((playMatrixHeight - artArray.height) / 2)
     artArray.forEach(cell => {
-      // play view is mirrored, so mirror array to make drawing art easier
-      toggleElementClassFilled(this.playMatrix[cell[1]][15 - cell[0]], 'chartreuse')
+      // play view is mirrored, so mirror array to make drawing art easier.  Center art designed for default grid on other sizes.
+
+      const drawCellY = translationToCenterY + cell[1]
+      const drawCellX = translationToCenterX - cell[0]
+
+      const drawCellHasValidPosition = (drawCellY < playMatrixHeight) && (drawCellY >= 0) &&  (drawCellX < playMatrixWidth) && (drawCellX >= 0)
+      if (drawCellHasValidPosition){
+        toggleElementClassFilled(this.playMatrix[drawCellY][drawCellX], fillColor)
+      }
     })
   }
 }
