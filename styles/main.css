@@ -371,6 +371,9 @@ tetris-overlay.enable-overlay{
 }
 
 @media screen and (max-width: 800px) {
+  main {
+    height: fit-content;
+  }
   header h1{
     margin: 0 0.5vw 0 0.5vw;
   }
