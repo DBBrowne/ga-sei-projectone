@@ -150,7 +150,6 @@ const playerControls = { //todo: refactor into TetrisGame object
     name: 'Move Left',
     legendClassName: 'input-symbol-move-left',
     keydown(targetPlayerIndex){
-      console.log('moveleft')
       globalPlayers[targetPlayerIndex].activeTetromino.move([0,1])
     },
     keyup(){
@@ -483,7 +482,7 @@ class TetrisGame {
   }
   handleBombOutsideSection(){
     const playerObject = globalPlayers[parseInt(this.classList[0].replace(/player/, '')) - 1]
-    console.log('out', this)
+    isDebugMode && console.log('out', this)
     playerObject.clearBombCommonTasks()
     
     playerObject.playerSection.querySelector('.bomb').style.visibility = 'unset'
@@ -1067,8 +1066,6 @@ const shapeCreator = {
     this.classList.toggle('filled')
     // XOR toggles value in shapemap between 0 and 1
     shapeCreator.newShapeMap[mapY][mapX] ^= true
-
-    console.log(shapeCreator.newShapeMap[mapY][mapX])
 
     isDebugMode && isDebugVerbose && console.log('after toggle', shapeCreator.newShapeMap)
   },
