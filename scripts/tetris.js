@@ -472,6 +472,7 @@ class TetrisGame {
     isDebugMode && console.log('pickup bomb.  player:', playerObject)
     // add event listener to playfield
     playerObject.playMatrixView.addEventListener('click',playerObject.handleBombDrop)
+    playerObject.playMatrixView.addEventListener('touchstart',playerObject.handleBombDrop)
 
     playerObject.playerSection.classList.add('bomb-cursor')
 
