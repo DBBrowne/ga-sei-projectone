@@ -42,7 +42,9 @@ header button{
   width: 10vh;
   border-style: none;
   font-size: 1.5vh;
-  text-transform: capitalize;
+}
+button{
+text-transform: capitalize;
 }
 header button:hover{
   background-size: 800% 500%;
@@ -126,9 +128,14 @@ box-shadow: inset 0px 10px 20px -8px #050505, 4px 4px 5px 4px rgba(150, 150, 150
   height:max-content;
   min-width: 450px;
 }
-
 section.bomb-cursor{
   cursor: url("../assets/bomb-cursor.gif"), auto;
+}
+section button{
+  background-color: #cebabae8;
+  padding: 1em;
+  width:10em;
+  margin-top: 0.5em;
 }
 
 small{
