@@ -1063,8 +1063,11 @@ const shapeCreator = {
     // isDebugMode && isDebugVerbose
     console.log('after toggle', shapeCreator.newShapeMap)
   },
-  handleColorChange(){
-
+  handleColorChange(e){
+    isDebugMode && isDebugVerbose && console.log(e.target.value)
+    const newColor = e.target.value
+    htmlRoot.style.setProperty('--shape-creater-cell-colour', newColor)
+    shapeCreator.newShapeColor = newColor
   },
 
 }
@@ -1164,6 +1167,7 @@ globalPauseButton.addEventListener('click', handlePauseButton)
 
 globalCreateShapeOverlay.addEventListener('click', handleCreateShapeOverlay)
 globalCreateShapeOverlay.firstChild.addEventListener('click', stopEventPropagation)
+globalCreateShapeOverlay.addEventListener('input', shapeCreator.handleColorChange)
 
 if (isDebugMode){
   document.querySelector('head').innerHTML += '<style>* {border: solid rgb(80, 80, 80) 0.2px;}</style>'
