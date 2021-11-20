@@ -515,7 +515,6 @@ class TetrisGame {
       try {
         targetFill = targetRow[target[1]].fillColor
         delete targetRow[target[1]].fillColor
-        console.log(targetFill === deadRowFill)
         if (!(targetFill === deadRowFill) && targetRow.fullCellsCount < 0){
           targetRow.fullCellsCount--
         }
