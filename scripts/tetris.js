@@ -59,7 +59,7 @@ const defaultGameTickTime = 500
 const levelUpTickTimeMultiplier = 0.90
 const levelUpTickTimeRowsBreakpoint = 1
 const speedUpTickDivider = 5
-const dropTickDivider = 1000
+const dropTickDivider = 5000
 let globalClearedRows = 0
 
 // todo: refactor to enum
