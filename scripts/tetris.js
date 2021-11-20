@@ -367,7 +367,7 @@ class TetrisGame {
 
 
     const additionalFeaturesElement = newPlayerSection.querySelector('.info')
-    const newButtons = [['resize', handleResizeButton], ['create shape', handleCreateShapeButton]]
+    const newButtons = [['resize', handleResizeButton], ['create shape', handleCreateShapeOverlay]]
       
     newButtons.forEach((button)=>{
       const newButton = document.createElement('button')
@@ -1087,11 +1087,9 @@ function handleResizeButton(){
 
   resetPlayMatrixSize({ newX: newX, newY: newY })
 }
-function handleCreateShapeButton(){
-  globalCreateShapeOverlay.classList.add('enable-overlay')
-}
-function closeOverlayHandler(){
-  globalCreateShapeOverlay.classList.remove('enable-overlay')
+function handleCreateShapeOverlay(){
+  globalIsGameOngoing && handlePauseButton()
+  globalCreateShapeOverlay.classList.toggle('enable-overlay')
 }
 
 function handleWindowResize(){
@@ -1106,7 +1104,7 @@ document.addEventListener('keyup',   handleKeyPress)
 globalPlayButton.addEventListener('click',   globalGameStateManager.buttonActivate)
 globalNewPlayerButton.addEventListener('click', addNewPlayer)
 globalPauseButton.addEventListener('click', handlePauseButton)
-globalCreateShapeOverlay.addEventListener('click', closeOverlayHandler)
+globalCreateShapeOverlay.addEventListener('click', handleCreateShapeOverlay)
 
 if (isDebugMode){
   document.querySelector('head').innerHTML += '<style>* {border: solid rgb(80, 80, 80) 0.2px;}</style>'
