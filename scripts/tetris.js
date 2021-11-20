@@ -925,14 +925,14 @@ function setPlayViewCellHeight(playMatrixViewHtmlElement){
 // ************
 // * playspace functions
 
-function resetGame() {
+function globalResetGames() {
   // todo if game state is ended, requires doubleclick to clear field
   globalIsGameOngoing = false
   globalIsGamePaused = false
   globalPlayers.forEach(player=>player.reset())
   globalTickTime = defaultGameTickTime
 }
-function startGame(){
+function globalStartGames(){
   globalIsGameOngoing = true
   globalPlayers.forEach(player=>{
     let forceTetrColor = null
@@ -987,7 +987,33 @@ function resetPlayMatrixSize({ newX = 16, newY = 20 }){
   tetrominoSpawnXY = [(playMatrixWidth / 2) - 1,playMatrixHeight]
   tetrominoSpawnYX = [tetrominoSpawnXY[1],tetrominoSpawnXY[0]]
 
-  resetGame()
+  globalGameStateManager.resetGames()
+}
+const globalGameStateManager = {
+  buttonActivate(){
+    if (!globalIsGameOngoing){
+      globalGameStateManager.startGames()
+    } else {
+      globalGameStateManager.resetGames()
+    }
+  },
+  startGames(){
+    globalStartGames()
+    globalPlayButton.textContent = 'reset'
+    globalPlayButton.classList.add('allcaps')
+    
+    globalNewPlayerButton.removeEventListener('click', addNewPlayer)
+    globalNewPlayerButton.classList.add('inactive-element')
+  },
+  resetGames(){
+    globalResetGames()
+    globalPlayButton.textContent = 'start game'
+    globalPlayButton.classList.remove('allcaps')
+
+    globalNewPlayerButton.addEventListener('click', addNewPlayer)
+    globalNewPlayerButton.classList.remove('inactive-element')
+  },
+}
 }
 // **************************************************************************
 // keypress handler
@@ -1022,23 +1048,6 @@ function handleKeyPress(e) {
       isDebugVerbose && console.log(err)
       console.log('unrecognised key event:', e.code, e.type)
     }
-  }
-}
-function handlePlayButton(){
-  if (!globalIsGameOngoing){
-    startGame()
-    globalPlayButton.textContent = 'reset'
-    globalPlayButton.classList.add('allcaps')
-    
-    globalNewPlayerButton.removeEventListener('click', addNewPlayer)
-    globalNewPlayerButton.classList.add('inactive-element')
-  } else {
-    resetGame()
-    globalPlayButton.textContent = 'start game'
-    globalPlayButton.classList.remove('allcaps')
-
-    globalNewPlayerButton.addEventListener('click', addNewPlayer)
-    globalNewPlayerButton.classList.remove('inactive-element')
   }
 }
 function handlePauseButton() {
@@ -1094,7 +1103,7 @@ function handleWindowResize(){
 
 document.addEventListener('keydown', handleKeyPress)
 document.addEventListener('keyup',   handleKeyPress)
-globalPlayButton.addEventListener('click',   handlePlayButton)
+globalPlayButton.addEventListener('click',   globalGameStateManager.buttonActivate)
 globalNewPlayerButton.addEventListener('click', addNewPlayer)
 globalPauseButton.addEventListener('click', handlePauseButton)
 globalCreateShapeOverlay.addEventListener('click', closeOverlayHandler)
