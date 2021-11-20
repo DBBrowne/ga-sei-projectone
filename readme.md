@@ -6,6 +6,8 @@ Click to equip your bomb.  Click again to blow up a section of your play field.
 
 Resize your playfield with the Resize button.  Layout starts to have problems at around 100x100.
 
+Add new custom Tetromino shapes with the "create shape" button
+
 There are a **LOT** of commits on this project.  These would normally exist on a development branch, then be consolidated and tidied before merging with Main.
 
 
