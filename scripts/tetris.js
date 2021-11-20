@@ -1018,7 +1018,7 @@ const shapeCreator = {
   overlay: globalCreateShapeOverlay,
   displayMatrix: [],
   newShapeMap: [],
-  newShapeColor: '',
+  newShapeColor: '#b71eff',
   shapeCreatorMatrix: [],
   injectShapeBuilder(){
     const currentMaxShapeLength = maxShapeSize
@@ -1069,7 +1069,10 @@ const shapeCreator = {
     htmlRoot.style.setProperty('--shape-creater-cell-colour', newColor)
     shapeCreator.newShapeColor = newColor
   },
-
+  addNewShapeToShapesArray(){
+    console.log(shapeCreator.newShapeMap, shapeCreator.newShapeColor)
+    tetrominoShapes.push(new TetrominoShape(shapeCreator.newShapeMap, shapeCreator.newShapeColor))
+  },
 }
 
 // **************************************************************************
@@ -1167,7 +1170,8 @@ globalPauseButton.addEventListener('click', handlePauseButton)
 
 globalCreateShapeOverlay.addEventListener('click', handleCreateShapeOverlay)
 globalCreateShapeOverlay.firstChild.addEventListener('click', stopEventPropagation)
-globalCreateShapeOverlay.addEventListener('input', shapeCreator.handleColorChange)
+globalCreateShapeOverlay.querySelector('#new-shape-color').addEventListener('input', shapeCreator.handleColorChange)
+globalCreateShapeOverlay.querySelector('#new-shape-add').addEventListener('click', shapeCreator.addNewShapeToShapesArray)
 
 if (isDebugMode){
   document.querySelector('head').innerHTML += '<style>* {border: solid rgb(80, 80, 80) 0.2px;}</style>'

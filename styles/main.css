@@ -292,13 +292,13 @@ tetris-overlay.enable-overlay{
   background-color: var(--shape-creater-cell-colour);
   border-color: var(--shape-creater-cell-colour);
 }
-.create-shape-overlay form{
+.create-shape-overlay .color-creator-buttons{
   display: flex;
   justify-content: space-around;
   width: 100%;
   margin:10px 0
 }
-.create-shape-overlay form * {
+.create-shape-overlay .color-creator-buttons * {
   min-height: 60px;
 }
 
