@@ -1018,17 +1018,17 @@ const shapeCreator = {
   overlay: globalCreateShapeOverlay,
   displayMatrix: [],
   newShapeMap: [],
+  newShapeColor: '',
   shapeCreatorMatrix: [],
   injectShapeBuilder(){
     const currentMaxShapeLength = maxShapeSize
     const displayElement = this.overlay.querySelector('.shape-creator-matrix-container')
-    console.log(displayElement)
     displayElement.innerHTML = ''
     console.log(currentMaxShapeLength)
     for (let y = 0; y < currentMaxShapeLength ; y++){
-      this.displayMatrix.push([])
+      this.newShapeMap.push([])
+      
       //count from width-1 to 0 to retain 0,0 at the lower left of the play view
-      console.log(currentMaxShapeLength)
       for (let x = (currentMaxShapeLength - 1); x >= 0; x--){
         const newCell = document.createElement('div')
         
@@ -1044,13 +1044,29 @@ const shapeCreator = {
         newCell.addEventListener('click', this.toggleCell)
 
         displayElement.prepend(newCell)
-        this.displayMatrix[y].push(newCell)
+        this.newShapeMap[y].push(0)
       }
     }
+    console.log('finishedbuilding',this.newShapeMap)
   },
-  toggleCell(e){
-    console.log('toggle:',e)
+  toggleCell(){
+    // isDebugMode &&
+    console.log('toggle shapecreator:',this)
+    
+    const mapX = this.dataset.matrixCoordinateX
+    const mapY = this.dataset.matrixCoordinateY
+
+    this.classList.toggle('filled')
+
+    shapeCreator.newShapeMap[mapY][mapX] = 1
+
+    // isDebugMode && isDebugVerbose
+    console.log('after toggle', shapeCreator.newShapeMap)
   },
+  handleColorChange(){
+
+  },
+
 }
 
 // **************************************************************************

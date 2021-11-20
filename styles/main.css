@@ -188,7 +188,7 @@ small{
 .bomb{
   align-self: center;
   width: 75px;
-  cursor:grabbing;
+  cursor:cell;
 }
 
 .play-decorator{
@@ -280,7 +280,6 @@ tetris-overlay.enable-overlay{
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, 1fr);
-
   border:outset 10px steelblue;
 }
 .shape-creator-matrix-container>div{
