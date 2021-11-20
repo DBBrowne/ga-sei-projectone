@@ -23,9 +23,6 @@ Tetronimos:
   </a>
 </figure>
 
-Small challenges that felt like wins - 
-
-(hash new shape colour or use hex code as class name) to ccreate unique classes for each new shape to allow setting all filled shape properties with class without having to manually create classes.
 
 Big challenges - 
 
