@@ -1072,8 +1072,8 @@ function addNewPlayer(){
   
 }
 function handleResizeButton(){
-  const newX = parseInt(window.prompt('Resize play field.  Enter new X dimension', 16))
-  const newY = parseInt(window.prompt('Resize play field.  Enter new X dimension', 20))
+  const newX = parseInt(window.prompt('Resize play field.  Enter new X dimension', 16)) || playMatrixWidth
+  const newY = parseInt(window.prompt('Resize play field.  Enter new Y dimension', 20)) || playMatrixHeight
 
   resetPlayMatrixSize({ newX: newX, newY: newY })
 }
