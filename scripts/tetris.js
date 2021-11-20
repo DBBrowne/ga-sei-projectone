@@ -14,12 +14,6 @@ class TetrominoShape {
   }
 }
 
-
-function testJestConnection() {
-  console.log('hello')
-  return 'hello'
-}
-
 // DOM Elements
 
 const pageMain = document.querySelector('main')
@@ -1208,12 +1202,3 @@ hiscoresManager.populateLocalHighscores()
 shapeCreator.injectShapeBuilder()
 
 // **************************************************************************
-// * export functions for testing
-try {
-  exports = {
-    Tetromino,
-    testJestConnection,
-  }
-} catch {
-  'suppress this error in the browser until solution'
-}
