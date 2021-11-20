@@ -364,12 +364,17 @@ class TetrisGame {
     bombFigure.appendChild(bombImg)
     bombFigure.appendChild(bombImgCaption)
 
-    const additionalFeaturesElement = newPlayerSection.querySelector('.info')
-    const resizeButton = document.createElement('button')
-    resizeButton.textContent = 'resize'
-    resizeButton.addEventListener('click', handleResizeButton)
 
-    additionalFeaturesElement.appendChild(resizeButton)
+    const additionalFeaturesElement = newPlayerSection.querySelector('.info')
+    const newButtons = [['resize', handleResizeButton], ['create shape', handleCreateShapeButton]]
+      
+    newButtons.forEach((button)=>{
+      const newButton = document.createElement('button')
+      newButton.textContent = button[0]
+      newButton.addEventListener('click', button[1])
+
+      additionalFeaturesElement.appendChild(newButton)
+    })
     
     
     
@@ -1071,6 +1076,9 @@ function handleResizeButton(){
   const newY = parseInt(window.prompt('Resize play field.  Enter new X dimension', 20))
 
   resetPlayMatrixSize({ newX: newX, newY: newY })
+}
+function handleCreateShapeButton(){
+  
 }
 
 function handleWindowResize(){
