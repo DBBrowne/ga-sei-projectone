@@ -1161,7 +1161,7 @@ function handleResizeButton(){
 
   resetPlayMatrixSize({ newX: newX, newY: newY })
 }
-function handleCreateShapeOverlay(e){
+function handleCreateShapeOverlay(){
   globalIsGameOngoing && handlePauseButton()
   globalCreateShapeOverlay.classList.toggle('enable-overlay')
 }
