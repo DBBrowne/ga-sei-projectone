@@ -5,8 +5,8 @@
   --playmatrix-width-count: 16;
   --playmatrix-height-count: 20;
   --playmatrix-cell-edge-length:50px;
-  --shape-creater-matrix-length:4;
-  --shape-creater-cell-colour:#b71eff;
+  --shape-creator-matrix-length:4;
+  --shape-creator-cell-colour:#b71eff;
 }
 
 * {
@@ -278,8 +278,8 @@ tetris-overlay.enable-overlay{
 }
 .shape-creator-matrix-container{
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: repeat(var(--shape-creator-matrix-length), 1fr);
+  grid-template-rows: repeat(var(--shape-creator-matrix-length), 1fr);
   border:outset 10px steelblue;
 }
 .shape-creator-matrix-container>div{
@@ -289,8 +289,8 @@ tetris-overlay.enable-overlay{
   background-color: rgb(200,200,200);
 }
 .shape-creator-matrix-container .filled{
-  background-color: var(--shape-creater-cell-colour);
-  border-color: var(--shape-creater-cell-colour);
+  background-color: var(--shape-creator-cell-colour);
+  border-color: var(--shape-creator-cell-colour);
 }
 .create-shape-overlay .color-creator-buttons{
   display: flex;

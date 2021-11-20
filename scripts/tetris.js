@@ -34,7 +34,7 @@ const playerCoreHTML = '<div class="info"><div class="score-container"><p>Score:
 // **************************************************************************
 // Variables
 // todo: refactor to enum
-const isDebugMode = false
+const isDebugMode = true
 const isDebugVerbose = false
 const localStorageDebugMode = false
 
@@ -131,7 +131,7 @@ const tetrominoShapes = [
     'darkblue'
   )
 ]
-const maxShapeSize = tetrominoShapes.reduce((acc,shape)=>{
+let globalMaxShapeSize = tetrominoShapes.reduce((acc,shape)=>{
   return Math.max(acc, shape.shapeMap.length)
 },0)
 
@@ -389,8 +389,8 @@ class TetrisGame {
   }
   buildMatrix(){
     //todo: refactor to deconstruct return.  Currently causes "console.log(...) is undefined"
-    isDebugMode && console.log('new matrix', playMatrixHeight + maxShapeSize, playMatrixWidth)
-    const buildReturn = this.buildNewPlayMatrix(playMatrixHeight + maxShapeSize, playMatrixWidth, this.playMatrixView)
+    isDebugMode && console.log('new matrix', playMatrixHeight + globalMaxShapeSize, playMatrixWidth)
+    const buildReturn = this.buildNewPlayMatrix(playMatrixHeight + globalMaxShapeSize, playMatrixWidth, this.playMatrixView)
     this.playMatrix = buildReturn[0]
     this.landedShape = buildReturn[1]
 
@@ -416,7 +416,7 @@ class TetrisGame {
           playCell.textContent = `${x}, ${y}`
           playCell.classList.add('debug')
         }
-        if ((rows - y) <= maxShapeSize){
+        if ((rows - y) <= globalMaxShapeSize){
           playCell.classList.add('spawn-area')
         }
         displayElement.prepend(playCell)
@@ -645,6 +645,7 @@ class Tetromino {
     this.nextOccupiedSpaces = []
     this.parent = parent
 
+    isDebugMode && console.log('shape map:',this.shapeMap)
     //initialise shape
     this.update()
   }
@@ -908,7 +909,7 @@ function toggleElementClassFilled(element, fillColor) {
 }
 
 function setCssGridProperties(rows, columns){
-  const gridRows = !isDebugMode ? rows - maxShapeSize : rows
+  const gridRows = !isDebugMode ? rows - globalMaxShapeSize : rows
   htmlRoot.style.setProperty('--playmatrix-width-count', columns)
   htmlRoot.style.setProperty('--playmatrix-height-count', gridRows)
 }
@@ -1020,11 +1021,12 @@ const shapeCreator = {
   newShapeMap: [],
   newShapeColor: '#b71eff',
   shapeCreatorMatrix: [],
-  injectShapeBuilder(){
-    const currentMaxShapeLength = maxShapeSize
+  currentMaxShapeLength: globalMaxShapeSize,
+  injectShapeBuilder(currentMaxShapeLength = this.currentMaxShapeLength){
     const displayElement = this.overlay.querySelector('.shape-creator-matrix-container')
     displayElement.innerHTML = ''
-    console.log(currentMaxShapeLength)
+    this.newShapeMap = []
+
     for (let y = 0; y < currentMaxShapeLength ; y++){
       this.newShapeMap.push([])
       
@@ -1047,31 +1049,43 @@ const shapeCreator = {
         this.newShapeMap[y].push(0)
       }
     }
-    console.log('finishedbuilding',this.newShapeMap)
+    isDebugMode && console.log('finishedbuilding',this.newShapeMap)
   },
   toggleCell(){
-    // isDebugMode &&
-    console.log('toggle shapecreator:',this)
+    isDebugMode && console.log('toggle shapecreator:',this)
     
     const mapX = this.dataset.matrixCoordinateX
     const mapY = this.dataset.matrixCoordinateY
 
     this.classList.toggle('filled')
+    // XOR toggles value in shapemap between 0 and 1
+    shapeCreator.newShapeMap[mapY][mapX] ^= true
 
-    shapeCreator.newShapeMap[mapY][mapX] = 1
+    console.log(shapeCreator.newShapeMap[mapY][mapX])
 
-    // isDebugMode && isDebugVerbose
-    console.log('after toggle', shapeCreator.newShapeMap)
+    isDebugMode && isDebugVerbose && console.log('after toggle', shapeCreator.newShapeMap)
   },
   handleColorChange(e){
     isDebugMode && isDebugVerbose && console.log(e.target.value)
     const newColor = e.target.value
-    htmlRoot.style.setProperty('--shape-creater-cell-colour', newColor)
+    htmlRoot.style.setProperty('--shape-creator-cell-colour', newColor)
     shapeCreator.newShapeColor = newColor
   },
   addNewShapeToShapesArray(){
-    console.log(shapeCreator.newShapeMap, shapeCreator.newShapeColor)
+    isDebugMode && console.log(shapeCreator.newShapeMap, shapeCreator.newShapeColor)
+    
     tetrominoShapes.push(new TetrominoShape(shapeCreator.newShapeMap, shapeCreator.newShapeColor))
+    globalMaxShapeSize = shapeCreator.currentMaxShapeLength
+
+    globalGameStateManager.resetGames()
+    shapeCreator.injectShapeBuilder()
+  },
+  increaseNewShapeSize(){
+    shapeCreator.currentMaxShapeLength++
+
+    htmlRoot.style.setProperty('--shape-creator-matrix-length', shapeCreator.currentMaxShapeLength)
+
+    shapeCreator.injectShapeBuilder()
   },
 }
 
@@ -1172,6 +1186,7 @@ globalCreateShapeOverlay.addEventListener('click', handleCreateShapeOverlay)
 globalCreateShapeOverlay.firstChild.addEventListener('click', stopEventPropagation)
 globalCreateShapeOverlay.querySelector('#new-shape-color').addEventListener('input', shapeCreator.handleColorChange)
 globalCreateShapeOverlay.querySelector('#new-shape-add').addEventListener('click', shapeCreator.addNewShapeToShapesArray)
+globalCreateShapeOverlay.querySelector('#shape-creator-increase-size-button').addEventListener('click', shapeCreator.increaseNewShapeSize)
 
 if (isDebugMode){
   document.querySelector('head').innerHTML += '<style>* {border: solid rgb(80, 80, 80) 0.2px;}</style>'
