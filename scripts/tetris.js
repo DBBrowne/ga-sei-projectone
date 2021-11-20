@@ -581,13 +581,6 @@ class TetrisGame {
     this.playerScore += Math.ceil(Math.pow(clearedRows, pointsMultirowExponent) * pointsPerRow)
     this.playerScoreView.textContent = this.playerScore
   }
-  newTetromino(fillColor, shapeChoice) {
-    isDebugMode && console.log('newtetr parent:', this)
-    shapeChoice = shapeChoice || Math.floor(Math.random() * tetrominoShapes.length)
-    isDebugMode && console.log('new shape index:', shapeChoice)
-    const shape = tetrominoShapes[shapeChoice]
-    return new Tetromino(shape.shapeMap, fillColor || shape.fillColor, this)
-  }
   pauseGame(){
     this.stopGameTimer()
     this.playerSection.querySelector('.pause-overlay').classList.add('enable-overlay')
