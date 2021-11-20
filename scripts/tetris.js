@@ -37,10 +37,10 @@ const isDebugMode = false
 const isDebugVerbose = false
 const localStorageDebugMode = false
 
-const playMatrixHeight = 20
-const playMatrixWidth = 16
+let playMatrixHeight = 20
+let playMatrixWidth = 16
 
-const tetrominoSpawnXY = [7,20]
+let tetrominoSpawnXY = [(playMatrixWidth / 2) - 1,playMatrixHeight]
 
 const bombSize = 1
 const deadRowFill = 'lightgrey'
@@ -275,7 +275,7 @@ const inputKeyBindings = {
 // * From this point on, location arrays are referenced in the form [y,x],
 // * so that each member of the outer array represents a row of the gamespace
 // **************************************************************************
-const tetrominoSpawnYX = [tetrominoSpawnXY[1],tetrominoSpawnXY[0]]
+let tetrominoSpawnYX = [tetrominoSpawnXY[1],tetrominoSpawnXY[0]]
 
 
 // **************************************************************************
@@ -397,6 +397,9 @@ class TetrisGame {
           playCell.textContent = `${x}, ${y}`
           playCell.classList.add('debug')
         }
+        if ((rows - y) <= maxShapeSize){
+          playCell.classList.add('spawn-area')
+        }
       
         displayElement.prepend(playCell)
         playMatrix[y].push(playCell)
@@ -513,10 +516,21 @@ class TetrisGame {
     this.setGameTimer()
     this.activeTetromino = this.newTetromino(fillColor)
   }
+  newTetromino(fillColor, shapeChoice) {
+    isDebugMode && console.log('newtetr parent:', this)
+    shapeChoice = shapeChoice || Math.floor(Math.random() * tetrominoShapes.length)
+    isDebugMode && console.log('new shape index:', shapeChoice)
+    const shape = tetrominoShapes[shapeChoice]
+    return new Tetromino(shape.shapeMap, fillColor || shape.fillColor, this)
+  }
   reset(){
     this.stopGameTimer()
     this.isGameOngoing = false
-    this.activeTetromino.clearCurrentLocation()
+    try {
+      this.activeTetromino.clearCurrentLocation()
+    } catch (e) {
+      isDebugMode && console.log(e)
+    }
     this.resumeFromPause()
     this.buildMatrix()
     this.armBomb()
@@ -598,6 +612,7 @@ class TetrisGame {
 }
 class Tetromino {
   constructor(shapeMap, fillColor, parent, baseLocation = tetrominoSpawnYX) {
+    isDebugMode && console.log('new tetr spawn at:', baseLocation)
     this.baseLocation = baseLocation
     this.fillColor = fillColor
     this.shapeMap = shapeMap
@@ -942,6 +957,15 @@ function redefinePlayerInput(legendElement,keyCode){
   legendElement.classList.remove('rebinding-input')
   redefineKeyMode.isOn = false
 }
+function resetPlayMatrixSize({ newX = 16, newY = 20 }){
+  playMatrixHeight = newY
+  playMatrixWidth = newX
+
+  tetrominoSpawnXY = [(playMatrixWidth / 2) - 1,playMatrixHeight]
+  tetrominoSpawnYX = [tetrominoSpawnXY[1],tetrominoSpawnXY[0]]
+
+  resetGame()
+}
 // **************************************************************************
 // keypress handler
 
@@ -1024,6 +1048,12 @@ function addNewPlayer(){
   // init new play field and return new player number
   return globalPlayers.push(new TetrisGame)
   
+}
+function handleResizeButton(){
+  const newX = parseInt(window.prompt('Resize play field.  Enter new X dimension', 16))
+  const newY = parseInt(window.prompt('Resize play field.  Enter new X dimension', 20))
+
+  resetPlayMatrixSize({ newX: newX, newY: newY })
 }
 
 function handleWindowResize(){

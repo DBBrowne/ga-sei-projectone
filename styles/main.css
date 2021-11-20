@@ -240,7 +240,7 @@ tetris-overlay.enable-overlay{
 .play-matrix div.filled{
   border: outset 0.6vw;
 }
-.play-matrix div:nth-child(-n + 64){
+.play-matrix .spawn-area{
   background-color: hotpink;
   display: none;
 }
