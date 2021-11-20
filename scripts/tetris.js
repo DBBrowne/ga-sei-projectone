@@ -352,7 +352,7 @@ class TetrisGame {
     isDebugMode && console.log(this.playMatrixView)
     this.playerScoreView = newPlayerSection.querySelector('.info .score-span')
 
-    // attach bomb
+    // attach bomb to existing HTML
     const bombFigure = newPlayerSection.querySelector('.bomb')
     const bombImg = document.createElement('img')
     bombImg.src = './assets/bomb.gif' 
