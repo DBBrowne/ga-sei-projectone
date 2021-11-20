@@ -435,6 +435,7 @@ class TetrisGame {
       controlLegendItem.dataset.playerNumber = this.playerNumber
       controlLegendItem.innerHTML = `<span class="${playerControl.legendClassName}"></span><p>&nbsp;${playerControl.name}</p>`
       controlLegendItem.addEventListener('click', handleRedefineInput)
+      controlLegendItem.addEventListener('touchstart', handleMobileTouchInput)
 
       controlLegendElement.appendChild(controlLegendItem)
     }
@@ -1111,6 +1112,21 @@ function handleKeyPress(e) {
     if (globalIsGameOngoing || isDebugMode ){
       const keyBoundPlayerIndex = inputKeyBindings[e.code].player - 1
       inputKeyBindings[e.code].control[e.type](keyBoundPlayerIndex, e.repeat)
+    }
+  } catch (err) {
+    if (isDebugMode){
+      isDebugVerbose && console.log(err)
+      console.log('unrecognised key event:', e.code, e.type)
+    }
+  }
+}
+function handleMobileTouchInput(){
+  const targetPlayerNumber = parseInt(this.dataset.playerNumber)
+  const action = this.dataset.controlAction
+
+  try {
+    if (globalIsGameOngoing || isDebugMode ){
+      playerControls[action].keyDown(targetPlayerNumber - 1)
     }
   } catch (err) {
     if (isDebugMode){
