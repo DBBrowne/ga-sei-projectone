@@ -533,6 +533,7 @@ class TetrisGame {
   }
   clearBombCommonTasks(){
     this.playMatrixView.removeEventListener('click',this.handleBombDrop)
+    this.playMatrixView.removeEventListener('touchstart',this.handleBombDrop)
     this.playerSection.removeEventListener('mouseleave', this.handleBombOutsideSection)
     this.playerSection.classList.remove('bomb-cursor')
   }
