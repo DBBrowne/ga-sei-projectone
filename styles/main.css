@@ -462,5 +462,11 @@ tetris-overlay.enable-overlay{
     width: 100%;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .controls div{
+    border: solid gray 2px;
+    margin: 3px;
+    padding: 0.4em;
   }
 }
