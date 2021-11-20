@@ -449,7 +449,7 @@ class TetrisGame {
   armBomb(){
     const bombFigure = this.playerSection.querySelector('.bomb')
     bombFigure.addEventListener('click', this.handleBombClick)
-    // bombFigure.addEventListener('touchstart', this.handleBombClick)
+    bombFigure.addEventListener('touchstart', this.handleBombClick)
     bombFigure.style.visibility = 'unset'
   }
   handleBombClick(){
