@@ -196,6 +196,7 @@ small{
   max-width: calc(((90vh)*var(--playmatrix-width-count)/var(--playmatrix-height-count)));
 }
 tetris-overlay{
+  z-index: 10;
   position: fixed;
   display: flex;
   align-items: center;
@@ -260,6 +261,18 @@ tetris-overlay.enable-overlay{
   background-image: url(../assets/explosion.gif);
   background-repeat: no-repeat;
   background-size: contain;
+}
+
+.create-shape-overlay{
+  width:100vw;
+  height: 100vh;
+
+}
+.create-shape-overlay div{
+  min-width: 200px;
+  min-height: 200px;
+  opacity: 100%;
+  background-color: rgba(255,255,255,1);
 }
 
 .rainbow-text {

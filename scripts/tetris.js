@@ -28,6 +28,7 @@ const htmlRoot = document.documentElement
 const globalPlayButton = document.querySelector('.play-button')
 const globalPauseButton = document.querySelector('.pause-button')
 const globalNewPlayerButton = document.querySelector('.new-player-button')
+const globalCreateShapeOverlay = document.querySelector('.create-shape-overlay')
 
 const playerCoreHTML = '<div class="info"><div class="score-container"><p>Score:&nbsp;</p><span class="score-span">000</span></div><ul class="controls"><p>Controls:<br><small>click to redefine, then press new key</small></p></ul><figure class="bomb"></figure></div><div class="play-decorator"><tetris-overlay class="pause-overlay"><p class = "rainbow-text">pause</p></tetris-overlay><div class="play-matrix"></div></div>'
 // **************************************************************************
@@ -1078,7 +1079,10 @@ function handleResizeButton(){
   resetPlayMatrixSize({ newX: newX, newY: newY })
 }
 function handleCreateShapeButton(){
-  
+  globalCreateShapeOverlay.classList.add('enable-overlay')
+}
+function closeOverlayHandler(){
+  globalCreateShapeOverlay.classList.remove('enable-overlay')
 }
 
 function handleWindowResize(){
@@ -1093,6 +1097,7 @@ document.addEventListener('keyup',   handleKeyPress)
 globalPlayButton.addEventListener('click',   handlePlayButton)
 globalNewPlayerButton.addEventListener('click', addNewPlayer)
 globalPauseButton.addEventListener('click', handlePauseButton)
+globalCreateShapeOverlay.addEventListener('click', closeOverlayHandler)
 
 if (isDebugMode){
   document.querySelector('head').innerHTML += '<style>* {border: solid rgb(80, 80, 80) 0.2px;}</style>'
