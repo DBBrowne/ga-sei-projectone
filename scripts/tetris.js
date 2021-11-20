@@ -413,7 +413,6 @@ class TetrisGame {
         if ((rows - y) <= maxShapeSize){
           playCell.classList.add('spawn-area')
         }
-      
         displayElement.prepend(playCell)
         playMatrix[y].push(playCell)
       }
@@ -478,6 +477,7 @@ class TetrisGame {
 
   }
   handleBombDrop(e){
+    isDebugMode && console.log('bomb', e.target)
     const targetDivData = e.target.dataset
     const targetPlayerObject = globalPlayers[parseInt(targetDivData.playerNumber) - 1]
     targetPlayerObject.clearBombCommonTasks()
@@ -487,7 +487,6 @@ class TetrisGame {
     const targetX = playMatrixWidth - parseInt(targetDivData.matrixCoordinateX) - 1
 
     const targets = []
-    console.log(targets)
     for (let y = -bombSize;y <= bombSize; y++){
       for (let x = -bombSize;x <= bombSize; x++){
         targets.push([targetY + y, targetX + x])
@@ -495,7 +494,7 @@ class TetrisGame {
     }
     [[targetY + bombSize + 1, targetX], [targetY - bombSize - 1, targetX], [targetY, targetX + bombSize + 1], [targetY, targetX - bombSize - 1]].forEach(target => targets.push(target))
 
-    console.log(targets)
+    isDebugMode && console.log('bomb targets:',targets)
 
     targets.forEach(target=>{
       const targetRow = targetLandedShape[target[0]]
@@ -510,11 +509,14 @@ class TetrisGame {
       } catch (e){
         isDebugMode && console.log(e)
       }
+      const targetDisplayElement = targetPlayerObject.playMatrix[target[0]][target[1]]
+      targetDisplayElement.classList.add('explode')
+      setTimeout(()=>targetDisplayElement.classList.remove('explode'), 400)
+
     })
 
     targetPlayerObject.clearPlayAreaView()
     targetPlayerObject.landedShape.draw(targetPlayerObject)
-    isDebugMode && console.log('bomb', e.target)
   }
   clearBombCommonTasks(){
     this.playMatrixView.removeEventListener('click',this.handleBombDrop)

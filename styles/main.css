@@ -249,6 +249,18 @@ tetris-overlay.enable-overlay{
   font-size: 6px;
   display: inherit;
 }
+.explode::before {
+  z-index: 1;
+  content: '';
+  position: absolute;
+  
+  width: var(--playmatrix-cell-edge-length);
+  height: var(--playmatrix-cell-edge-length); 
+
+  background-image: url(../assets/explosion.gif);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
 
 .rainbow-text {
   background-image: repeating-linear-gradient(45deg, violet, indigo, blue, green, yellow, orange, red, violet);
