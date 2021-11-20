@@ -10,7 +10,11 @@
     <meta content="width=device-width, initial-scale=1" name="viewport" />
   </head>
   <body>
-    <tetris-overlay class="create-shape-overlay"><div></div></tetris-overlay>
+    <tetris-overlay class="create-shape-overlay"><div>
+      <div class="shape-creator-matrix-container"></div>
+        <form><button id="shape-creator-increase-size-button">increase size</button><input type="color" id="new-shape-color" name="new-shape-color" value="#b71eff"><input type="submit" value="add shape">
+        </form>
+    </div></tetris-overlay>
     <header>
       <div class="hiscores">
         <ul class="hiscore-players">

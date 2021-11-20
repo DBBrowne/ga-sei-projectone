@@ -5,6 +5,8 @@
   --playmatrix-width-count: 16;
   --playmatrix-height-count: 20;
   --playmatrix-cell-edge-length:50px;
+  --shape-creater-matrix-length:4;
+  --shape-creater-cell-colour:#b71eff;
 }
 
 * {
@@ -196,7 +198,6 @@ small{
   max-width: calc(((90vh)*var(--playmatrix-width-count)/var(--playmatrix-height-count)));
 }
 tetris-overlay{
-  z-index: 10;
   position: fixed;
   display: flex;
   align-items: center;
@@ -210,6 +211,7 @@ tetris-overlay.enable-overlay{
   display: flex;
 }
 .pause-overlay{
+  z-index: 2;
   width: calc(var(--playmatrix-cell-edge-length)*var(--playmatrix-width-count));
   height: calc(var(--playmatrix-cell-edge-length)*var(--playmatrix-height-count));
 }
@@ -264,15 +266,41 @@ tetris-overlay.enable-overlay{
 }
 
 .create-shape-overlay{
+  z-index: 3;
   width:100vw;
   height: 100vh;
-
 }
-.create-shape-overlay div{
+.create-shape-overlay>div{
   min-width: 200px;
   min-height: 200px;
   opacity: 100%;
-  background-color: rgba(255,255,255,1);
+  background-color: gray;
+}
+.shape-creator-matrix-container{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+
+  border:outset 10px steelblue;
+}
+.shape-creator-matrix-container>div{
+  border: outset rgb(175,175,175) 10px;
+  width: 80px;
+  height: 80px;
+  background-color: rgb(200,200,200);
+}
+.shape-creator-matrix-container .filled{
+  background-color: var(--shape-creater-cell-colour);
+  border-color: var(--shape-creater-cell-colour);
+}
+.create-shape-overlay form{
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin:10px 0
+}
+.create-shape-overlay form * {
+  min-height: 60px;
 }
 
 .rainbow-text {

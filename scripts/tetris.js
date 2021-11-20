@@ -1014,7 +1014,45 @@ const globalGameStateManager = {
     globalNewPlayerButton.classList.remove('inactive-element')
   },
 }
+const shapeCreator = {
+  overlay: globalCreateShapeOverlay,
+  displayMatrix: [],
+  newShapeMap: [],
+  shapeCreatorMatrix: [],
+  injectShapeBuilder(){
+    const currentMaxShapeLength = maxShapeSize
+    const displayElement = this.overlay.querySelector('.shape-creator-matrix-container')
+    console.log(displayElement)
+    displayElement.innerHTML = ''
+    console.log(currentMaxShapeLength)
+    for (let y = 0; y < currentMaxShapeLength ; y++){
+      this.displayMatrix.push([])
+      //count from width-1 to 0 to retain 0,0 at the lower left of the play view
+      console.log(currentMaxShapeLength)
+      for (let x = (currentMaxShapeLength - 1); x >= 0; x--){
+        const newCell = document.createElement('div')
+        
+        newCell.dataset.matrixCoordinateY = y
+        newCell.dataset.matrixCoordinateX = x
+
+        if (isDebugMode){
+          newCell.textContent = `${x}, ${y}`
+          newCell.classList.add('debug')
+        }
+
+
+        newCell.addEventListener('click', this.toggleCell)
+
+        displayElement.prepend(newCell)
+        this.displayMatrix[y].push(newCell)
+      }
+    }
+  },
+  toggleCell(e){
+    console.log('toggle:',e)
+  },
 }
+
 // **************************************************************************
 // keypress handler
 
@@ -1087,9 +1125,12 @@ function handleResizeButton(){
 
   resetPlayMatrixSize({ newX: newX, newY: newY })
 }
-function handleCreateShapeOverlay(){
+function handleCreateShapeOverlay(e){
   globalIsGameOngoing && handlePauseButton()
   globalCreateShapeOverlay.classList.toggle('enable-overlay')
+}
+function stopEventPropagation(e){
+  e.stopPropagation()
 }
 
 function handleWindowResize(){
@@ -1104,7 +1145,9 @@ document.addEventListener('keyup',   handleKeyPress)
 globalPlayButton.addEventListener('click',   globalGameStateManager.buttonActivate)
 globalNewPlayerButton.addEventListener('click', addNewPlayer)
 globalPauseButton.addEventListener('click', handlePauseButton)
+
 globalCreateShapeOverlay.addEventListener('click', handleCreateShapeOverlay)
+globalCreateShapeOverlay.firstChild.addEventListener('click', stopEventPropagation)
 
 if (isDebugMode){
   document.querySelector('head').innerHTML += '<style>* {border: solid rgb(80, 80, 80) 0.2px;}</style>'
@@ -1121,8 +1164,9 @@ window.onresize =  handleWindowResize
 // START GAME
 // populate with at least one player
 globalPlayers.push(new TetrisGame)
-// init highscores
+// init highscores + shape creator
 hiscoresManager.populateLocalHighscores()
+shapeCreator.injectShapeBuilder()
 
 // **************************************************************************
 // * export functions for testing
