@@ -34,7 +34,7 @@ const playerCoreHTML = '<div class="info"><div class="score-container"><p>Score:
 // **************************************************************************
 // Variables
 // todo: refactor to enum
-const isDebugMode = true
+const isDebugMode = false
 const isDebugVerbose = false
 const localStorageDebugMode = false
 
