@@ -46,7 +46,7 @@ let playMatrixWidth = 16
 
 let tetrominoSpawnXY = [(playMatrixWidth / 2) - 1,playMatrixHeight]
 
-const bombSize = 1
+const bombSize = 4
 const deadRowFill = 'lightgrey'
 const gameOverFill = 'chartreuse'
 
@@ -499,12 +499,16 @@ class TetrisGame {
     const targetX = playMatrixWidth - parseInt(targetDivData.matrixCoordinateX) - 1
 
     const targets = []
+
+
+
+
+
     for (let y = -bombSize;y <= bombSize; y++){
-      for (let x = -bombSize;x <= bombSize; x++){
+      for (let x = -bombSize+Math.abs(y);x <= bombSize-Math.abs(y); x++){
         targets.push([targetY + y, targetX + x])
       }
     }
-    [[targetY + bombSize + 1, targetX], [targetY - bombSize - 1, targetX], [targetY, targetX + bombSize + 1], [targetY, targetX - bombSize - 1]].forEach(target => targets.push(target))
 
     isDebugMode && console.log('bomb targets:',targets)
 
