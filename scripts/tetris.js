@@ -500,10 +500,6 @@ class TetrisGame {
 
     const targets = []
 
-
-
-
-
     for (let y = -bombSize;y <= bombSize; y++){
       for (let x = -bombSize+Math.abs(y);x <= bombSize-Math.abs(y); x++){
         targets.push([targetY + y, targetX + x])
