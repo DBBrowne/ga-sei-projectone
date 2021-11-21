@@ -46,7 +46,7 @@ let playMatrixWidth = 16
 
 let tetrominoSpawnXY = [(playMatrixWidth / 2) - 1,playMatrixHeight]
 
-const bombSize = 4
+const bombSize = 2
 const deadRowFill = 'lightgrey'
 const gameOverFill = 'chartreuse'
 
