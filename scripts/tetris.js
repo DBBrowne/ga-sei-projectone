@@ -501,7 +501,7 @@ class TetrisGame {
     const targets = []
 
     for (let y = -bombSize;y <= bombSize; y++){
-      for (let x = -bombSize+Math.abs(y);x <= bombSize-Math.abs(y); x++){
+      for (let x = -bombSize + Math.abs(y);x <= bombSize - Math.abs(y); x++){
         targets.push([targetY + y, targetX + x])
       }
     }
@@ -518,9 +518,9 @@ class TetrisGame {
         if (!(targetFill === deadRowFill) && targetRow.fullCellsCount > 0){
           targetRow.fullCellsCount--
         }
-      const targetDisplayElement = targetPlayerObject.playMatrix[target[0]][target[1]]
-      targetDisplayElement.classList.add('explode')
-      setTimeout(()=>targetDisplayElement.classList.remove('explode'), 400)
+        const targetDisplayElement = targetPlayerObject.playMatrix[target[0]][target[1]]
+        targetDisplayElement.classList.add('explode')
+        setTimeout(()=>targetDisplayElement.classList.remove('explode'), 400)
       } catch (e){
         isDebugMode && console.log(e)
       }
