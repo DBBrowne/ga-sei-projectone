@@ -514,15 +514,16 @@ class TetrisGame {
       try {
         targetFill = targetRow[target[1]].fillColor
         delete targetRow[target[1]].fillColor
-        if (!(targetFill === deadRowFill) && targetRow.fullCellsCount < 0){
+        // reduce full cells count to allow row clearing at the correct time, unless row is populated  due to another player passing a completed row
+        if (!(targetFill === deadRowFill) && targetRow.fullCellsCount > 0){
           targetRow.fullCellsCount--
         }
-      } catch (e){
-        isDebugMode && console.log(e)
-      }
       const targetDisplayElement = targetPlayerObject.playMatrix[target[0]][target[1]]
       targetDisplayElement.classList.add('explode')
       setTimeout(()=>targetDisplayElement.classList.remove('explode'), 400)
+      } catch (e){
+        isDebugMode && console.log(e)
+      }
 
     })
 
