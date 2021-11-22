@@ -292,6 +292,7 @@ class LandedShape extends Array {
       return
     }
     this.forEach((row, rowIndex)=>{
+      // only iterate through row that have filled cells.
       if (row.fullCellsCount){
         row.forEach((cell, columnIndex)=>{
           if (cell.fillColor){
@@ -511,20 +512,22 @@ class TetrisGame {
     targets.forEach(target=>{
       const targetRow = targetLandedShape[target[0]]
       let targetFill = ''
+      const targetColIndex = target[1]
       try {
-        targetFill = targetRow[target[1]].fillColor
-        delete targetRow[target[1]].fillColor
-        // reduce full cells count to allow row clearing at the correct time, unless row is populated  due to another player passing a completed row
-        if (!(targetFill === deadRowFill) && targetRow.fullCellsCount > 0){
-          targetRow.fullCellsCount--
-        }
-        const targetDisplayElement = targetPlayerObject.playMatrix[target[0]][target[1]]
+        targetFill = targetRow[targetColIndex].fillColor
+        delete targetRow[targetColIndex].fillColor
+
+        const targetDisplayElement = targetPlayerObject.playMatrix[target[0]][targetColIndex]
         targetDisplayElement.classList.add('explode')
         setTimeout(()=>targetDisplayElement.classList.remove('explode'), 400)
+
+        // reduce full cells count if a cell has been cleared, unless row is populated  due to another player passing a completed row
+        if (targetFill !== undefined && targetRow.fullCellsCount > 0 && targetFill !== deadRowFill){
+          targetRow.fullCellsCount --
+        }
       } catch (e){
         isDebugMode && console.log(e)
       }
-
     })
 
     targetPlayerObject.clearPlayAreaView()
