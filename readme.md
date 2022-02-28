@@ -17,7 +17,7 @@ Deployed at [tentris.dbb.tools](https://tentris.dbb.tools) via [Netlify](https:/
 - [Getting Started](#getting-started)
 - [Links](#links)
 - [Overview](#overview)
-    - [Architecture](#architecture)
+    - [System Design](#system-design)
     - [Core Behaviour](#core-behaviour)
     - [Project History](#project-history)
         - [Brief](#brief)
@@ -57,7 +57,7 @@ Move pieces left and right, and rotate them, to fill rows of your play field.  D
 
 #### Add new custom Tetromino shapes with the "create shape" button.
 
-#### Score a hiscore to save your score and initials.
+#### Beat the high scores to get onto the local Leaderboard.
 
 #### Tap the buttons on mobile to control the game.
 
@@ -81,7 +81,7 @@ Deploy to any static site hosting service, e.g. Github Pages.
 ****
 
 ## Overview
-## Architecture
+## System Design
 - [globalPlayers](https://github.com/DBBrowne/ga-sei-projectone/blob/c9ed2626c66529b2bbfe4af3c9611caf4deb54df/scripts/tetris.js#L53) holds an array of [TetrisGame](https://github.com/DBBrowne/ga-sei-projectone/blob/c9ed2626c66529b2bbfe4af3c9611caf4deb54df/scripts/tetris.js#L323)s, which populate the DOM with their UI on initialisation.
 - Each TetrisGame holds references to its DOM elements for rendering, a map of the cells occupied by the placed Tetrominoes in its [landedShape](https://github.com/DBBrowne/ga-sei-projectone/blob/c9ed2626c66529b2bbfe4af3c9611caf4deb54df/scripts/tetris.js#L289-L321), and an [activeTetromino](https://github.com/DBBrowne/ga-sei-projectone/blob/c9ed2626c66529b2bbfe4af3c9611caf4deb54df/scripts/tetris.js#L646).
 - The [keypress handler](https://github.com/DBBrowne/ga-sei-projectone/blob/c9ed2626c66529b2bbfe4af3c9611caf4deb54df/scripts/tetris.js#L1103) passes input through the control handlers to the method on the target player's active Tetrominoes:
@@ -102,7 +102,7 @@ Deploy to any static site hosting service, e.g. Github Pages.
 - [Initial tetromino matrix meshes](https://github.com/DBBrowne/ga-sei-projectone/blob/c9ed2626c66529b2bbfe4af3c9611caf4deb54df/scripts/tetris.js#L77-L136) which are transformed into [renderable offsets](https://github.com/DBBrowne/ga-sei-projectone/blob/c9ed2626c66529b2bbfe4af3c9611caf4deb54df/scripts/tetris.js#L871-L877) of cells for rendering via their [css classes](https://github.com/DBBrowne/ga-sei-projectone/blob/c9ed2626c66529b2bbfe4af3c9611caf4deb54df/scripts/tetris.js#L909-L919).
 - [inputKeyBindings](https://github.com/DBBrowne/ga-sei-projectone/blob/c9ed2626c66529b2bbfe4af3c9611caf4deb54df/scripts/tetris.js#L217) hold key mappings for each player and translate these through the [playerControls](https://github.com/DBBrowne/ga-sei-projectone/blob/c9ed2626c66529b2bbfe4af3c9611caf4deb54df/scripts/tetris.js#L147) object to each `TetrisGame`.
 - [gameTimers](https://github.com/DBBrowne/ga-sei-projectone/blob/c9ed2626c66529b2bbfe4af3c9611caf4deb54df/scripts/tetris.js#L578-L586) on each player's `TetrisGame` control the interval between each processing of a [gameTick](https://github.com/DBBrowne/ga-sei-projectone/blob/c9ed2626c66529b2bbfe4af3c9611caf4deb54df/scripts/tetris.js#L573-L577).  Each `gameTick`, rotation, or horizontal movement triggers a check that the next space is free to move or rotate into, moves the shape if possible, and checks for any completed rows.
-- The [hiscoresManager](https://github.com/DBBrowne/ga-sei-projectone/blob/c9ed2626c66529b2bbfe4af3c9611caf4deb54df/scripts/tetris.js#L784) handles storing and retrieving hiscores when each player loses their game, and populates the scrolling hiscores display.
+- The [hiscoresManager](https://github.com/DBBrowne/ga-sei-projectone/blob/c9ed2626c66529b2bbfe4af3c9611caf4deb54df/scripts/tetris.js#L784) handles storing and retrieving the Leaderboard and high scores when each player loses their game, and populates the scrolling hiscores display.
 - The [shapeCreator](https://github.com/DBBrowne/ga-sei-projectone/blob/c9ed2626c66529b2bbfe4af3c9611caf4deb54df/scripts/tetris.js#L1028) displays a modal overlay allowing the user to create their own custom Tetrominoes, managing any necessary playfield size changes required to correctly deploy the new shapes.
 - A [window resize listener](https://github.com/DBBrowne/ga-sei-projectone/blob/c9ed2626c66529b2bbfe4af3c9611caf4deb54df/scripts/tetris.js#L1198-L1200) retains playfield aspect ratios as the window is resized.
 
@@ -124,9 +124,9 @@ Handle all gameplay in a data layer (ie JavaScript objects), use HTML DOM only t
 
 As all JavaScript will be in a single file, code order is not entirely optimal for readability to ensure correct initialisation order.
 
-[Github Projects Beta](https://github.com/users/DBBrowne/projects/1) provided a framework to assemble a Kanban style board of issues, broken down into the smallest possible steps, to ensure a working MVP was released asap. Github issues provided an organised place to include pseudocode where a possible solutions occurred to problems that were not yet prioritised.
+[Github Projects Beta](https://github.com/users/DBBrowne/projects/1) provided a framework to assemble a Kanban style board of issues, broken down into the smallest possible steps, to ensure a working MVP was released asap. Github issues provided an organised place to include pseudocode where possible solutions occurred to problems that were not yet prioritised.
 
-### Wireframes:
+### Wireframes
 Designed with mobile in mind, the original design required little more than a max-width media query to switch the main Section flex direction to column to achieve a functional mobile view.
 
 |MVP - 1 player desktop Tetris| 1 player mobile view|multi-player desktop view|
@@ -158,12 +158,12 @@ Although I had wanted to follow a TDD-lite approach, building tests where possib
 1. ***MVP DONE*** - We have a game that meets the specified brief.
 1. Refactor to a Class, and duplicate the player object.
 1. Separate controls.
-1. Competitive interactions - one players completing a row adds to other's blocked rows.
+1. Competitive interactions - one player completing a row adds to other's blocked rows.
 1. ***2-Player complete*** - Stretch goals met, on to fun additions.
 1. Wallkicks
 1. Game art - Draw pixel art into the playFields for, eg, GameOver.  
 
-      *As we've built ina  flexible manner, show that off :*  
+      *As we've built in a flexible manner, show that off :*  
 1. Dynamically resize play fields.
 1. Create Custom Shape modal with colourpicker.
 1. Bombs?  Bombs.
@@ -360,7 +360,7 @@ Although I had wanted to follow a TDD-lite approach, building tests where possib
 - Display next incoming shape to user, and allow swapping current shape into storage.  
 <br>
 
-- Refactor the checks for next occupied spaces to reduce the number of intermediate states that ate stored on the Tetromino objects.
+- Refactor the checks for next occupied spaces to reduce the number of intermediate states that are stored on the Tetromino objects.
 - Reduce some of the mutually exclusive flags to enums (eg debug modes, gameOngoing states).
 - Refactor the `Tetromino.moveDown` method into `.move([vector])` .  Alternatively, MoveDown is a special state as it can trigger `Tetromino.addToLandedShape`, so it may be clearer if it remains separate.
 
