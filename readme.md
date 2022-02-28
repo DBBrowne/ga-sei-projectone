@@ -326,7 +326,7 @@ Although I had wanted to follow a TDD-lite approach, building tests where possib
       buildNewPlayMatrix(rows, columns, playMatrixView)
       ```
 1. Separate controls.
-    - Attach a playerId to each set of controls, and pass that through the control handlers to call the required method on the correct player's object without duplicating code or objects.
+    - Attach a `playerId` to each set of controls, and pass that through the control handlers to call the required method on the correct player's object without duplicating code or objects.
 1. Competitive interactions - one player completing a row adds to other's blocked rows.
     - Some refactoring to correctly handle moving another playfield against the normal flow of the game.
 1. ***2-Player complete*** - Stretch goals met, on to fun additions.
